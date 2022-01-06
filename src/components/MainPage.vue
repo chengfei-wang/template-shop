@@ -15,7 +15,7 @@ const page_map = {
   2: PersonalPage,
 }
 
-function onPageChange(position) {
+function onPageChange(position: number) {
   currentPage.value = position
 }
 
