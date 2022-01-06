@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import {} from "vue";
+
+defineProps<{
+  title: string,
+}>()
+</script>
+
 <template>
   <div class="mdui-appbar">
     <div class="mdui-toolbar mdui-color-theme">
@@ -10,12 +18,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  title: String,
-})
-</script>
 
 <style scoped>
 

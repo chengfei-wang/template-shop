@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Toolbar from './Toolbar.vue'
-import ApplyPage from './templates/ApplyPage/ApplyPage.vue'
+import Toolbar from "./Toolbar.vue"
+import ApplyPage from "./templates/ApplyPage/ApplyPage.vue"
 </script>
 
 <template>

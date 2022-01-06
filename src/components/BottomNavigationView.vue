@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
+import {} from "vue"
 
-defineProps({
+defineProps<{
   onPageChange: Function
-})
+}>()
 
 </script>
 

@@ -1,5 +1,5 @@
-<script setup>
-import Toolbar from './Toolbar.vue'
+<script setup lang="ts">
+import Toolbar from "./Toolbar.vue"
 
 </script>
 

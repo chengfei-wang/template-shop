@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps} from 'vue';
+import {} from "vue";
 import {TemplateForm} from "../TemplateForm";
 import {TemplateStyle} from "../TemplateStyle";
 import {TemplateData} from "../TemplateData";

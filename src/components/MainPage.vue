@@ -1,11 +1,11 @@
-<script setup>
-import {ref} from 'vue'
-import BottomNavigationView from './BottomNavigationView.vue'
-import ShoppingPage from './ShoppingPage.vue'
-import CraftPage from './CraftPage.vue'
-import PersonalPage from './PersonalPage.vue'
+<script setup lang="ts">
+import {ref} from "vue"
+import BottomNavigationView from "./BottomNavigationView.vue"
+import ShoppingPage from "./ShoppingPage.vue"
+import CraftPage from "./CraftPage.vue"
+import PersonalPage from "./PersonalPage.vue"
 
-defineProps({})
+defineProps<{}>()
 
 const currentPage = ref(0)
 
