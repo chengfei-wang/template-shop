@@ -4,7 +4,7 @@ import {TemplateForm} from "../TemplateForm";
 import {TemplateStyle} from "../TemplateStyle";
 import {TemplateData} from "../TemplateData";
 
-const props = defineProps<{
+defineProps<{
   form: TemplateForm,
   style: TemplateStyle,
   data: TemplateData,
@@ -12,7 +12,7 @@ const props = defineProps<{
 </script>
 
 <template>
-{{form.method}} {{form.url}}
+  {{ form.method }} {{ form.url }}
 </template>
 
 <style scoped>
