@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import {} from "vue";
+import TextInput from "../element/TextInput.vue"
+import FormSubmit from "../element/FormSubmit.vue"
+
 import {TemplateForm} from "../TemplateForm";
 import {TemplateStyle} from "../TemplateStyle";
 import {TemplateData} from "../TemplateData";
@@ -12,9 +15,15 @@ defineProps<{
 </script>
 
 <template>
-  {{ form.method }} {{ form.url }}
+  <form :action="form.url" :method="form.method" onsubmit="return false">
+    <TextInput v-for="item in data.items" :item="item"/>
+    <FormSubmit text="提交"/>
+  </form>
 </template>
 
 <style scoped>
-
+form {
+  padding-left: 16px;
+  padding-right: 16px;
+}
 </style>
