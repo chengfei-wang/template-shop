@@ -22,13 +22,12 @@ function onPageChange(position) {
 </script>
 
 <template>
-
-  <component :is="page_map[currentPage]" />
-
+  <component :is="page_map[currentPage]"/>
   <BottomNavigationView :on-page-change="onPageChange"/>
 </template>
 
 <script>
+
 </script>
 
 <style scoped>

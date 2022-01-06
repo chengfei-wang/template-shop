@@ -1,7 +1,9 @@
-<script>
+<script setup>
+import Toolbar from './Toolbar.vue'
 
 </script>
 
 <template>
-  <h1>个人中心</h1>
+  <Toolbar title="个人中心"/>
+
 </template>

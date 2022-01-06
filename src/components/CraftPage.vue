@@ -1,7 +1,9 @@
-<script>
-
+<script setup lang="ts">
+import Toolbar from './Toolbar.vue'
+import ApplyPage from './templates/ApplyPage/ApplyPage.vue'
 </script>
 
 <template>
-<h1>开始创作</h1>
+  <Toolbar title="开始创作"/>
+  <ApplyPage :form="{method: 'POST', url: 'http://localhost:8080/26313987'}" :data="{data: []}" :style="{}"/>
 </template>

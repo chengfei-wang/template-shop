@@ -1,7 +1,9 @@
-<script>
+<script setup>
+import Toolbar from './Toolbar.vue'
 
 </script>
 
 <template>
-  <h1>模版市场</h1>
+  <Toolbar title="模版市场"/>
+
 </template>
