@@ -22,7 +22,9 @@ function onPageChange(position: number) {
 </script>
 
 <template>
-  <component :is="page_map[currentPage]"/>
+  <keep-alive>
+    <component :is="page_map[currentPage]"/>
+  </keep-alive>
   <BottomNavigationView :on-page-change="onPageChange"/>
 </template>
 
