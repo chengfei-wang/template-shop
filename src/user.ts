@@ -31,5 +31,8 @@ export function logout() {
 export function login(email: string, password: string) {
     request("user/login", {"email": email, "password": password}, (result: any) => {
         console.log(result)
+        if (result?.data?.token != null) {
+            storage.setItem("token", result?.data?.token)
+        }
     })
 }

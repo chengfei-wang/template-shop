@@ -1,5 +1,5 @@
 const default_headers: { [key: string]: string; } = {
-    "Content-Type": "application/json;charset=utf-8"
+    "Content-Type": "application/json;charset=utf-8",
 }
 
 const protocol = document.location.protocol
@@ -20,7 +20,7 @@ export function request(route: string, body: { [key: string]: any; }, callback: 
     }
     let form = new Request(api(route), {
         method: 'POST',
-        credentials: 'include',
+        credentials: "same-origin",
         headers: headers,
         body: JSON.stringify(body)
     })
