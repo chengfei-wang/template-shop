@@ -15,15 +15,15 @@ function login_handler() {
     mdui.snackbar({
       message: '邮箱不合法',
       position: 'bottom',
-      buttonText: 'EDIT',
-      onButtonClick: function(){
-        // $('#input_login_email').focus()
-      },
     });
     return
   }
 
   if (_password.length <= 0) {
+    mdui.snackbar({
+      message: '请输入密码',
+      position: 'bottom',
+    });
     return;
   }
 
