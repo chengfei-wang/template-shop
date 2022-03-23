@@ -49,18 +49,20 @@ function register_handler() {
   <div class="mdui-container">
     <div class="mdui-col-lg-3"></div>
     <div class="mdui-col-lg-6">
-      <h1 class="mdui-text-center mdui-typo-headline">Template Shop</h1>
-      <div class="mdui-textfield mdui-textfield-floating-label">
-        <label class="mdui-textfield-label">邮箱</label>
-        <input id="input_login_email" class="mdui-textfield-input" type="email" v-model="email"/>
-        <div class="mdui-textfield-error">邮箱格式错误</div>
-      </div>
-      <div class="mdui-textfield mdui-textfield-floating-label">
-        <label class="mdui-textfield-label">密码</label>
-        <input id="input_login_password" class="mdui-textfield-input" type="password" v-model="password"/>
-      </div>
-      <input type="button" style="margin-top: 32px" value="提交" v-on:click="login_handler"
-             class="mdui-btn mdui-btn-block mdui-color-green mdui-text-color-white"/>
+      <form onsubmit="return false">
+        <h1 class="mdui-text-center mdui-typo-headline">Template Shop</h1>
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">邮箱</label>
+          <input id="input_login_email" class="mdui-textfield-input" type="email" autocomplete="off" v-model="email"/>
+          <div class="mdui-textfield-error">邮箱格式错误</div>
+        </div>
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">密码</label>
+          <input id="input_login_password" class="mdui-textfield-input" type="password" autocomplete="off" v-model="password"/>
+        </div>
+        <input type="submit" style="margin-top: 32px" value="提交" v-on:click="login_handler"
+               class="mdui-btn mdui-btn-block mdui-color-green mdui-text-color-white"/>
+      </form>
     </div>
     <div class="mdui-col-lg-3"></div>
   </div>
