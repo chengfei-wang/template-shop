@@ -1,5 +1,26 @@
-import {createApp} from 'vue'
-import App from './App.vue'
+import {createApp, h} from 'vue'
+import LoginPage from './components/LoginPage.vue'
+import MainPage from "./components/MainPage.vue";
+import NotFoundPage from "./components/NotFoundPage.vue";
 
-let app = createApp(App)
+const routes = {
+    '/': MainPage,
+    '/login': LoginPage
+}
+
+const Router = {
+    data: () => ({
+        currentRoute: window.location.pathname
+    }),
+    computed: {
+        CurrentComponent() {
+            return routes[this.currentRoute] || NotFoundPage
+        }
+    },
+    render() {
+        return h(this.CurrentComponent)
+    }
+}
+
+let app = createApp(Router)
 app.mount('#app')
