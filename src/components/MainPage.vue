@@ -28,8 +28,10 @@ function onPageChange(position: number) {
   <BottomNavigationView :on-page-change="onPageChange"/>
 </template>
 
-<script>
+<script lang="ts">
+export default {
 
+}
 </script>
 
 <style scoped>
