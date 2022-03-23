@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Toolbar from "./Toolbar.vue"
+import Toolbar from "./widget/Toolbar.vue"
 import ApplyPage from "./template/ApplyPage/ApplyPage.vue"
 import {TemplateData} from "./template/TemplateData";
 
