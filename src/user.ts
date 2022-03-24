@@ -1,4 +1,4 @@
-import {request} from "./requests"
+import {request, Response} from "./requests"
 
 export class User {
     constructor(uid: string, name: string, email: string) {
@@ -18,13 +18,21 @@ export function logout() {
     storage.clear()
 }
 
-export function login(email: string, password: string, callback: Function) {
-    request("user/login", {"email": email, "password": password}, (result: any) => {
-        if (result?.data?.token != null) {
-            storage.setItem("token", result?.data?.token)
-            callback(result.data)
+export function login(email: string, password: string, callback: (code: number, data: any | null) => void) {
+    request("user/login", {"email": email, "password": password}, (status, obj: Response) => {
+        if (status == 200 && obj?.data != null) {
+            if (obj.code == 200 && obj.data.token != null) {
+                storage.setItem("token", obj.data.token)
+                callback(obj.code, obj.data)
+            } else {
+                callback(obj.code, null)
+            }
         } else {
-            callback(null)
+            callback(400, null)
         }
     })
+}
+
+export function register(email: string, password: string, callback: (code: number, data: any | null) => void ) {
+
 }

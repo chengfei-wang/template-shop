@@ -10,7 +10,7 @@ function api(route: string): string {
     return `${protocol}//${host}:${port}/${route}`
 }
 
-export function request(route: string, body: { [key: string]: any; }, callback: Function, headers: { [key: string]: string; } = default_headers) {
+export function request(route: string, body: { [key: string]: any; }, callback: (status: number, obj: Response) => void, headers: { [key: string]: string; } = default_headers) {
     let token = window.localStorage.getItem("token")
     if (token != null) {
         headers = {
@@ -25,5 +25,11 @@ export function request(route: string, body: { [key: string]: any; }, callback: 
         body: JSON.stringify(body)
     })
 
-    fetch(form).then(result => result.json().then(obj => callback(obj)))
+    fetch(form).then(result => result.json().then(obj => callback(result.status, obj)))
+}
+
+export interface Response {
+    code: number
+    message: string
+    data: any | null
 }
