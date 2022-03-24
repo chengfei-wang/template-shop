@@ -1,8 +1,33 @@
 <script setup lang="ts">
-import TextInput from "./template/element/TextInput.vue";
-import {dragover_handler, drop_handler, delete_handler, randomId} from "./template/drag_handler.ts"
-import {ref, h} from "vue";
+import {randomId} from "./template/drag_handler"
+import {ref} from "vue";
 
+class Widget {
+  id: string
+  description: string
+
+  constructor(id: string, description: string) {
+    this.id = id
+    this.description = description
+  }
+}
+
+function create_widget(html: string): Widget {
+  return new Widget(randomId(), html)
+}
+
+function clone_item(item: Widget) {
+  return new Widget(randomId(), item.description)
+}
+
+// const drag = ref(false)
+const content_source = ref<Array<Widget>>([
+  create_widget("<p class='template-item'>简单文本</p>"),
+  create_widget("<input type='text' class='template-item mdui-textfield-input' placeholder='请输入文本'/>"),
+  create_widget("<button class='template-item mdui-text-color-white mdui-color-green-400'>普通按钮</button>"),
+])
+const content_editor = ref<Array<Widget>>([])
+const content_trash = ref<Array<Widget>>([])
 </script>
 
 <template>
@@ -10,45 +35,41 @@ import {ref, h} from "vue";
     <div class="mdui-col-sm-3">
       <div id="template-source" class="template-source">
         <draggable
-            @drop="drop_handler($event, (data) => {content.push({component: data})})"
-            @dragover="dragover_handler($event)"
-            v-model="content"
-            @start="drag=true"
-            @end="drag=false"
-            tag="transition-group"
+            :list="content_source"
+            :clone="clone_item"
+            :group="{ name: 'editor', pull: 'clone', put: false }"
             item-key="id">
           <template #item="{element}">
-            <component is="text-input"/>
+            <div v-html="element.description"></div>
           </template>
         </draggable>
       </div>
     </div>
 
     <div class="mdui-col-sm-7">
-      <div id="template-container-root"
-           class="template-container-root">
-        <draggable
-            @drop="drop_handler($event, (data) => {content.push({component: data})})"
-            @dragover="dragover_handler($event)"
-            v-model="content"
-            @start="drag=true"
-            @end="drag=false"
-            tag="transition-group"
-            item-key="id">
-          <template #item="{element}">
-            <component is="text-input"/>
-          </template>
-        </draggable>
-      </div>
-
+      <draggable
+          id="template-container-root"
+          class="template-container-root"
+          :list="content_editor"
+          group="editor"
+          item-key="id">
+        <template #item="{element}">
+          <div v-html="element.description" :id="element.id"></div>
+        </template>
+      </draggable>
     </div>
 
     <div class="mdui-col-sm-2">
-      <div
+      <draggable
+          id="template-trash"
           class="template-trash mdui-center"
-          @drop="delete_handler($event)"
-          @dragover="dragover_handler($event)"
-      />
+          :list="content_trash"
+          group="editor"
+          item-key="id">
+        <template #item="{element}">
+          <div style="visibility: hidden"></div>
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
@@ -56,18 +77,13 @@ import {ref, h} from "vue";
 <script lang="ts">
 import draggable from "vuedraggable";
 import {ref} from "vue";
+import {randomId} from "./template/drag_handler";
 
 export default {
   components: {draggable},
-  data() {
-    return {
-      drag: false,
-      content: [{component: "TextInput"}]
-    }
-  }
 }
 </script>
 
-<style scoped lang="css">
+<style lang="css">
 @import "./template/template.css";
 </style>
