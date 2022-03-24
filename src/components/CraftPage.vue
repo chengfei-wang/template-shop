@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Toolbar from "./widget/Toolbar.vue"
-import ApplyPage from "./template/ApplyPage/ApplyPage.vue"
 import {TemplateData} from "./template/TemplateData";
 
 const data: TemplateData = {
@@ -26,5 +25,4 @@ const data: TemplateData = {
 
 <template>
   <Toolbar title="开始创作"/>
-  <ApplyPage :form="{method: 'POST', url: 'http://localhost:8080/26313987'}" :data="data" :style="{}"/>
 </template>
