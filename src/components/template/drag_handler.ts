@@ -1,12 +1,14 @@
+import Vue from "vue"
+
 function isTemplate(element: Element) {
     return element.classList.contains('template-flag')
 }
 
-function copyElement(element: Element) {
+function copyElement(element: Element, parent: HTMLElement) {
     const node = <Element>element.cloneNode(true)
     node.classList.remove('template-flag')
     deepId(node)
-    document.getElementById('template-item-holder')!.appendChild(node)
+    parent.appendChild(node)
     return node
 }
 
@@ -35,9 +37,10 @@ function randomId(): string {
 export function dragstart_handler(event: DragEvent) {
     const source: Element | null = <Element | null>event.target
     const data: DataTransfer | null = event.dataTransfer
-    if (source != null && data != null) {
+    const placeholder = document.getElementById('template-item-holder')
+    if (source != null && data != null && placeholder != null) {
         if (isTemplate(<Element>source)) {
-            const dest = copyElement(source)
+            const dest = copyElement(source, placeholder)
             data.setData('application/element-id', dest.id)
         } else {
             data.setData('application/element-id', source.id)
