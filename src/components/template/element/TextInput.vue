@@ -5,7 +5,7 @@ defineProps<{}>();
 </script>
 
 <template>
-  <div draggable="true" v-on:dragstart="dragstart_handler($event)"
+  <div draggable="true" v-on:dragstart="dragstart_handler($event, 'TextInput')"
        class="template-item template-flag mdui-textfield mdui-textfield-floating-label">
     <label class="mdui-textfield-label">简单文本框</label>
     <input class="mdui-textfield-input" type="text"/>

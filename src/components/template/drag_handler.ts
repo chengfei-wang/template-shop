@@ -1,5 +1,3 @@
-import Vue from "vue"
-
 function isTemplate(element: Element) {
     return element.classList.contains('template-flag')
 }
@@ -24,7 +22,7 @@ function deepId(element: Element) {
     }
 }
 
-function randomId(): string {
+export function randomId(): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     const len = chars.length
     let s = ''
@@ -34,41 +32,28 @@ function randomId(): string {
     return s
 }
 
-export function dragstart_handler(event: DragEvent) {
-    const source: Element | null = <Element | null>event.target
+export function dragstart_handler(event: DragEvent, content: string) {
     const data: DataTransfer | null = event.dataTransfer
-    const placeholder = document.getElementById('template-item-holder')
-    if (source != null && data != null && placeholder != null) {
-        if (isTemplate(<Element>source)) {
-            const dest = copyElement(source, placeholder)
-            data.setData('application/element-id', dest.id)
-        } else {
-            data.setData('application/element-id', source.id)
-        }
-        data.dropEffect = 'move'
+    if (data != null) {
+        data.setData('application/element-id', content)
     }
 }
 
 export function dragover_handler(event: DragEvent) {
     event.preventDefault()
-    const data: DataTransfer | null = event.dataTransfer
-    if (data != null) {
-        data.dropEffect = 'move'
-    }
 }
 
-export function drop_handler(event: DragEvent) {
+export function drop_handler(event: DragEvent, callback: (data: string) => {}) {
     event.preventDefault()
 
     const target: Element | null = <Element | null>event.target
     const transfer: DataTransfer | null = event.dataTransfer
     if (target != null && transfer != null) {
         const data = transfer.getData('application/element-id')
-        const source = document.getElementById(data)
-        if (source != null && target.classList.contains('template-container-root') || target.classList.contains('template-slot')) {
-            target.appendChild(<Node>source)
-        } else if (source != null && target.classList.contains('template-item') || target.classList.contains('template-container')) {
-            target.parentNode!.insertBefore(<Node>source, target)
+        if (data != null && target.classList.contains('template-container-root') || target.classList.contains('template-slot')) {
+            callback(data)
+        } else if (target.classList.contains('template-item') || target.classList.contains('template-container')) {
+
         }
     }
 }
