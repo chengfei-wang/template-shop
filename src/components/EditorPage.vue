@@ -1,3 +1,9 @@
+<script setup>
+import TextInput from "./template/element/TextInput.vue";
+import {dragstart_handler, dragover_handler, drop_handler, delete_handler} from "./template/drag_handler.ts"
+
+</script>
+
 <template>
   <div class="mdui-container">
     <div class="mdui-col-sm-3">
@@ -84,6 +90,8 @@
           id="template-item-holder"
           style="position: absolute;left: -1000%"
       />
+
+      <TextInput />
     </div>
 
     <div class="mdui-col-sm-7">
@@ -105,166 +113,6 @@
   </div>
 </template>
 
-<script setup>
-function isTemplate(element) {
-  return element.classList.contains('template-flag')
-}
-
-function copyElement(element) {
-  const node = element.cloneNode(true)
-  node.classList.remove('template-flag')
-  deepId(node)
-  document.getElementById('template-item-holder').appendChild(node)
-  return node
-}
-
-function deepId(element) {
-  element.id = randomId()
-  if (element.hasChildNodes()) {
-    const nodes = element.childNodes
-    nodes.forEach(node => deepId(node))
-  }
-}
-
-function randomId() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-  const len = chars.length
-  let s = ''
-  for (let i = 0; i < 32; i++) {
-    s += chars.charAt(Math.floor(Math.random() * len))
-  }
-  return s
-}
-
-function dragstart_handler(event) {
-  const source = event.target
-  if (isTemplate(source)) {
-    const dest = copyElement(source)
-    event.dataTransfer.setData('application/element-id', dest.id)
-  } else {
-    event.dataTransfer.setData('application/element-id', source.id)
-  }
-  event.dataTransfer.dropEffect = 'move'
-}
-
-function dragover_handler(event) {
-  event.preventDefault()
-  event.dataTransfer.dropEffect = 'move'
-}
-
-function drop_handler(event) {
-  event.preventDefault()
-  const data = event.dataTransfer.getData('application/element-id')
-  const target = event.target
-  const source = document.getElementById(data)
-  if (target.classList.contains('template-container-root') || target.classList.contains('template-slot')) {
-    target.appendChild(source)
-  } else if (target.classList.contains('template-item') || target.classList.contains('template-container')) {
-    target.parentNode.insertBefore(source, target)
-  }
-}
-
-function delete_handler(event) {
-  event.preventDefault()
-  const data = event.dataTransfer.getData('application/element-id')
-  const element = document.getElementById(data)
-  element.remove()
-}
-
-// function ondragenter_handler(event) {
-//   event.preventDefault()
-//   console.log("enter")
-//   console.log(event)
-//   console.log(event.target)
-//   let target = event.target
-// }
-//
-// function remove_all_with_class(node, className) {
-//   if (node.hasChildNodes()) {
-//     node.childNodes.forEach(node => remove_all_with_class(node, className))
-//   } else if (node.classList?.contains(className)) {
-//     node.remove()
-//   }
-// }
-//
-// function ondragleave_handler(event) {
-//   event.preventDefault()
-//   console.log("leave")
-//   console.log(event.target)
-// }
-</script>
-
-<style scoped>
-.template-container-root {
-  min-height: 480px;
-  border: 1px solid #aaaaaa;
-  height: auto;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-.template-container {
-  height: auto;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.template-slot {
-  border: 1px dotted #aaaaaa;
-  min-height: 32px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  height: auto;
-}
-
-.template-item {
-  border: 1px dotted #aaaaaa;
-  width: 100% !important;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-.template-trash {
-  width: 80px;
-  height: 80px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border: 1px solid #aaaaaa;
-}
-
-p {
-  min-width: 20%;
-  width: auto;
-  min-height: 32px;
-}
-
-button {
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
-  min-width: 88px;
-  height: 36px;
-  margin: 0;
-  padding: 0 16px;
-  overflow: hidden;
-  color: inherit;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 36px;
-  letter-spacing: .04em;
-  white-space: nowrap;
-  text-align: center;
-  text-transform: uppercase;
-  text-decoration: none;
-  vertical-align: middle;
-  background: 0 0;
-  border: none;
-  border-radius: 2px;
-  outline: 0;
-  cursor: pointer;
-}
-
-.template-flag {
-
-}
+<style scoped lang="css">
+@import "./template/template.css";
 </style>

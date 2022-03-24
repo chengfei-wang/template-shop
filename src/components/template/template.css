@@ -1,0 +1,72 @@
+.template-container-root {
+    min-height: 480px;
+    border: 1px solid #aaaaaa;
+    height: auto;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.template-container {
+    height: auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.template-slot {
+    border: 1px dotted #aaaaaa;
+    min-height: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: auto;
+}
+
+.template-item {
+    border: 1px dotted #aaaaaa;
+    width: 100% !important;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.template-trash {
+    width: 80px;
+    height: 80px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #aaaaaa;
+}
+
+p {
+    min-width: 20%;
+    width: auto;
+    min-height: 32px;
+}
+
+button {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    min-width: 88px;
+    height: 36px;
+    margin: 0;
+    padding: 0 16px;
+    overflow: hidden;
+    color: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 36px;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    vertical-align: middle;
+    background: 0 0;
+    border: none;
+    border-radius: 2px;
+    outline: 0;
+    cursor: pointer;
+}
+
+.template-flag {
+
+}
