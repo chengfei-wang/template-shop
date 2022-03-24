@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {} from "vue";
 import TextInput from "../element/TextInput.vue"
 import FormSubmit from "../element/FormSubmit.vue"
 
@@ -16,7 +15,7 @@ defineProps<{
 
 <template>
   <form :action="form.url" :method="form.method" onsubmit="return false">
-    <TextInput v-for="item in data.items" :item="item"/>
+    <TextInput v-for="item in data.items" :item="item" :key="item.id"/>
     <FormSubmit text="提交"/>
   </form>
 </template>

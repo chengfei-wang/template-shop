@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {} from "vue"
 
 defineProps<{
-  onPageChange: Function
+  onPageChange: (page: number) => void
 }>()
 
 </script>

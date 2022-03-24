@@ -54,12 +54,6 @@ if (localStorage.getItem("token") == null) {
   <BottomNavigationView :on-page-change="onPageChange"/>
 </template>
 
-<script lang="ts">
-export default {
-
-}
-</script>
-
 <style scoped>
 a {
   color: #42b983;
