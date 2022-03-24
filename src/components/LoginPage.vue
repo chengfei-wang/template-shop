@@ -41,9 +41,6 @@ function login_handler() {
 
 }
 
-function register_handler() {
-
-}
 </script>
 
 <template>
