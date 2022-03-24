@@ -4,6 +4,9 @@ import BottomNavigationView from "./BottomNavigationView.vue"
 import ShoppingPage from "./ShoppingPage.vue"
 import CraftPage from "./CraftPage.vue"
 import PersonalPage from "./PersonalPage.vue"
+import {request} from "../requests";
+import {logout} from "../user";
+import mdui from "mdui";
 
 defineProps<{}>()
 
@@ -19,6 +22,29 @@ function onPageChange(position: number) {
   currentPage.value = position
 }
 
+if (localStorage.getItem("token") == null) {
+  console.log("Token == null")
+  window.location.href = "/login"
+} else {
+  request("user/verify", {}, ((status, obj) => {
+    if (status == 200) {
+      if (obj.code != 200) {
+        logout()
+        window.location.href = "/login"
+      } else {
+        // mdui.snackbar({
+        //   message: `欢迎 ${obj.data.name}`,
+        //   position: 'top',
+        // });
+      }
+    } else {
+      mdui.snackbar({
+        message: '服务器异常',
+        position: 'bottom',
+      });
+    }
+  }))
+}
 </script>
 
 <template>

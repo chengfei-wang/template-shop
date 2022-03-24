@@ -1,5 +1,4 @@
 import {request, Response} from "./requests"
-import {ref} from "vue"
 
 export class User {
     constructor(uid: string, name: string, email: string) {
@@ -13,13 +12,8 @@ export class User {
     email: string
 }
 
-let storage = window.localStorage
-
-export let currentUser = ref<User | null>()
-
 export function logout() {
-    currentUser.value = null
-    storage.clear()
+    localStorage.clear()
     window.location.href = "/login"
 }
 
@@ -27,7 +21,7 @@ export function login(email: string, password: string, callback: (code: number, 
     request("user/login", {"email": email, "password": password}, (status, obj: Response) => {
         if (status == 200) {
             if (obj.code == 200 && obj?.data.token != null) {
-                storage.setItem("token", obj.data.token)
+                localStorage.setItem("token", obj.data.token)
                 callback(obj.code, obj.data)
             } else {
                 callback(obj.code, null)
