@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import DivDraggable from "./DivDraggable.vue"
+import {SlotProp} from "../../widget";
 
 const props = defineProps<{
-  children: number
+  slots: Array<SlotProp>
 }>()
 </script>
 
 <template>
-  <div :class="`mdui-row-xs-${children}`" class="template-container mdui-col">
-    <div-draggable v-for="index in children"></div-draggable>
+  <div class="template-container template-item mdui-container-fluid">
+    <div-draggable v-for="slot in slots" :slot="slot"></div-draggable>
   </div>
 </template>
 

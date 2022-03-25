@@ -2,8 +2,20 @@ export enum WidgetType {
     WIDGET, CONTAINER
 }
 
-export interface SlotProp {
+export class SlotProp {
     size: number
+
+    constructor(size: number = 12) {
+        this.size = size
+    }
+
+    clone() : SlotProp {
+        return new SlotProp(this.size)
+    }
+
+    static clone_props(props: Array<SlotProp>): Array<SlotProp> {
+        return props.map(value => value.clone())
+    }
 }
 
 export class Widget {
@@ -24,17 +36,17 @@ export class Widget {
     }
 }
 
-export class Container extends Widget{
-    children: number
+export class Container extends Widget {
+    children: Array<SlotProp>
 
-    constructor(id: string, description: string, children: number = 1) {
+    constructor(id: string, description: string, children: Array<SlotProp>) {
         super(id, description)
         this.widget_type = WidgetType.CONTAINER
         this.children = children
     }
 
     clone(): Container {
-        let container = new Container(this.id, this.description, this.children)
+        let container = new Container(this.id, this.description, SlotProp.clone_props(this.children))
         console.log(container)
         return container
     }

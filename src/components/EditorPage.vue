@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {randomId} from "./template/drag_handler"
 import {ref} from "vue";
-import {Widget, Container, WidgetType} from "../widget"
+import {Widget, Container, WidgetType, SlotProp} from "../widget"
 import NestedDraggable from "./widget/NestedDraggable.vue";
 
 function create_widget(html: string): Widget {
   return new Widget(randomId(), html)
 }
 
-function create_container(children: number, description: string): Container {
+function create_container(children: Array<SlotProp>, description: string): Container {
   return new Container(randomId(), description, children)
 }
 
@@ -21,8 +21,8 @@ const content_source = ref<Array<Widget>>([
   create_widget("<p class='template-item'>简单文本</p>"),
   create_widget("<input type='text' class='template-item mdui-textfield-input' placeholder='请输入文本'/>"),
   create_widget("<button class='template-item mdui-text-color-white mdui-color-green-400'>普通按钮</button>"),
-  create_container(3, "<div class='template-item template-container'></div>"),
-  create_container(2, "<div class='template-item template-container'></div>")
+  create_container([new SlotProp()], "<div class='template-item template-container'></div>"),
+  create_container([new SlotProp(6), new SlotProp(6)], "<div class='template-item template-container'></div>")
 ])
 const content_editor = ref<Array<Widget>>([])
 const content_trash = ref<Array<Widget>>([])
@@ -42,7 +42,7 @@ const content_trash = ref<Array<Widget>>([])
             <nested-draggable
                 v-if="element.widget_type === WidgetType.CONTAINER"
                 :id="element.id"
-                :children="element.children">
+                :slots="element.children">
             </nested-draggable>
             <div
                 v-else-if="element.widget_type === WidgetType.WIDGET"
@@ -67,7 +67,7 @@ const content_trash = ref<Array<Widget>>([])
           <nested-draggable
               v-if="element.widget_type === WidgetType.CONTAINER"
               :id="element.id"
-              :children="element.children">
+              :slots="element.children">
           </nested-draggable>
           <div v-else-if="element.widget_type === WidgetType.WIDGET"
                :id="element.id"
