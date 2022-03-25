@@ -3,36 +3,19 @@ import Draggable from "vuedraggable";
 import SlotDraggable from "./SlotDraggable.vue";
 
 import {ref} from "vue";
-import {Widget, Container, SlotProp, randomId} from "../widget"
+import {Widget, Container, SlotProp, randomId, template_widgets} from "../widget"
 
 export default {
-  components: {
-    Draggable, SlotDraggable
-  }
+  components: {Draggable, SlotDraggable}
 }
 </script>
 
 <script setup lang="ts">
-function create_widget(html: string): Widget {
-  return new Widget(randomId(), html)
-}
-
-function create_container(children: Array<SlotProp>, description: string): Container {
-  return new Container(randomId(), description, children)
-}
-
 function clone_item(item: Widget): Widget {
   return item.clone()
 }
 
-// const drag = ref(false)
-const content_source = ref<Array<Widget>>([
-  create_widget("<p class='template-item'>简单文本</p>"),
-  create_widget("<input type='text' class='template-item mdui-textfield-input' placeholder='请输入文本'/>"),
-  create_widget("<button class='template-item mdui-text-color-white mdui-color-green-400'>普通按钮</button>"),
-  create_container(SlotProp.create_slots(4, 4, 4, 12), "<div></div>"),
-  create_container(SlotProp.create_slots(6, 6), "<div></div>")
-])
+const content_template = template_widgets
 const content_editor = ref<Array<Widget>>([])
 </script>
 
@@ -41,7 +24,7 @@ const content_editor = ref<Array<Widget>>([])
     <div class="mdui-col-sm-3">
       <div id="template-source" class="template-source">
         <draggable
-            :list="content_source" :clone="clone_item" v-bind="{animation: 200}"
+            :list="content_template" :clone="clone_item" v-bind="{animation: 200}"
             :group="{name: 'editor', pull: 'clone', put: false}" item-key="id">
           <template #item="{element}">
             <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">

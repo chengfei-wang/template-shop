@@ -65,3 +65,21 @@ export class Container extends Widget {
         return container
     }
 }
+
+export function create_widget(html: string): Widget {
+    return new Widget(randomId(), html)
+}
+
+export function create_container(children: Array<SlotProp>, description: string): Container {
+    return new Container(randomId(), description, children)
+}
+
+export const template_widgets = [
+    create_widget("<p class='template-item'>简单文本</p>"),
+    create_widget("<input type='text' class='template-item mdui-textfield-input' placeholder='请输入文本'/>"),
+    create_widget("<button class='template-item mdui-text-color-white mdui-color-green-400'>普通按钮</button>"),
+    create_widget("<div class='template-item'><label class='mdui-checkbox'> <input type='checkbox'/> <i class='mdui-checkbox-icon'></i> 默认不选中</label></div>"),
+    create_widget("<div class='template-item'><label class='mdui-radio'> <input type='radio' name='group1'/> <i class='mdui-radio-icon'></i> 默认不选中</label></div>"),
+    create_container(SlotProp.create_slots(4, 4, 4, 12), "<div></div>"),
+    create_container(SlotProp.create_slots(6, 6), "<div></div>")
+]
