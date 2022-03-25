@@ -96,8 +96,6 @@ const content_trash = ref<Array<Widget>>([])
 
 <script lang="ts">
 import draggable from "vuedraggable";
-import {ref} from "vue";
-import {randomId} from "./template/drag_handler";
 
 export default {
   components: {draggable},
