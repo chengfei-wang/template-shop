@@ -30,8 +30,7 @@ const content = ref<Array<Widget>>([])
       item-key="id">
     <template #item="{element}">
       <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
-        <div-draggable :id="element.id" v-for="slot in element.children" :slot="slot">
-        </div-draggable>
+        <div-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></div-draggable>
       </div>
       <div v-else-if="!element.is_container()" :id="element.id" v-html="element.html"></div>
       <div v-else>Unknown</div>
