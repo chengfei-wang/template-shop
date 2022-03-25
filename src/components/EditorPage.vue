@@ -1,23 +1,19 @@
 <script setup lang="ts">
 import {randomId} from "./template/drag_handler"
 import {ref} from "vue";
-
-class Widget {
-  id: string
-  description: string
-
-  constructor(id: string, description: string) {
-    this.id = id
-    this.description = description
-  }
-}
+import {Widget, Container, WidgetType} from "../widget"
+import NestedDraggable from "./widget/NestedDraggable.vue";
 
 function create_widget(html: string): Widget {
   return new Widget(randomId(), html)
 }
 
-function clone_item(item: Widget) {
-  return new Widget(randomId(), item.description)
+function create_container(description: string): Container {
+  return new Container(randomId(), description)
+}
+
+function clone_item(item: Widget): Widget {
+  return item.clone()
 }
 
 // const drag = ref(false)
@@ -25,6 +21,7 @@ const content_source = ref<Array<Widget>>([
   create_widget("<p class='template-item'>简单文本</p>"),
   create_widget("<input type='text' class='template-item mdui-textfield-input' placeholder='请输入文本'/>"),
   create_widget("<button class='template-item mdui-text-color-white mdui-color-green-400'>普通按钮</button>"),
+  create_container("<div class='template-item template-container'></div>")
 ])
 const content_editor = ref<Array<Widget>>([])
 const content_trash = ref<Array<Widget>>([])
@@ -37,10 +34,21 @@ const content_trash = ref<Array<Widget>>([])
         <draggable
             :list="content_source"
             :clone="clone_item"
+            v-bind="{animation: 200}"
             :group="{ name: 'editor', pull: 'clone', put: false }"
             item-key="id">
           <template #item="{element}">
-            <div v-html="element.description"></div>
+            <nested-draggable
+                v-if="element.widget_type === WidgetType.CONTAINER"
+                :id="element.id"
+                :content="element.children">
+            </nested-draggable>
+            <div
+                v-else-if="element.widget_type === WidgetType.WIDGET"
+                :id="element.id"
+                v-html="element.description">
+            </div>
+            <div v-else>Unknown</div>
           </template>
         </draggable>
       </div>
@@ -51,10 +59,20 @@ const content_trash = ref<Array<Widget>>([])
           id="template-container-root"
           class="template-container-root"
           :list="content_editor"
+          v-bind="{animation: 200}"
           group="editor"
           item-key="id">
         <template #item="{element}">
-          <div v-html="element.description" :id="element.id"></div>
+          <nested-draggable
+              v-if="element.widget_type === WidgetType.CONTAINER"
+              :id="element.id"
+              :content="element.children">
+          </nested-draggable>
+          <div v-else-if="element.widget_type === WidgetType.WIDGET"
+               :id="element.id"
+               v-html="element.description">
+          </div>
+          <div v-else>Unknown</div>
         </template>
       </draggable>
     </div>
