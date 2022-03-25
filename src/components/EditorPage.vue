@@ -1,13 +1,13 @@
 <script lang="ts">
 import Draggable from "vuedraggable";
-import DivDraggable from "./template/DivDraggable.vue";
+import SlotDraggable from "./SlotDraggable.vue";
 
 import {ref} from "vue";
 import {Widget, Container, SlotProp, randomId} from "../widget"
 
 export default {
   components: {
-    Draggable, DivDraggable
+    Draggable, SlotDraggable
   }
 }
 </script>
@@ -41,14 +41,11 @@ const content_editor = ref<Array<Widget>>([])
     <div class="mdui-col-sm-3">
       <div id="template-source" class="template-source">
         <draggable
-            :list="content_source"
-            :clone="clone_item"
-            v-bind="{animation: 200}"
-            :group="{name: 'editor', pull: 'clone', put: false}"
-            item-key="id">
+            :list="content_source" :clone="clone_item" v-bind="{animation: 200}"
+            :group="{name: 'editor', pull: 'clone', put: false}" item-key="id">
           <template #item="{element}">
             <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
-              <div-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></div-draggable>
+              <slot-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></slot-draggable>
             </div>
             <div v-else-if="!element.is_container()" :id="element.id" v-html="element.html"></div>
             <div v-else>Unknown</div>
@@ -59,15 +56,12 @@ const content_editor = ref<Array<Widget>>([])
 
     <div class="mdui-col-sm-7">
       <draggable
-          id="template-container-root"
-          class="template-container-root"
-          :list="content_editor"
-          v-bind="{animation: 200}"
-          group="editor"
-          item-key="id">
+          id="template-container-root" class="template-container-root"
+          :list="content_editor" v-bind="{animation: 200}"
+          group="editor" item-key="id">
         <template #item="{element}">
           <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
-            <div-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></div-draggable>
+            <slot-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></slot-draggable>
           </div>
           <div v-else-if="!element.is_container()" :id="element.id" v-html="element.html"></div>
           <div v-else>Unknown</div>
