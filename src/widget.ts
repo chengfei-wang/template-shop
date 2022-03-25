@@ -2,6 +2,10 @@ export enum WidgetType {
     WIDGET, CONTAINER
 }
 
+export interface SlotProp {
+    size: number
+}
+
 export class Widget {
     id: string
     description: string
