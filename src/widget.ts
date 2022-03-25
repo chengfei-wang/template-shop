@@ -1,7 +1,3 @@
-export enum WidgetType {
-    WIDGET, CONTAINER
-}
-
 export class SlotProp {
     size: number
 
@@ -9,44 +5,52 @@ export class SlotProp {
         this.size = size
     }
 
-    clone() : SlotProp {
+    clone(): SlotProp {
         return new SlotProp(this.size)
     }
 
     static clone_props(props: Array<SlotProp>): Array<SlotProp> {
         return props.map(value => value.clone())
     }
+
+    static create_slots(...sizes: number[]) {
+        return sizes.map(value => new SlotProp(value))
+    }
 }
 
 export class Widget {
     id: string
-    description: string
-    widget_type: WidgetType
+    html: string
+    container: boolean
 
-    constructor(id: string, description: string) {
+    constructor(id: string, html: string) {
         this.id = id
-        this.description = description
-        this.widget_type = WidgetType.WIDGET
+        this.html = html
+        this.container = false
     }
 
     clone(): Widget {
-        let widget = new Widget(this.id, this.description)
+        let widget = new Widget(this.id, this.html)
         console.log(widget)
         return widget
+    }
+
+    is_container(): boolean {
+        return this.container
     }
 }
 
 export class Container extends Widget {
     children: Array<SlotProp>
 
-    constructor(id: string, description: string, children: Array<SlotProp>) {
-        super(id, description)
-        this.widget_type = WidgetType.CONTAINER
+    constructor(id: string, html: string, children: Array<SlotProp>) {
+        super(id, html)
         this.children = children
+        this.container = true
     }
 
     clone(): Container {
-        let container = new Container(this.id, this.description, SlotProp.clone_props(this.children))
+        let container = new Container(this.id, this.html, SlotProp.clone_props(this.children))
         console.log(container)
         return container
     }
