@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import {ref} from "vue"
 import {Widget, Container, WidgetType} from "../../widget";
 
+const list = ref<Array<Widget>>([])
+
 defineProps<{
-  content: Array<Widget>
+  content: Array<Widget>,
 }>()
 </script>
 
 <template>
   <draggable
       class="template-item template-container"
-      :list="content"
+      :list="list"
       v-bind="{ animation: 200 }"
       :group="{ name: 'editor' }"
       item-key="id">
