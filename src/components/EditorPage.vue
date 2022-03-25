@@ -2,9 +2,8 @@
 import NestedDraggable from "./template/NestedDraggable.vue";
 import Draggable from "vuedraggable";
 
-import {randomId} from "../drag_handler"
 import {ref} from "vue";
-import {Widget, Container, SlotProp} from "../widget"
+import {Widget, Container, SlotProp, randomId} from "../widget"
 
 export default {
   components: {

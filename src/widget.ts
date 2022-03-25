@@ -1,3 +1,13 @@
+export function randomId(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    const len = chars.length
+    let s = ''
+    for (let i = 0; i < 32; i++) {
+        s += chars.charAt(Math.floor(Math.random() * len))
+    }
+    return s
+}
+
 export class SlotProp {
     size: number
 
