@@ -1,27 +1,3 @@
-function isTemplate(element: Element) {
-    return element.classList.contains('template-flag')
-}
-
-function copyElement(element: Element, parent: HTMLElement) {
-    const node = <Element>element.cloneNode(true)
-    node.classList.remove('template-flag')
-    deepId(node)
-    parent.appendChild(node)
-    return node
-}
-
-function deepId(element: Element) {
-    element.id = randomId()
-    const nodes = element.children
-    if (nodes.length > 0) {
-        for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i] != null) {
-                deepId(nodes[i])
-            }
-        }
-    }
-}
-
 export function randomId(): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     const len = chars.length

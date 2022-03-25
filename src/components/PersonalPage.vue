@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import Toolbar from "./widget/Toolbar.vue"
+
+</script>
+
+<script lang="ts">
+import Toolbar from "./Toolbar.vue"
+
+export default {
+  name: "PersonalPage",
+  components: {Toolbar}
+}
 </script>
 
 <template>
   <Toolbar title="个人中心"/>
-
 </template>
+

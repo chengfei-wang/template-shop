@@ -1,7 +1,15 @@
-<script setup lang="ts">
+<script lang="ts">
 import DivDraggable from "./DivDraggable.vue"
+
 import {SlotProp} from "../../widget";
 
+export default {
+  name: "NestedDraggable",
+  components: {DivDraggable}
+}
+</script>
+
+<script setup lang="ts">
 const props = defineProps<{
   slots: Array<SlotProp>
 }>()
@@ -13,12 +21,6 @@ const props = defineProps<{
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: "NestedDraggable",
-}
-</script>
-
 <style>
-@import "../template/template.css";
+@import "../../template.css";
 </style>

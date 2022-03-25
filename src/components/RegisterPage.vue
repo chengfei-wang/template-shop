@@ -1,8 +1,17 @@
-<script setup lang="ts">
+<script lang="ts">
+import Toolbar from "./Toolbar.vue";
+
 import {register} from "../user";
 import {ref} from "vue";
 import mdui from "mdui";
-import Toolbar from "./widget/Toolbar.vue";
+
+export default {
+  name: "RegisterPage",
+  components: {Toolbar}
+}
+</script>
+
+<script setup lang="ts">
 
 defineProps<{}>()
 
@@ -98,6 +107,3 @@ function register_handler() {
     <div class="mdui-col-lg-3"></div>
   </div>
 </template>
-
-<style scoped>
-</style>

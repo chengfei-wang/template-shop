@@ -5,6 +5,12 @@ defineProps<{
 }>()
 </script>
 
+<script lang="ts">
+export default {
+  name: "Toolbar"
+}
+</script>
+
 <template>
   <div class="mdui-appbar">
     <div class="mdui-toolbar mdui-color-theme">

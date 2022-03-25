@@ -1,13 +1,22 @@
-<script setup lang="ts">
+<script lang="ts">
 import {ref} from "vue"
+import {request} from "../requests";
+import {logout} from "../user";
+import mdui from "mdui";
 import BottomNavigationView from "./BottomNavigationView.vue"
 import ShoppingPage from "./ShoppingPage.vue"
 import CraftPage from "./CraftPage.vue"
 import PersonalPage from "./PersonalPage.vue"
-import {request} from "../requests";
-import {logout} from "../user";
-import mdui from "mdui";
 
+export default {
+  name: "MainPage",
+  components: {
+    BottomNavigationView, ShoppingPage, CraftPage, PersonalPage
+  }
+}
+</script>
+
+<script setup lang="ts">
 defineProps<{}>()
 
 const currentPage = ref(0)
@@ -53,9 +62,3 @@ if (localStorage.getItem("token") == null) {
   </keep-alive>
   <BottomNavigationView :on-page-change="onPageChange"/>
 </template>
-
-<style scoped>
-a {
-  color: #42b983;
-}
-</style>

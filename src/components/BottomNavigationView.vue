@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "BottomNavigationView"
+}
+</script>
+
 <script setup lang="ts">
 
 defineProps<{
@@ -22,7 +28,3 @@ defineProps<{
     </a>
   </div>
 </template>
-
-<style scoped>
-
-</style>

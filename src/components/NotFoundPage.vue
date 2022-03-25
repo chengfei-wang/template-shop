@@ -1,13 +1,9 @@
 <template>
-  <p>Page not found</p>
+  <h1>Page not found</h1>
 </template>
 
 <script lang="ts">
 export default {
-  // name: "NotFoundPage"
+  name: "NotFoundPage"
 }
 </script>
-
-<style scoped>
-
-</style>

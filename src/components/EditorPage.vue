@@ -1,9 +1,19 @@
-<script setup lang="ts">
-import {randomId} from "./template/drag_handler"
+<script lang="ts">
+import NestedDraggable from "./template/NestedDraggable.vue";
+import Draggable from "vuedraggable";
+
+import {randomId} from "../drag_handler"
 import {ref} from "vue";
 import {Widget, Container, SlotProp} from "../widget"
-import NestedDraggable from "./widget/NestedDraggable.vue";
 
+export default {
+  components: {
+    Draggable, NestedDraggable
+  }
+}
+</script>
+
+<script setup lang="ts">
 function create_widget(html: string): Widget {
   return new Widget(randomId(), html)
 }
@@ -94,14 +104,6 @@ const content_trash = ref<Array<Widget>>([])
   </div>
 </template>
 
-<script lang="ts">
-import draggable from "vuedraggable";
-
-export default {
-  components: {draggable},
-}
-</script>
-
 <style lang="css">
-@import "./template/template.css";
+@import "../template.css";
 </style>

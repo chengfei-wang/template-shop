@@ -1,5 +1,13 @@
+<script lang="ts">
+import Toolbar from "./Toolbar.vue"
+
+export default {
+  name: "CraftPage",
+  components: {Toolbar}
+}
+</script>
+
 <script setup lang="ts">
-import Toolbar from "./widget/Toolbar.vue"
 
 </script>
 
