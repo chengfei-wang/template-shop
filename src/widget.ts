@@ -21,16 +21,16 @@ export class Widget {
 }
 
 export class Container extends Widget{
-    children: Array<Widget>
+    children: number
 
-    constructor(id: string, description: string, children: Array<Widget> = []) {
+    constructor(id: string, description: string, children: number = 1) {
         super(id, description)
         this.widget_type = WidgetType.CONTAINER
         this.children = children
     }
 
     clone(): Container {
-        let container = new Container(this.id, this.description, [])
+        let container = new Container(this.id, this.description, this.children)
         console.log(container)
         return container
     }
