@@ -11,8 +11,11 @@ export function randomId(): string {
 export class SlotProp {
     size: number
 
-    constructor(size: number = 12) {
+    children: Array<Widget>
+
+    constructor(size: number = 12, children: Array<Widget> = []) {
         this.size = size
+        this.children = children
     }
 
     clone(): SlotProp {

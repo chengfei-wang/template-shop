@@ -14,13 +14,11 @@ export default {
 defineProps<{
   slot: SlotProp
 }>()
-
-const content = ref<Array<Widget>>([])
 </script>
 
 <template>
   <draggable
-      :list="content"
+      :list="slot.children"
       :class="`template-slot mdui-col-xs-${slot.size}`"
       v-bind="{animation: 200}"
       group="editor"
