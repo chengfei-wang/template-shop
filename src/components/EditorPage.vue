@@ -28,7 +28,7 @@ const content_editor = ref<Array<Widget>>([])
             :group="{name: 'editor', pull: 'clone', put: false}" item-key="id">
           <template #item="{element}">
             <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
-              <slot-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></slot-draggable>
+              <slot-draggable :id="`${element.id}-${index}`" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
             </div>
             <div v-else-if="!element.is_container()" :id="element.id" v-html="element.html"></div>
             <div v-else>Unknown</div>
@@ -44,7 +44,7 @@ const content_editor = ref<Array<Widget>>([])
           group="editor" item-key="id">
         <template #item="{element}">
           <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
-            <slot-draggable :id="element.id" v-for="slot in element.children" :slot="slot"></slot-draggable>
+            <slot-draggable :id="`${element.id}-${index}`" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
           </div>
           <div v-else-if="!element.is_container()" :id="element.id" v-html="element.html"></div>
           <div v-else>Unknown</div>

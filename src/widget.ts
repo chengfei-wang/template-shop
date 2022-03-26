@@ -43,7 +43,7 @@ export class Widget {
     }
 
     clone(): Widget {
-        let widget = new Widget(this.id, this.html)
+        let widget = new Widget(randomId(), this.html)
         console.log(widget)
         return widget
     }
@@ -63,7 +63,7 @@ export class Container extends Widget {
     }
 
     clone(): Container {
-        let container = new Container(this.id, this.html, SlotProp.clone_props(this.children))
+        let container = new Container(randomId(), this.html, SlotProp.clone_props(this.children))
         console.log(container)
         return container
     }
