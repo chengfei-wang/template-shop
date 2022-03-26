@@ -22,7 +22,7 @@ const content_editor = ref<Array<Widget>>([])
 <template>
   <div class="mdui-container">
     <div class="mdui-col-sm-3">
-      <div id="template-source" class="template-source">
+      <div id="template-source" class="template-source mdui-center">
         <draggable
             :list="content_template" :clone="clone_item" v-bind="{animation: 200}"
             :group="{name: 'editor', pull: 'clone', put: false}" item-key="id">

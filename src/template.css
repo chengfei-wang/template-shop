@@ -1,30 +1,25 @@
 .template-container-root {
-    min-height: 480px;
+    min-height: 720px;
     border: 1px solid #aaaaaa;
     height: auto;
-    margin-top: 4px;
-    margin-bottom: 4px;
 }
 
 .template-container {
     height: auto;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 1px !important;
+    margin: 1px !important;
 }
 
 .template-slot {
     border: 1px dotted #aaaaaa;
     min-height: 36px !important;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 1px !important;
+    margin: 0 !important;
     height: auto;
 }
 
 .template-item {
-    border: 1px dotted #aaaaaa;
     width: 100% !important;
-    margin-top: 8px;
-    margin-bottom: 8px;
 }
 
 .template-trash {
@@ -38,7 +33,15 @@
 p {
     min-width: 20%;
     width: auto;
-    min-height: 32px;
+    min-height: 36px;
+    margin: 0 !important;
+}
+
+.p-single-line {
+    line-height: 36px;
+    vertical-align: center;
+    height: 36px;
+    margin: 0 !important;
 }
 
 button {
