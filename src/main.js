@@ -12,7 +12,7 @@ const routes = {
     '/register': RegisterPage
 }
 
-const Router = {
+const router = {
     data: () => ({
         currentRoute: window.location.pathname
     }),
@@ -26,5 +26,5 @@ const Router = {
     }
 }
 
-let app = createApp(Router)
+let app = createApp(router)
 app.mount('#app')

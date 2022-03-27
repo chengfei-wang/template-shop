@@ -8,7 +8,6 @@ import {ref} from "vue";
 import mdui from "mdui"
 import {Widget, template_widgets, eval_widget_json} from "../widget"
 import { request } from "../requests";
-import { useRouter } from "vue-router";
 
 export default {
   components: {Draggable, SlotDraggable, Toolbar, PageBody}
