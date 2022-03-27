@@ -12,3 +12,7 @@ export class Template {
         this.content = content;
     }
 }
+
+export function eval_template(obj: any): Template {
+    return new Template(obj.tid, obj.creator, obj.title, obj.content)
+}

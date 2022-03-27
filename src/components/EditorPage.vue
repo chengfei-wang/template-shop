@@ -8,6 +8,7 @@ import {ref} from "vue";
 import mdui from "mdui"
 import {Widget, template_widgets, eval_widget_json} from "../widget"
 import { request } from "../requests";
+import { eval_template, Template } from "../model";
 
 export default {
   components: {Draggable, SlotDraggable, Toolbar, PageBody}
@@ -25,21 +26,13 @@ function clone_item(item: Widget): Widget {
   return item.clone()
 }
 
-function export_data() {
-  console.log(JSON.stringify(content_editor.value))
+function export_data(): string {
+  return JSON.stringify(content_editor.value)
 }
 
-function import_data() {
-  mdui.prompt(
-      '请输入Widget Json',
-      function (value: string) {
-        content_editor.value = <Array<any>>JSON.parse(value).map(eval_widget_json)
-      },
-      function (value: string) {},
-      {
-        type: 'textarea'
-      }
-  );
+function import_data(value?: string) {
+  if (value == null || value.length == 0) return
+  content_editor.value = <Array<any>>JSON.parse(value).map(eval_widget_json)
 }
 
 function get_template() {
@@ -47,24 +40,60 @@ function get_template() {
     return
   }
   request(
-    `template/get/${page_tid.value}`,
+    `template/${page_tid.value}`,
     {},
     (status, obj) => {
-      console.log(obj)
+      if (status == 200 && obj.code == 200 && obj.data != null) {
+        let template = eval_template(obj.data.template)
+        console.log(template)
+        page_title.value = template.title
+        import_data(template.content)
+      } else if (status == 200) {
+        console.log(obj)
+        page_tid.value = ""
+        mdui.snackbar({
+          message: '模版不存在',
+          position: 'bottom',
+        });
+      }
     }
   )
 }
 
 function save_template() {
+  console.log(page_tid.value)
   request(
-    "template/update", 
+    "template/save", 
     {
-      tid: page_tid.value
+      tid: page_tid.value,
+      title: page_title.value,
+      content: export_data(),
     },
     (status, obj) => {
-
+      if (status == 200 && obj.code == 200) {
+        mdui.snackbar({
+          message: '保存成功',
+          position: 'bottom',
+        });
+      } else if (status == 200 && obj.message != null) {
+        mdui.snackbar({
+          message: obj.message,
+          position: 'bottom',
+        });
+      } else {
+        mdui.snackbar({
+          message: '未知异常',
+          position: 'bottom',
+        });
+      }
     }
   )
+}
+
+const params = new URLSearchParams(location.search)
+const _tid = params.get('tid')
+if (_tid != null && _tid.length > 0) {
+  page_tid.value = _tid
 }
 
 get_template()
@@ -108,7 +137,7 @@ get_template()
 
       <div class="mdui-col-md-6">
         <div class="mdui-container-fluid">
-          <div class="mdui-textfield mdui-textfield-floating-label">
+          <div class="mdui-textfield">
             <label class="mdui-textfield-label">页面标题</label>
             <input class="mdui-textfield-input" type="text" v-model="page_title"/>
           </div>
