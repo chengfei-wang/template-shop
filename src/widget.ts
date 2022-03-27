@@ -87,3 +87,12 @@ export const template_widgets = [
     create_container(SlotProp.create_slots(6, 6), "<div></div>"),
     create_container(SlotProp.create_slots(3, 9), "<div></div>")
 ]
+
+export function eval_widget_json(value: any): Widget {
+    if (value.container) {
+        let children = value.children.map((slot: any) => new SlotProp(slot.size, slot.children.map((child: any) => eval_widget_json(child))))
+        return new Container(value.id, value.html, children)
+    } else {
+        return new Widget(value.id, value.html)
+    }
+}
