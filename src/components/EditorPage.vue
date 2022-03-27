@@ -6,7 +6,9 @@ import PageBody from "./PageBody.vue";
 
 import {ref} from "vue";
 import mdui from "mdui"
-import {Widget, Container, SlotProp, randomId, template_widgets, eval_widget_json} from "../widget"
+import {Widget, template_widgets, eval_widget_json} from "../widget"
+import { request } from "../requests";
+import { useRouter } from "vue-router";
 
 export default {
   components: {Draggable, SlotDraggable, Toolbar, PageBody}
@@ -41,9 +43,32 @@ function import_data() {
   );
 }
 
-function save_template() {
-
+function get_template() {
+  if (page_tid.value == null || page_tid.value.length == 0) {
+    return
+  }
+  request(
+    `template/get/${page_tid.value}`,
+    {},
+    (status, obj) => {
+      console.log(obj)
+    }
+  )
 }
+
+function save_template() {
+  request(
+    "template/update", 
+    {
+      tid: page_tid.value
+    },
+    (status, obj) => {
+
+    }
+  )
+}
+
+get_template()
 </script>
 
 <template>
