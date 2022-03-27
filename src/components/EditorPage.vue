@@ -14,6 +14,12 @@ export default {
 </script>
 
 <script setup lang="ts">
+const content_template = template_widgets
+const content_editor = ref<Array<Widget>>([])
+
+const page_title= ref<string>("")
+const page_tid = ref<string>("")
+
 function clone_item(item: Widget): Widget {
   return item.clone()
 }
@@ -35,14 +41,17 @@ function import_data() {
   );
 }
 
-const content_template = template_widgets
-const content_editor = ref<Array<Widget>>([])
+function save_template() {
 
-const page_title= ref<string>("")
+}
 </script>
 
 <template>
-  <toolbar title="编辑页面" />
+  <toolbar title="编辑页面">
+    <a class="mdui-btn mdui-btn-icon" @click="save_template">
+      <i class="mdui-icon material-icons">save</i>
+    </a>
+  </toolbar>
   <page-body>
     <div class="mdui-container-fluid">
       <div class="mdui-col-md-3">
