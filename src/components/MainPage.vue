@@ -21,11 +21,11 @@ defineProps<{}>()
 
 const currentPage = ref(0)
 
-const page_map = {
-  0: ShoppingPage,
-  1: CraftPage,
-  2: PersonalPage,
-}
+const page_map = [
+  ShoppingPage,
+  CraftPage,
+  PersonalPage,
+]
 
 function onPageChange(position: number) {
   currentPage.value = position
