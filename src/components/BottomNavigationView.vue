@@ -13,7 +13,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="mdui-bottom-nav mdui-bottom-nav-text-auto">
+  <div class="mdui-bottom-nav mdui-bottom-nav-text-auto mdui-color-white">
     <a v-on:click="onPageChange(0)" class="mdui-ripple mdui-bottom-nav-active">
       <i class="mdui-icon material-icons">language</i>
       <label>模版市场</label>

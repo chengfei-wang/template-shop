@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-  <div class="mdui-appbar">
+  <div class="mdui-appbar mdui-appbar-fixed mdui-color-white">
     <div class="mdui-toolbar mdui-color-theme">
       <a href="/" class="mdui-typo-headline">TemplateShop</a>
       <a href="javascript:" class="mdui-typo-title">{{ title }}</a>

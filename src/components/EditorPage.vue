@@ -41,7 +41,7 @@ const page_title= ref<string>("")
 
 <template>
   <toolbar title="编辑页面" />
-  <div class="mdui-container-fluid" style="margin-top: 32px">
+  <div class="mdui-container-fluid" style="margin-top: 96px">
     <div class="mdui-col-md-3">
       <div id="template-source" class="template-source mdui-center">
         <draggable

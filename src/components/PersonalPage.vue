@@ -12,6 +12,6 @@ export default {
 </script>
 
 <template>
-  <Toolbar title="个人中心"/>
+  <toolbar title="个人中心"/>
 </template>
 

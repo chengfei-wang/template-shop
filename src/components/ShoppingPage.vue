@@ -12,5 +12,6 @@ export default {
 </script>
 
 <template>
-  <Toolbar title="模版市场"/>
+  <toolbar title="模版市场"/>
+
 </template>

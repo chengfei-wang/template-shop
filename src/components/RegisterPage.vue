@@ -72,7 +72,7 @@ function register_handler() {
 </script>
 
 <template>
-  <Toolbar title="用户注册"/>
+  <toolbar title="用户注册"/>
   <div class="mdui-container">
     <div class="mdui-col-lg-3"></div>
     <div class="mdui-col-lg-6">

@@ -45,6 +45,7 @@ if (localStorage.getItem("token") == null) {
         //   message: `欢迎 ${obj.data.name}`,
         //   position: 'top',
         // });
+        console.log(obj)
       }
     } else {
       mdui.snackbar({
@@ -60,5 +61,5 @@ if (localStorage.getItem("token") == null) {
   <keep-alive>
     <component :is="page_map[currentPage]"/>
   </keep-alive>
-  <BottomNavigationView :on-page-change="onPageChange"/>
+  <bottom-navigation-view :on-page-change="onPageChange"/>
 </template>

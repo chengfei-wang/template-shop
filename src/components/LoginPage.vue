@@ -53,7 +53,7 @@ function login_handler() {
 </script>
 
 <template>
-  <Toolbar title="用户登录"/>
+  <toolbar title="用户登录"/>
   <div class="mdui-container">
     <div class="mdui-col-lg-3"></div>
     <div class="mdui-col-lg-6">
