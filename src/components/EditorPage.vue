@@ -6,7 +6,7 @@ import PageBody from "./PageBody.vue";
 
 import {ref} from "vue";
 import mdui from "mdui"
-import {Widget, template_widgets, eval_widget_json} from "../widget"
+import {Widget, template_widgets, eval_widget_json, NodeProp} from "../widget"
 import { request } from "../requests";
 import { eval_template, Template } from "../model";
 import { render_node_prop } from "../render";
@@ -23,7 +23,7 @@ const content_editor = ref<Array<Widget>>([])
 const page_title= ref<string>("")
 const page_tid = ref<string>("")
 
-const selected_item = ref("")
+const selected_item = ref<Widget | undefined>(undefined)
 
 function clone_item(item: Widget): Widget {
   return item.clone()
@@ -95,9 +95,9 @@ function save_template() {
   )
 }
 
-function select_item(id: string) {
-  console.log(`item select: ${id}`)
-  selected_item.value = id
+function select_item(widget: Widget) {
+  console.log(`item select: ${widget.id}`)
+  selected_item.value = widget
 }
 
 const params = new URLSearchParams(location.search)
@@ -124,7 +124,7 @@ get_template()
               :group="{name: 'editor', pull: 'clone', put: false}" item-key="id">
             <template #item="{element}">
               <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
-                <slot-draggable :id="`${element.id}-${index}`" :select_item="(id: string) => {}" :selected_item="selected_item" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
+                <slot-draggable :id="`${element.id}-${index}`" :select_item="() => {}" :selected_item="selected_item" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
               </div>
               <div v-else-if="!element.is_container()" :id="element.id" v-html="render_node_prop(element.html, element.node_prop)"></div>
               <div v-else>Unknown</div>
@@ -157,10 +157,10 @@ get_template()
             :list="content_editor" v-bind="{animation: 200}"
             group="editor" item-key="id">
           <template #item="{element}">
-            <div v-if="element.is_container()" :id="element.id" @click.stop="select_item(element.id)" class="template-container template-item mdui-container-fluid" :class="{'template-selected': element.id === selected_item}">
+            <div v-if="element.is_container()" :id="element.id" @click.stop="select_item(element)" class="template-container template-item mdui-container-fluid" :class="{'template-selected': element.id === selected_item?.id}">
               <slot-draggable :id="`${element.id}-${index}`" v-for="(slot, index) in element.children" :slot="slot" :select_item="select_item" :selected_item="selected_item"></slot-draggable>
             </div>
-            <div v-else-if="!element.is_container()" :id="element.id" @click.stop="select_item(element.id)" v-html="render_node_prop(element.html, element.node_prop)" :class="{'template-selected': element.id === selected_item}"></div>
+            <div v-else-if="!element.is_container()" :id="element.id" @click.stop="select_item(element)" v-html="render_node_prop(element.html, element.node_prop)" :class="{'template-selected': element.id === selected_item?.id}"></div>
             <div v-else>Unknown</div>
           </template>
         </draggable>
