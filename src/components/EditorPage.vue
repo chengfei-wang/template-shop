@@ -181,8 +181,8 @@ get_template()
       <div class="mdui-col-md-3">
         <div v-if="selected_item !== undefined">
           <!-- <button class="mdui-btn mdui-color-green mdui-text-color-white" @click="add_class(selected_item, 'mdui-text-color-blue')">ADD CLASS</button> -->
-          <pre class="">{{ selected_item }}</pre>
-          <pre class="">{{ render_node_prop(selected_item.id, selected_item.html, selected_item.prop) }}</pre>
+          <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre>
+          <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ render_node_prop(selected_item.id, selected_item.html, selected_item.prop) }}</pre>
         </div>
       </div>
     </div>
