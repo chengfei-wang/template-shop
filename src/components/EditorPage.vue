@@ -95,8 +95,8 @@ function save_template() {
   )
 }
 
-function select_item(widget: Widget) {
-  console.log(`item select: ${widget.id}`)
+function select_item(widget?: Widget) {
+  console.log(`item select: ${widget?.id}`)
   selected_item.value = widget
 }
 
@@ -154,7 +154,7 @@ get_template()
         </div>
         <draggable
             id="template-container-root" class="template-container-root"
-            :list="content_editor" v-bind="{animation: 200}"
+            :list="content_editor" v-bind="{animation: 200}" @click="select_item(null)"
             group="editor" item-key="id">
           <template #item="{element}">
             <div v-if="element.is_container()" :id="element.id" @click.stop="select_item(element)" class="template-container template-item mdui-container-fluid" :class="{'template-selected': element.id === selected_item?.id}">
