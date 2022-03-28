@@ -37,23 +37,14 @@ p {
     margin: 0 !important;
 }
 
-.p-single-line {
-    line-height: 36px;
-    vertical-align: center;
-    height: 36px;
-    margin: 0 !important;
-}
-
-button {
+.template-default-button {
     position: relative;
     display: inline-block;
     box-sizing: border-box;
-    min-width: 88px;
     height: 36px;
     margin: 1px !important;
     padding: 0 16px;
     overflow: hidden;
-    color: inherit;
     font-weight: 500;
     font-size: 14px;
     line-height: 36px;
@@ -63,11 +54,20 @@ button {
     text-transform: uppercase;
     text-decoration: none;
     vertical-align: middle;
-    background: 0 0;
     border: none;
     border-radius: 2px;
     outline: 0;
     cursor: pointer;
+
+    background-color: #4CAF50;
+    color: #FFFFFF;
+}
+
+.template-default-p {
+    line-height: 36px;
+    vertical-align: center;
+    height: 36px;
+    margin: 0 !important;
 }
 
 .template-selected {

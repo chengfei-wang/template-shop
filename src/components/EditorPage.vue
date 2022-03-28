@@ -138,7 +138,7 @@ get_template()
               <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
                 <slot-draggable :id="`${element.id}-${index}`" :select_item="() => {}" :selected_item="selected_item" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
               </div>
-              <div v-else-if="!element.is_container()" :id="element.id" v-html="render_node_prop(element.html, element.prop)"></div>
+              <div v-else-if="!element.is_container()" v-html="render_node_prop(element.id, element.html, element.prop)"></div>
               <div v-else>Unknown</div>
             </template>
           </draggable>
@@ -172,7 +172,7 @@ get_template()
             <div v-if="element.is_container()" :id="element.id" @click.stop="select_item(element)" class="template-container template-item mdui-container-fluid" :class="{'template-selected': element.id === selected_item?.id}">
               <slot-draggable :id="`${element.id}-${index}`" v-for="(slot, index) in element.children" :slot="slot" :select_item="select_item" :selected_item="selected_item"></slot-draggable>
             </div>
-            <div v-else-if="!element.is_container()" :id="element.id" @click.stop="select_item(element)" v-html="render_node_prop(element.html, element.prop)" :class="{'template-selected': element.id === selected_item?.id}"></div>
+            <div v-else-if="!element.is_container()" @click.stop="select_item(element)" v-html="render_node_prop(element.id, element.html, element.prop)" :class="{'template-selected': element.id === selected_item?.id}"></div>
             <div v-else>Unknown</div>
           </template>
         </draggable>
@@ -182,7 +182,7 @@ get_template()
         <div v-if="selected_item !== undefined">
           <!-- <button class="mdui-btn mdui-color-green mdui-text-color-white" @click="add_class(selected_item, 'mdui-text-color-blue')">ADD CLASS</button> -->
           <pre class="">{{ selected_item }}</pre>
-          <pre class="">{{ render_node_prop(selected_item.html, selected_item.prop) }}</pre>
+          <pre class="">{{ render_node_prop(selected_item.id, selected_item.html, selected_item.prop) }}</pre>
         </div>
       </div>
     </div>
