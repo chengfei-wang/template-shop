@@ -32,7 +32,7 @@ function export_data(): string {
 
 function import_data(value?: string) {
   if (value == null || value.length == 0) return
-  content_editor.value = <Array<any>>JSON.parse(value).map(eval_widget_json)
+  content_editor.value = (<Array<any>>JSON.parse(value)).map(eval_widget_json)
 }
 
 function get_template() {
