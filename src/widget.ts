@@ -35,15 +35,17 @@ export class Widget {
     id: string
     html: string
     container: boolean
+    prop: NodeProp
 
-    constructor(id: string, html: string) {
+    constructor(id: string, html: string, porp: NodeProp) {
         this.id = id
         this.html = html
         this.container = false
+        this.prop = porp
     }
 
     clone(): Widget {
-        let widget = new Widget(randomId(), this.html)
+        let widget = new Widget(randomId(), this.html, new NodeProp())
         console.log(widget)
         return widget
     }
@@ -56,25 +58,43 @@ export class Widget {
 export class Container extends Widget {
     children: Array<SlotProp>
 
-    constructor(id: string, html: string, children: Array<SlotProp>) {
-        super(id, html)
+    constructor(id: string, html: string, children: Array<SlotProp>, prop: NodeProp) {
+        super(id, html, prop)
         this.children = children
         this.container = true
     }
 
     clone(): Container {
-        let container = new Container(randomId(), this.html, SlotProp.clone_props(this.children))
+        let container = new Container(randomId(), this.html, SlotProp.clone_props(this.children), new NodeProp())
         console.log(container)
         return container
     }
 }
 
-export function create_widget(html: string): Widget {
-    return new Widget(randomId(), html)
+export class NodeProp {
+    clazz?: Array<string>
+    name?: string
+    content?: string
+    href?: string
+    styles?: { [key: string]: string }
+    type?: string
+
+    constructor(props?: {clazz?: Array<string>, name?: string, content?: string, href?: string, styles?: { [key: string]: string }, type?: string}) {
+        this.clazz = props?.clazz
+        this.name = props?.name
+        this.content = props?.content
+        this.href = props?.href
+        this.styles = props?.styles
+        this.type = props?.type
+    }
 }
 
-export function create_container(children: Array<SlotProp>, description: string): Container {
-    return new Container(randomId(), description, children)
+export function create_widget(html: string, prop: NodeProp = new NodeProp()): Widget {
+    return new Widget(randomId(), html, prop)
+}
+
+export function create_container(children: Array<SlotProp>, description: string, prop: NodeProp = new NodeProp()): Container {
+    return new Container(randomId(), description, children, prop)
 }
 
 export const template_widgets = [
@@ -88,11 +108,25 @@ export const template_widgets = [
     create_container(SlotProp.create_slots(3, 9), "<div></div>")
 ]
 
+export function eval_node_prop_json(value?: any): NodeProp {
+    if (value == undefined) {
+        return new NodeProp();
+    }
+    return new NodeProp({
+        clazz: value?.clazz,
+        name: value?.name,
+        content: value?.content,
+        href: value?.href,
+        styles: value?.styles,
+        type: value?.type,
+    })
+}
+
 export function eval_widget_json(value: any): Widget {
     if (value.container) {
         let children = value.children.map((slot: any) => new SlotProp(slot.size, slot.children.map((child: any) => eval_widget_json(child))))
-        return new Container(value.id, value.html, children)
+        return new Container(value.id, value.html, children, eval_node_prop_json(value.prop))
     } else {
-        return new Widget(value.id, value.html)
+        return new Widget(value.id, value.html, eval_node_prop_json(value.prop))
     }
 }

@@ -69,3 +69,8 @@ button {
     outline: 0;
     cursor: pointer;
 }
+
+.template-selected {
+    border: 1px solid #aaaaaa;
+    background-color: #fafafa;
+}
