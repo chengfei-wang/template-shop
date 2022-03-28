@@ -82,7 +82,7 @@ function register_handler() {
           <div class="mdui-textfield mdui-textfield-floating-label">
             <label class="mdui-textfield-label">登录邮箱</label>
             <input id="input_register_email" class="mdui-textfield-input" type="email"
-                   autocomplete="off" autofocus="true" v-model="email" required/>
+                   autocomplete="off" autofocus v-model="email" required/>
             <div class="mdui-textfield-error">邮箱格式错误</div>
           </div>
           <div class="mdui-textfield mdui-textfield-floating-label">

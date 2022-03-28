@@ -37,11 +37,11 @@ export class Widget {
     container: boolean
     prop: NodeProp
 
-    constructor(id: string, html: string, porp: NodeProp) {
+    constructor(id: string, html: string, prop: NodeProp) {
         this.id = id
         this.html = html
         this.container = false
-        this.prop = porp
+        this.prop = prop
     }
 
     clone(): Widget {

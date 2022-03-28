@@ -100,6 +100,18 @@ function select_item(widget?: Widget) {
   selected_item.value = widget
 }
 
+function add_class(widget: Widget, clazz: string) {
+  if (widget.prop.clazz == undefined) {
+    widget.prop.clazz = []
+  }
+
+  if (!widget.prop.clazz.includes(clazz)) {
+    widget.prop.clazz.push(clazz)
+  } else {
+    widget.prop.clazz = widget.prop.clazz.filter(item => item !== clazz);
+  }
+}
+
 const params = new URLSearchParams(location.search)
 const _tid = params.get('tid')
 if (_tid != null && _tid.length > 0) {
@@ -126,7 +138,7 @@ get_template()
               <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
                 <slot-draggable :id="`${element.id}-${index}`" :select_item="() => {}" :selected_item="selected_item" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
               </div>
-              <div v-else-if="!element.is_container()" :id="element.id" v-html="render_node_prop(element.html, element.node_prop)"></div>
+              <div v-else-if="!element.is_container()" :id="element.id" v-html="render_node_prop(element.html, element.prop)"></div>
               <div v-else>Unknown</div>
             </template>
           </draggable>
@@ -154,20 +166,24 @@ get_template()
         </div>
         <draggable
             id="template-container-root" class="template-container-root"
-            :list="content_editor" v-bind="{animation: 200}" @click="select_item(null)"
+            :list="content_editor" v-bind="{animation: 200}" @click="select_item(undefined)"
             group="editor" item-key="id">
           <template #item="{element}">
             <div v-if="element.is_container()" :id="element.id" @click.stop="select_item(element)" class="template-container template-item mdui-container-fluid" :class="{'template-selected': element.id === selected_item?.id}">
               <slot-draggable :id="`${element.id}-${index}`" v-for="(slot, index) in element.children" :slot="slot" :select_item="select_item" :selected_item="selected_item"></slot-draggable>
             </div>
-            <div v-else-if="!element.is_container()" :id="element.id" @click.stop="select_item(element)" v-html="render_node_prop(element.html, element.node_prop)" :class="{'template-selected': element.id === selected_item?.id}"></div>
+            <div v-else-if="!element.is_container()" :id="element.id" @click.stop="select_item(element)" v-html="render_node_prop(element.html, element.prop)" :class="{'template-selected': element.id === selected_item?.id}"></div>
             <div v-else>Unknown</div>
           </template>
         </draggable>
       </div>
 
       <div class="mdui-col-md-3">
-
+        <div v-if="selected_item !== undefined">
+          <!-- <button class="mdui-btn mdui-color-green mdui-text-color-white" @click="add_class(selected_item, 'mdui-text-color-blue')">ADD CLASS</button> -->
+          <pre class="">{{ selected_item }}</pre>
+          <pre class="">{{ render_node_prop(selected_item.html, selected_item.prop) }}</pre>
+        </div>
       </div>
     </div>
   </page-body>
