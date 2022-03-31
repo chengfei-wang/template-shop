@@ -1,23 +1,20 @@
-<script lang="ts" setup>
-defineProps<{
-    type: string,
-    node_prop: NodeProp,
-}>()
-</script>
-
-<script lang="ts">
+<script lang="tsx">
 import { NodeProp } from "../widget";
-import { TYPE_RENDER_MAP } from "../template";
+import { type_render_functions, template_unknown } from "../template";
+import { h } from "vue";
 
 export default {
     name: "TemplateComponent",
+    props: {
+        type: String,
+        node_prop: NodeProp
+    },
     render: (params: { type: string, node_prop: NodeProp }) => {
-        console.log(params)
-        return TYPE_RENDER_MAP[params.type](params.node_prop)
+        let render = type_render_functions[params.type]
+        if (render === undefined) {
+            render = template_unknown
+        }
+        return h(render(params.node_prop))
     }
 }
 </script>
-
-<style>
-@import "../template.css";
-</style>

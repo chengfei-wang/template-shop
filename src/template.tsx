@@ -1,4 +1,3 @@
-import { defineComponent } from 'vue'
 import { ClassProp, NodeProp } from "./widget";
 
 function create_class_list(init: Array<string>, prop?: ClassProp): Array<string> {
@@ -31,12 +30,6 @@ export function template_p(prop: NodeProp): JSX.Element {
 
     return (<p class={classList} style={prop.styles}>{prop.content}</p>);
 }
-
-// export const TemplateP = defineComponent<{ type: string, node_prop: NodeProp, }>({
-//     render() {
-//         return template_p(this.$props.node_prop)
-//     }
-// })
 
 export function template_input(prop: NodeProp): JSX.Element {
     if (prop.content == undefined) {
@@ -106,7 +99,11 @@ export function template_container(prop: NodeProp): JSX.Element {
     return (<div>容器组件</div>)
 }
 
-export const TYPE_RENDER_MAP: {[key: string]: (prop: NodeProp) => JSX.Element} = {
+export function template_unknown(prop: NodeProp): JSX.Element {
+    return (<div>未知组件{prop}</div>)
+}
+
+export const type_render_functions: {[key: string]: (prop: NodeProp) => JSX.Element} = {
     'P': template_p,
     'INPUT': template_input,
     'BUTTON': template_button,

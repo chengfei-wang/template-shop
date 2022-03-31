@@ -6,10 +6,10 @@ import PageBody from "./PageBody.vue";
 import TemplateComponent from "./TemplateComponent.vue";
 
 import { ref } from "vue";
-import { template_widgets, eval_widget_json, class_group, Widget, ClassProp } from "../widget"
+import { template_widgets, eval_widget_json, class_group, Widget, NodeProp, ClassProp } from "../widget"
 import { request } from "../requests";
 import { eval_template, Template } from "../model";
-import { TYPE_RENDER_MAP } from "../template";
+import { type_render_functions } from "../template";
 import mdui from "mdui"
 
 export default {
@@ -148,8 +148,6 @@ const _tid = params.get('tid')
 if (_tid != null && _tid.length > 0) {
   page_tid.value = _tid
 }
-
-console.log(TYPE_RENDER_MAP)
 
 get_template()
 </script>
