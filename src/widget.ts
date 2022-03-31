@@ -127,7 +127,7 @@ export const template_widgets = [
     create_widget("<button class='template-item template-default-button'>普通按钮</button>"),
     create_widget("<div class='template-item'><label class='mdui-checkbox'><input type='checkbox' name='default_checkbox_group'/><i class='mdui-checkbox-icon'></i>多选框</label></div>"),
     create_widget("<div class='template-item'><label class='mdui-radio'><input type='radio' name='default_radio_group'/><i class='mdui-radio-icon'></i>单选框</label></div>"),
-    create_container(SlotProp.create_slots(4, 4, 4, 12), "<div></div>"),
+    create_container(SlotProp.create_slots(12, 4, 4, 4), "<div></div>"),
     create_container(SlotProp.create_slots(6, 6), "<div></div>"),
     create_container(SlotProp.create_slots(3, 9), "<div></div>")
 ]
@@ -181,6 +181,6 @@ export const class_group = {
     textAlign: [
         new ClassItem("mdui-text-center", "居中"),
         new ClassItem("mdui-text-left", "左对齐"),
-        new ClassItem("mdui-text-right", "左对齐"),
+        new ClassItem("mdui-text-right", "右对齐"),
     ]
 }

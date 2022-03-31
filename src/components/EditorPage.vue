@@ -208,7 +208,7 @@ get_template()
 
       <div class="mdui-col-md-3">
         <div v-if="selected_item !== undefined">
-          <div>
+          <div class="style_editor_group">
             <p>文本颜色</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.textColor" class="mdui-col-xs-3"
@@ -219,7 +219,7 @@ get_template()
             </div>
           </div>
 
-          <div>
+          <div class="style_editor_group">
             <p>背景颜色</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.backgroundColor" class="mdui-col-xs-3"
@@ -230,7 +230,7 @@ get_template()
             </div>
           </div>
 
-          <div>
+          <div class="style_editor_group">
             <p>文本字体</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.textSize" class="mdui-col-xs-6"
@@ -241,10 +241,10 @@ get_template()
             </div>
           </div>
 
-          <div>
+          <div class="style_editor_group">
             <p>文本样式</p>
             <div class="mdui-container-fluid">
-              <div v-for="choice in class_group.textAlign" class="mdui-col-xs-6"
+              <div v-for="choice in class_group.textAlign" class="mdui-col-xs-4"
                    :class="[choice.className, selected_item.prop.clazz?.textAlign === choice.className? 'choice_selected' : 'choice_unselected']"
                    @click="item_set_text_align(choice.className)">
                 {{ choice.classDesc }}
@@ -276,6 +276,18 @@ get_template()
   height: 32px;
   background-color: #eeeeee;
   text-align: center;
+  line-height: 32px;
+}
+
+.style_editor_group {
+  margin-bottom: 12px;
+  border: 1px dotted #cccccc;
+  padding: 8px 0px;
+}
+
+.style_editor_group > p {
+  text-align: center;
+  height: 32px;
   line-height: 32px;
 }
 </style>
