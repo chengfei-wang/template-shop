@@ -28,6 +28,9 @@ export function render_node_prop(id: string, html: string, prop: NodeProp): stri
         element.classList.add(clazz.textAlign)
     }
 
+    if (prop.content != undefined) {
+        console.log(`内容："${prop.content}"`)
+    }
     // console.log(element.outerHTML)
 
     return element.outerHTML

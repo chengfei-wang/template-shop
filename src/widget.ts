@@ -33,39 +33,36 @@ export class SlotProp {
 
 export class Widget {
     id: string
-    html: string
-    container: boolean
-    prop: NodeProp
+    type: string
+    node_prop: NodeProp
 
-    constructor(id: string, html: string, prop: NodeProp) {
+    constructor(id: string, type: string, node_prop: NodeProp) {
         this.id = id
-        this.html = html
-        this.container = false
-        this.prop = prop
+        this.type = type
+        this.node_prop = node_prop
     }
 
     clone(): Widget {
-        let widget = new Widget(randomId(), this.html, new NodeProp())
+        let widget = new Widget(randomId(), this.type, new NodeProp())
         console.log(widget)
         return widget
     }
 
     is_container(): boolean {
-        return this.container
+        return this.type === 'CONTAINER'
     }
 }
 
 export class Container extends Widget {
     children: Array<SlotProp>
 
-    constructor(id: string, html: string, children: Array<SlotProp>, prop: NodeProp) {
-        super(id, html, prop)
+    constructor(id: string, type: string, children: Array<SlotProp>, node_prop: NodeProp) {
+        super(id, type, node_prop)
         this.children = children
-        this.container = true
     }
 
     clone(): Container {
-        let container = new Container(randomId(), this.html, SlotProp.clone_props(this.children), new NodeProp())
+        let container = new Container(randomId(), this.type, SlotProp.clone_props(this.children), new NodeProp())
         console.log(container)
         return container
     }
@@ -93,13 +90,13 @@ export class NodeProp {
     styles?: { [key: string]: string }
     type?: string
 
-    constructor(props?: {clazz?: ClassProp, name?: string, content?: string, href?: string, styles?: { [key: string]: string }, type?: string}) {
-        this.clazz = props?.clazz
-        this.name = props?.name
-        this.content = props?.content
-        this.href = props?.href
-        this.styles = props?.styles
-        this.type = props?.type
+    constructor(clazz?: ClassProp, name?: string, content?: string, href?: string, styles?: { [key: string]: string }, type?: string) {
+        this.clazz = clazz
+        this.name = name
+        this.content = content
+        this.href = href
+        this.styles = styles
+        this.type = type
     }
 }
 
@@ -113,45 +110,46 @@ export class ClassItem {
     }
 }
 
-export function create_widget(html: string, prop: NodeProp = new NodeProp()): Widget {
-    return new Widget(randomId(), html, prop)
+export function create_widget(type: string, node_prop: NodeProp = new NodeProp()): Widget {
+    return new Widget(randomId(), type, node_prop)
 }
 
-export function create_container(children: Array<SlotProp>, description: string, prop: NodeProp = new NodeProp()): Container {
-    return new Container(randomId(), description, children, prop)
+export function create_container(children: Array<SlotProp>, type: string, node_prop: NodeProp = new NodeProp()): Container {
+    return new Container(randomId(), type, children, node_prop)
 }
 
 export const template_widgets = [
-    create_widget("<p class='template-item template-default-p'>单行文本</p>"),
-    create_widget("<input type='text' class='template-item mdui-textfield-input' placeholder='请输入文本'/>"),
-    create_widget("<button class='template-item template-default-button'>普通按钮</button>"),
-    create_widget("<div class='template-item'><label class='mdui-checkbox'><input type='checkbox' name='default_checkbox_group'/><i class='mdui-checkbox-icon'></i>多选框</label></div>"),
-    create_widget("<div class='template-item'><label class='mdui-radio'><input type='radio' name='default_radio_group'/><i class='mdui-radio-icon'></i>单选框</label></div>"),
-    create_container(SlotProp.create_slots(12, 4, 4, 4), "<div></div>"),
-    create_container(SlotProp.create_slots(6, 6), "<div></div>"),
-    create_container(SlotProp.create_slots(3, 9), "<div></div>")
+    create_widget("P"),
+    create_widget("INPUT"),
+    create_widget("BUTTON"),
+    create_widget("CHECKBOX"),
+    create_widget("RADIO"),
+    create_container(SlotProp.create_slots(12, 4, 4, 4), "CONTAINER"),
+    create_container(SlotProp.create_slots(6, 6), "CONTAINER"),
+    create_container(SlotProp.create_slots(3, 9), "CONTAINER")
 ]
+
+export function eval_class_json(value?: any): ClassProp {
+    if (value == undefined) {
+        return new ClassProp()
+    }
+
+    return new ClassProp(value.textColor, value.textSize, value.backgroundColor, value.textAlign)
+}
 
 export function eval_node_prop_json(value?: any): NodeProp {
     if (value == undefined) {
         return new NodeProp();
     }
-    return new NodeProp({
-        clazz: value?.clazz,
-        name: value?.name,
-        content: value?.content,
-        href: value?.href,
-        styles: value?.styles,
-        type: value?.type,
-    })
+    return new NodeProp(eval_class_json(value.clazz), value.name, value.content, value.href, value.styles, value.type)
 }
 
 export function eval_widget_json(value: any): Widget {
-    if (value.container) {
+    if (value.type == 'CONTAINER') {
         let children = value.children.map((slot: any) => new SlotProp(slot.size, slot.children.map((child: any) => eval_widget_json(child))))
-        return new Container(value.id, value.html, children, eval_node_prop_json(value.prop))
+        return new Container(value.id, value.type, children, eval_node_prop_json(value.node_prop))
     } else {
-        return new Widget(value.id, value.html, eval_node_prop_json(value.prop))
+        return new Widget(value.id, value.type, eval_node_prop_json(value.node_prop))
     }
 }
 

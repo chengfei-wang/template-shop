@@ -1,14 +1,23 @@
+<script lang="ts" setup>
+defineProps<{
+    type: string,
+    node_prop: NodeProp,
+}>()
+</script>
+
+<script lang="ts">
 import { NodeProp } from "../widget";
 import { TYPE_RENDER_MAP } from "../template";
-import {h, defineComponent} from "vue";
 
-defineComponent({
-    props: {
-        type: {type: String},
-        node_prop: {type: NodeProp},
-    },
-    render: (h) => {
-        return h(TYPE_RENDER_MAP[this.type](this.node_prop))
+export default {
+    name: "TemplateComponent",
+    render: (params: { type: string, node_prop: NodeProp }) => {
+        console.log(params)
+        return TYPE_RENDER_MAP[params.type](params.node_prop)
     }
-})
+}
+</script>
 
+<style>
+@import "../template.css";
+</style>

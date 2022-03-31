@@ -1,4 +1,5 @@
-import {ClassProp, NodeProp} from "./widget";
+import { defineComponent } from 'vue'
+import { ClassProp, NodeProp } from "./widget";
 
 function create_class_list(init: Array<string>, prop?: ClassProp): Array<string> {
     let classList = Array.from(init)
@@ -31,6 +32,12 @@ export function template_p(prop: NodeProp): JSX.Element {
     return (<p class={classList} style={prop.styles}>{prop.content}</p>);
 }
 
+// export const TemplateP = defineComponent<{ type: string, node_prop: NodeProp, }>({
+//     render() {
+//         return template_p(this.$props.node_prop)
+//     }
+// })
+
 export function template_input(prop: NodeProp): JSX.Element {
     if (prop.content == undefined) {
         prop.content = '请输入文本'
@@ -39,6 +46,16 @@ export function template_input(prop: NodeProp): JSX.Element {
     let classList: Array<string> = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
 
     return (<input type='text' class={classList} name={prop.name} placeholder={prop.content}/>)
+}
+
+export function template_button(prop: NodeProp): JSX.Element {
+    if (prop.content == undefined) {
+        prop.content = '普通按钮'
+    }
+
+    let classList: Array<string> = create_class_list(['template-item', 'template-default-button'], prop.clazz)
+
+    return (<button class={classList}>{prop.content}</button>)
 }
 
 export function template_checkbox(prop: NodeProp) {
@@ -50,7 +67,7 @@ export function template_checkbox(prop: NodeProp) {
         prop.name = 'default_checkbox_group'
     }
 
-    let classList: Array<string> = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
+    let classList: Array<string> = create_class_list(['template-item'], prop.clazz)
 
     return (
         <div class={classList}>
@@ -72,7 +89,7 @@ export function template_radio(prop: NodeProp): JSX.Element {
         prop.name = 'default_radio_group'
     }
 
-    let classList: Array<string> = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
+    let classList: Array<string> = create_class_list(['template-item'], prop.clazz)
 
     return (
         <div class={classList}>
@@ -83,4 +100,17 @@ export function template_radio(prop: NodeProp): JSX.Element {
             </label>
         </div>
     )
+}
+
+export function template_container(prop: NodeProp): JSX.Element {
+    return (<div>容器组件</div>)
+}
+
+export const TYPE_RENDER_MAP: {[key: string]: (prop: NodeProp) => JSX.Element} = {
+    'P': template_p,
+    'INPUT': template_input,
+    'BUTTON': template_button,
+    'CHECKBOX': template_checkbox,
+    'RADIO': template_radio,
+    'CONTAINER': template_container,
 }

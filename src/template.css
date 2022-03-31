@@ -2,6 +2,7 @@
     min-height: 720px;
     border: 1px solid #aaaaaa;
     height: auto;
+    padding: 2px;
 }
 
 .template-container {
@@ -66,11 +67,10 @@ p {
 .template-default-p {
     line-height: 36px;
     vertical-align: center;
-    height: 36px;
+    min-height: 36px;
     margin: 0 !important;
 }
 
 .template-selected {
-    border: 1px solid #aaaaaa;
-    background-color: #fafafa;
+    border: 2px solid #000000;
 }

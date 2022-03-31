@@ -3,16 +3,18 @@ import Draggable from "vuedraggable";
 import SlotDraggable from "./SlotDraggable.vue";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
+import TemplateComponent from "./TemplateComponent.vue";
 
-import {ref} from "vue";
-import mdui from "mdui"
-import {Widget, template_widgets, eval_widget_json, class_group, NodeProp, ClassProp} from "../widget"
+import { ref } from "vue";
+import { template_widgets, eval_widget_json, class_group, Widget, ClassProp } from "../widget"
 import { request } from "../requests";
 import { eval_template, Template } from "../model";
-import { render_node_prop } from "../render";
+import { TYPE_RENDER_MAP } from "../template";
+import mdui from "mdui"
 
 export default {
-  components: {Draggable, SlotDraggable, Toolbar, PageBody}
+  name: "EditorPage",
+  components: {Draggable, SlotDraggable, Toolbar, PageBody, TemplateComponent}
 }
 </script>
 
@@ -36,8 +38,9 @@ function export_data(): string {
 function import_data(value?: string) {
   if (value == null || value.length == 0) return
   let widget_array = <Array<any>>JSON.parse(value)
-  console.log(widget_array)
   content_editor.value = widget_array.map(eval_widget_json)
+  console.log("import_data")
+  console.log(content_editor.value)
 }
 
 function get_template() {
@@ -101,8 +104,8 @@ function select_item(widget?: Widget) {
 }
 
 function item_set_background_color(clazz: string) {
-  if (selected_item.value?.prop != undefined) {
-    let prop = selected_item.value.prop
+  if (selected_item.value?.node_prop != undefined) {
+    let prop = selected_item.value.node_prop
     if (prop.clazz == undefined) {
       prop.clazz = new ClassProp()
     }
@@ -111,8 +114,8 @@ function item_set_background_color(clazz: string) {
 }
 
 function item_set_text_color(clazz: string) {
-  if (selected_item.value?.prop != undefined) {
-    let prop = selected_item.value.prop
+  if (selected_item.value?.node_prop != undefined) {
+    let prop = selected_item.value.node_prop
     if (prop.clazz == undefined) {
       prop.clazz = new ClassProp()
     }
@@ -121,8 +124,8 @@ function item_set_text_color(clazz: string) {
 }
 
 function item_set_text_size(clazz: string) {
-  if (selected_item.value?.prop != undefined) {
-    let prop = selected_item.value.prop
+  if (selected_item.value?.node_prop != undefined) {
+    let prop = selected_item.value.node_prop
     if (prop.clazz == undefined) {
       prop.clazz = new ClassProp()
     }
@@ -131,8 +134,8 @@ function item_set_text_size(clazz: string) {
 }
 
 function item_set_text_align(clazz: string) {
-  if (selected_item.value?.prop != undefined) {
-    let prop = selected_item.value.prop
+  if (selected_item.value?.node_prop != undefined) {
+    let prop = selected_item.value.node_prop
     if (prop.clazz == undefined) {
       prop.clazz = new ClassProp()
     }
@@ -145,6 +148,8 @@ const _tid = params.get('tid')
 if (_tid != null && _tid.length > 0) {
   page_tid.value = _tid
 }
+
+console.log(TYPE_RENDER_MAP)
 
 get_template()
 </script>
@@ -166,7 +171,7 @@ get_template()
               <div v-if="element.is_container()" class="template-container template-item mdui-container-fluid">
                 <slot-draggable :id="`${element.id}-${index}`" :select_item="() => {}" :selected_item="selected_item" v-for="(slot, index) in element.children" :slot="slot"></slot-draggable>
               </div>
-              <div v-else-if="!element.is_container()" v-html="render_node_prop(element.id, element.html, element.prop)"></div>
+              <template-component v-else-if="!element.is_container()" :type="element.type" :node_prop="element.node_prop"></template-component>
               <div v-else>Unknown</div>
             </template>
           </draggable>
@@ -200,7 +205,7 @@ get_template()
             <div v-if="element.is_container()" :id="element.id" @click.stop="select_item(element)" class="template-container template-item mdui-container-fluid" :class="{'template-selected': element.id === selected_item?.id}">
               <slot-draggable :id="`${element.id}-${index}`" v-for="(slot, index) in element.children" :slot="slot" :select_item="select_item" :selected_item="selected_item"></slot-draggable>
             </div>
-            <div v-else-if="!element.is_container()" @click.stop="select_item(element)" v-html="render_node_prop(element.id, element.html, element.prop)" :class="{'template-selected': element.id === selected_item?.id}"></div>
+            <template-component v-else-if="!element.is_container()" @click.stop="select_item(element)" :type="element.type" :node_prop="element.node_prop" :class="{'template-selected': element.id === selected_item?.id}"></template-component>
             <div v-else>Unknown</div>
           </template>
         </draggable>
@@ -212,7 +217,7 @@ get_template()
             <p>文本颜色</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.textColor" class="mdui-col-xs-3"
-                   :class="[choice.className, selected_item.prop.clazz?.textColor === choice.className? 'choice_selected' : 'choice_unselected']"
+                   :class="[choice.className, selected_item.node_prop.clazz?.textColor === choice.className? 'choice_selected' : 'choice_unselected']"
                    @click="item_set_text_color(choice.className)">
                 {{ choice.classDesc }}
               </div>
@@ -223,7 +228,7 @@ get_template()
             <p>背景颜色</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.backgroundColor" class="mdui-col-xs-3"
-                   :class="[choice.className, selected_item.prop.clazz?.backgroundColor === choice.className? 'choice_selected' : 'choice_unselected']"
+                   :class="[choice.className, selected_item.node_prop.clazz?.backgroundColor === choice.className? 'choice_selected' : 'choice_unselected']"
                    @click="item_set_background_color(choice.className)">
                 {{ choice.classDesc }}
               </div>
@@ -234,7 +239,7 @@ get_template()
             <p>文本字体</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.textSize" class="mdui-col-xs-6"
-                   :class="[choice.className, selected_item.prop.clazz?.textSize === choice.className? 'choice_selected' : 'choice_unselected']"
+                   :class="[choice.className, selected_item.node_prop.clazz?.textSize === choice.className? 'choice_selected' : 'choice_unselected']"
                    @click="item_set_text_size(choice.className)">
                 {{ choice.classDesc }}
               </div>
@@ -245,15 +250,19 @@ get_template()
             <p>文本样式</p>
             <div class="mdui-container-fluid">
               <div v-for="choice in class_group.textAlign" class="mdui-col-xs-4"
-                   :class="[choice.className, selected_item.prop.clazz?.textAlign === choice.className? 'choice_selected' : 'choice_unselected']"
+                   :class="[choice.className, selected_item.node_prop.clazz?.textAlign === choice.className? 'choice_selected' : 'choice_unselected']"
                    @click="item_set_text_align(choice.className)">
                 {{ choice.classDesc }}
               </div>
             </div>
           </div>
+
+          <div class="style_editor_group">
+            <p>内容文本</p>
+            <input class="mdui-textfield-input" type="text" v-model="selected_item.node_prop.content" placeholder="内容文本"/>
+          </div>
           
           <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre>
-          <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ render_node_prop(selected_item.id, selected_item.html, selected_item.prop) }}</pre>
         </div>
       </div>
     </div>
@@ -282,7 +291,7 @@ get_template()
 .style_editor_group {
   margin-bottom: 12px;
   border: 1px dotted #cccccc;
-  padding: 8px 0px;
+  padding: 8px 0;
 }
 
 .style_editor_group > p {
