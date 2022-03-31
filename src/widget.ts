@@ -71,21 +71,45 @@ export class Container extends Widget {
     }
 }
 
+export class ClassProp {
+    textColor?: string
+    textSize?: string
+    backgroundColor?: string
+    textAlign?: string
+
+    constructor(textColor?: string, textSize?: string, backgroundColor?: string, textAlign?: string) {
+        this.textColor = textColor
+        this.textSize = textSize
+        this.backgroundColor = backgroundColor
+        this.textAlign = textAlign
+    }
+}
+
 export class NodeProp {
-    clazz?: Array<string>
+    clazz?: ClassProp
     name?: string
     content?: string
     href?: string
     styles?: { [key: string]: string }
     type?: string
 
-    constructor(props?: {clazz?: Array<string>, name?: string, content?: string, href?: string, styles?: { [key: string]: string }, type?: string}) {
+    constructor(props?: {clazz?: ClassProp, name?: string, content?: string, href?: string, styles?: { [key: string]: string }, type?: string}) {
         this.clazz = props?.clazz
         this.name = props?.name
         this.content = props?.content
         this.href = props?.href
         this.styles = props?.styles
         this.type = props?.type
+    }
+}
+
+export class ClassItem {
+    className: string
+    classDesc: string
+
+    constructor(className: string, classDesc: string) {
+        this.className = className
+        this.classDesc = classDesc
     }
 }
 
@@ -129,4 +153,34 @@ export function eval_widget_json(value: any): Widget {
     } else {
         return new Widget(value.id, value.html, eval_node_prop_json(value.prop))
     }
+}
+
+export const class_group = {
+    textColor: [
+        new ClassItem("mdui-text-color-green", "绿色"),
+        new ClassItem("mdui-text-color-blue", "蓝色"),
+        new ClassItem("mdui-text-color-white", "白色"),
+        new ClassItem("mdui-text-color-black", "黑色"),
+        new ClassItem("mdui-text-color-red", "红色"),
+    ],
+    backgroundColor: [
+        new ClassItem("mdui-color-green", "绿色"),
+        new ClassItem("mdui-color-blue", "蓝色"),
+        new ClassItem("mdui-color-white", "白色"),
+        new ClassItem("mdui-color-black", "黑色"),
+        new ClassItem("mdui-color-red", "红色"),
+    ],
+    textSize: [
+        new ClassItem("mdui-typo-headline", "大标题"),
+        new ClassItem("mdui-typo-title", "标题"),
+        new ClassItem("mdui-typo-subheading", "副标题"),
+        new ClassItem("mdui-typo-caption", "小标题"),
+        new ClassItem("mdui-typo-body-2", "正文2"),
+        new ClassItem("mdui-typo-body-1", "正文1"),
+    ],
+    textAlign: [
+        new ClassItem("mdui-text-center", "居中"),
+        new ClassItem("mdui-text-left", "左对齐"),
+        new ClassItem("mdui-text-right", "左对齐"),
+    ]
 }

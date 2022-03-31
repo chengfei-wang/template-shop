@@ -6,7 +6,7 @@ import PageBody from "./PageBody.vue";
 
 import {ref} from "vue";
 import mdui from "mdui"
-import {Widget, template_widgets, eval_widget_json, NodeProp} from "../widget"
+import {Widget, template_widgets, eval_widget_json, class_group, NodeProp, ClassProp} from "../widget"
 import { request } from "../requests";
 import { eval_template, Template } from "../model";
 import { render_node_prop } from "../render";
@@ -100,15 +100,43 @@ function select_item(widget?: Widget) {
   selected_item.value = widget
 }
 
-function add_class(widget: Widget, clazz: string) {
-  if (widget.prop.clazz == undefined) {
-    widget.prop.clazz = []
+function item_set_background_color(clazz: string) {
+  if (selected_item.value?.prop != undefined) {
+    let prop = selected_item.value.prop
+    if (prop.clazz == undefined) {
+      prop.clazz = new ClassProp()
+    }
+    prop.clazz.backgroundColor = clazz
   }
+}
 
-  if (!widget.prop.clazz.includes(clazz)) {
-    widget.prop.clazz.push(clazz)
-  } else {
-    widget.prop.clazz = widget.prop.clazz.filter(item => item !== clazz);
+function item_set_text_color(clazz: string) {
+  if (selected_item.value?.prop != undefined) {
+    let prop = selected_item.value.prop
+    if (prop.clazz == undefined) {
+      prop.clazz = new ClassProp()
+    }
+    prop.clazz.textColor = clazz
+  }
+}
+
+function item_set_text_size(clazz: string) {
+  if (selected_item.value?.prop != undefined) {
+    let prop = selected_item.value.prop
+    if (prop.clazz == undefined) {
+      prop.clazz = new ClassProp()
+    }
+    prop.clazz.textSize = clazz
+  }
+}
+
+function item_set_text_align(clazz: string) {
+  if (selected_item.value?.prop != undefined) {
+    let prop = selected_item.value.prop
+    if (prop.clazz == undefined) {
+      prop.clazz = new ClassProp()
+    }
+    prop.clazz.textAlign = clazz
   }
 }
 
@@ -180,7 +208,50 @@ get_template()
 
       <div class="mdui-col-md-3">
         <div v-if="selected_item !== undefined">
-          <!-- <button class="mdui-btn mdui-color-green mdui-text-color-white" @click="add_class(selected_item, 'mdui-text-color-blue')">ADD CLASS</button> -->
+          <div>
+            <p>文本颜色</p>
+            <div class="mdui-container-fluid">
+              <div v-for="choice in class_group.textColor" class="mdui-col-xs-3"
+                   :class="[choice.className, selected_item.prop.clazz?.textColor === choice.className? 'choice_selected' : 'choice_unselected']"
+                   @click="item_set_text_color(choice.className)">
+                {{ choice.classDesc }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p>背景颜色</p>
+            <div class="mdui-container-fluid">
+              <div v-for="choice in class_group.backgroundColor" class="mdui-col-xs-3"
+                   :class="[choice.className, selected_item.prop.clazz?.backgroundColor === choice.className? 'choice_selected' : 'choice_unselected']"
+                   @click="item_set_background_color(choice.className)">
+                {{ choice.classDesc }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p>文本字体</p>
+            <div class="mdui-container-fluid">
+              <div v-for="choice in class_group.textSize" class="mdui-col-xs-6"
+                   :class="[choice.className, selected_item.prop.clazz?.textSize === choice.className? 'choice_selected' : 'choice_unselected']"
+                   @click="item_set_text_size(choice.className)">
+                {{ choice.classDesc }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p>文本样式</p>
+            <div class="mdui-container-fluid">
+              <div v-for="choice in class_group.textAlign" class="mdui-col-xs-6"
+                   :class="[choice.className, selected_item.prop.clazz?.textAlign === choice.className? 'choice_selected' : 'choice_unselected']"
+                   @click="item_set_text_align(choice.className)">
+                {{ choice.classDesc }}
+              </div>
+            </div>
+          </div>
+          
           <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre>
           <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ render_node_prop(selected_item.id, selected_item.html, selected_item.prop) }}</pre>
         </div>
@@ -191,4 +262,20 @@ get_template()
 
 <style lang="css">
 @import "../template.css";
+
+.choice_selected {
+  border: 2px solid #aaaaaa;
+
+  height: 32px;
+  background-color: #eeeeee;
+  text-align: center;
+  line-height: 32px;
+}
+
+.choice_unselected {
+  height: 32px;
+  background-color: #eeeeee;
+  text-align: center;
+  line-height: 32px;
+}
 </style>

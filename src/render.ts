@@ -14,10 +14,18 @@ export function render_node_prop(id: string, html: string, prop: NodeProp): stri
         }
     }
 
-    if (prop?.clazz != null) {
-        prop.clazz.forEach(clazz => {
-            element.classList.add(clazz)
-        });
+    let clazz = prop?.clazz
+    if (clazz?.backgroundColor != undefined) {
+        element.classList.add(clazz.backgroundColor)
+    }
+    if (clazz?.textSize != undefined) {
+        element.classList.add(clazz.textSize)
+    }
+    if (clazz?.textColor != undefined) {
+        element.classList.add(clazz.textColor)
+    }
+    if (clazz?.textAlign != undefined) {
+        element.classList.add(clazz.textAlign)
     }
 
     // console.log(element.outerHTML)
