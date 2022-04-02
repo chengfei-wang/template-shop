@@ -47,6 +47,10 @@ export class Widget {
     is_container(): boolean {
         return this.type === 'CONTAINER' || this.type === 'FORM'
     }
+
+    is_form(): boolean {
+        return this.type === 'FORM'
+    }
 }
 
 export class Container extends Widget {
