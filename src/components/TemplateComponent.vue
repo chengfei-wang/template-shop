@@ -1,7 +1,6 @@
 <script lang="tsx">
 import { NodeProp } from "../widget";
 import { type_render_functions, template_unknown } from "../template";
-import { h } from "vue";
 
 export default {
     name: "TemplateComponent",
@@ -14,7 +13,7 @@ export default {
         if (render === undefined) {
             render = template_unknown
         }
-        return h(render(params.node_prop))
+        return render(params.node_prop)
     }
 }
 </script>
