@@ -34,7 +34,3 @@ defineProps<{
     </template>
   </draggable>
 </template>
-
-<style>
-@import "../template.css";
-</style>

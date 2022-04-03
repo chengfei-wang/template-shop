@@ -41,7 +41,3 @@ function edit_template() {
   window.location.href = `editor?tid=${props.tid}`
 }
 </script>
-
-<style scoped>
-
-</style>

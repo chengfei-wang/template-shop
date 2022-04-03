@@ -100,6 +100,10 @@ function save_template() {
   )
 }
 
+function preview_template() {
+  window.location.href = `preview?tid=${page_tid.value}`
+}
+
 function select_item(widget?: Widget) {
   console.log(`item select: ${widget?.id}`)
   selected_item.value = widget
@@ -118,6 +122,10 @@ get_template()
   <toolbar title="编辑页面">
     <a class="mdui-btn mdui-btn-icon" @click="save_template">
       <i class="mdui-icon material-icons">save</i>
+    </a>
+
+    <a class="mdui-btn mdui-btn-icon" @click="preview_template">
+      <i class="mdui-icon material-icons">photo</i>
     </a>
   </toolbar>
   <page-body>
@@ -226,8 +234,27 @@ get_template()
   </page-body>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
 @import "../template.css";
+
+.template-container-root {
+    min-height: 720px;
+    border: 1px solid #aaaaaa !important;
+    height: auto;
+    padding: 2px;
+}
+
+.template-trash {
+    width: 100%;
+    height: 80px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #aaaaaa;
+}
+
+.template-selected {
+    border: 2px solid #000000 !important;
+}
 
 .choice_selected {
   border: 2px solid #aaaaaa;

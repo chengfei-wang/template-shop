@@ -1,4 +1,4 @@
-import { ClassProp, NodeProp } from "./widget";
+import { Widget, Container, ClassProp, NodeProp, FormProp, SlotProp } from "./widget";
 
 function create_class_list(init: Array<string>, prop?: ClassProp): Array<string> {
     let classList = Array.from(init)
@@ -38,7 +38,7 @@ export function template_input(prop: NodeProp): JSX.Element {
 
     let classList: Array<string> = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
 
-    return (<input type='text' class={classList} name={prop.name} placeholder={prop.content}/>)
+    return (<input type='text' class={classList} name={prop.name} placeholder={prop.content} />)
 }
 
 export function template_button(prop: NodeProp): JSX.Element {
@@ -65,8 +65,8 @@ export function template_checkbox(prop: NodeProp) {
     return (
         <div class={classList}>
             <label class='mdui-checkbox'>
-                <input type='checkbox' name={prop.name}/>
-                <i class='mdui-checkbox-icon'/>
+                <input type='checkbox' name={prop.name} value={prop.content} />
+                <i class='mdui-checkbox-icon' />
                 {prop.content}
             </label>
         </div>
@@ -87,8 +87,8 @@ export function template_radio(prop: NodeProp): JSX.Element {
     return (
         <div class={classList}>
             <label class='mdui-radio'>
-                <input type='radio' name={prop.name}/>
-                <i class='mdui-radio-icon'/>
+                <input type='radio' name={prop.name} value={prop.content} />
+                <i class='mdui-radio-icon' />
                 {prop.content}
             </label>
         </div>
@@ -103,11 +103,74 @@ export function template_unknown(prop: NodeProp): JSX.Element {
     return (<div>未知组件{prop}</div>)
 }
 
-export const type_render_functions: {[key: string]: (prop: NodeProp) => JSX.Element} = {
+export const type_render_functions: { [key: string]: (prop: NodeProp) => JSX.Element } = {
     'P': template_p,
     'INPUT': template_input,
     'BUTTON': template_button,
     'CHECKBOX': template_checkbox,
     'RADIO': template_radio,
     'CONTAINER': template_container,
+}
+
+// function preview_form(container: Container): JSX.Element {
+//     let form_prop: FormProp = container.form_prop
+//     let children: SlotProp[] = container.children
+
+//     let items = children.map((child: SlotProp, index: number) => {
+//         return (
+//             <div class={`templat-slot mdui-col-xs-${child.size}`} id={`${container.id}-${index}`}>
+//                 {preview_page(child.children)}
+//             </div>
+//         )
+//     })
+//     return (
+//         <form method={form_prop.method} action={form_prop.url}>
+//             <div class="template-item mdui-container-fluid" id={container.id}>
+//                 {items}
+//             </div>
+//         </form>
+//     )
+// }
+
+function preview_container(container: Container): JSX.Element {
+    let children: SlotProp[] = container.children
+
+    let items = children.map((child: SlotProp, index: number) => {
+        return (
+            <div class={`template-slot mdui-col-xs-${child.size}`} id={`${container.id}-${index}`}>
+                {preview_page(child.children)}
+            </div>
+        )
+    })
+
+    return (
+        <div class="template-container template-item mdui-container-fluid" id={container.id}>
+            {items}
+        </div>
+    )
+}
+
+export function preview_page(widgets: Widget[]): JSX.Element {
+    return (
+        <div>
+            {widgets.map((widget: Widget) => {
+                if (widget.is_container()) {
+                    let container: Container = widget as Container
+                    if (widget.is_form()) {
+                        let form_prop: FormProp = container.form_prop
+                        return (
+                            <form method={form_prop.method} action={form_prop.url}>
+                                {preview_container(container)}
+                            </form>
+                        )
+                    } else {
+                        return preview_container(widget as Container)
+                    }
+                } else {
+                    let render = type_render_functions[widget.type] || template_unknown
+                    return render(widget.node_prop)
+                }
+            })}
+        </div>
+    )
 }
