@@ -27,6 +27,16 @@ export class SlotProp {
     }
 }
 
+export class FormProp {
+    method: string
+    url: string
+
+    constructor(method: string = 'POST', url: string = '') {
+        this.method = method
+        this.url = url
+    }
+}
+
 export class Widget {
     id: string
     type: string
@@ -55,14 +65,16 @@ export class Widget {
 
 export class Container extends Widget {
     children: Array<SlotProp>
+    form_prop: FormProp
 
-    constructor(id: string, type: string, children: Array<SlotProp>, node_prop: NodeProp) {
+    constructor(id: string, type: string, children: Array<SlotProp>, node_prop: NodeProp, form_prop: FormProp) {
         super(id, type, node_prop)
         this.children = children
+        this.form_prop = form_prop
     }
 
     clone(): Container {
-        let container = new Container(randomId(), this.type, SlotProp.clone_props(this.children), new NodeProp())
+        let container = new Container(randomId(), this.type, SlotProp.clone_props(this.children), new NodeProp(), new FormProp())
         console.log(container)
         return container
     }
@@ -110,6 +122,14 @@ export class ClassItem {
     }
 }
 
+export class FormMethod {
+    name: string
+
+    constructor(name: string) {
+        this.name = name
+    }
+}
+
 function create_slots(...sizes: number[]): SlotProp[] {
     return sizes.map(value => new SlotProp(value))
 }
@@ -118,12 +138,16 @@ function create_class_item(className: string, classDesc: string): ClassItem {
     return new ClassItem(className, classDesc)
 }
 
+function craete_form_method(method: string): FormMethod {
+    return new FormMethod(method)
+}
+
 function create_widget(type: string, node_prop: NodeProp = new NodeProp()): Widget {
     return new Widget(randomId(), type, node_prop)
 }
 
-function create_container(children: Array<SlotProp>, type: string, node_prop: NodeProp = new NodeProp()): Container {
-    return new Container(randomId(), type, children, node_prop)
+function create_container(children: Array<SlotProp>, type: string, node_prop: NodeProp = new NodeProp(), form_prop = new FormProp()): Container {
+    return new Container(randomId(), type, children, node_prop, form_prop)
 }
 
 export const template_widgets: Widget[] = [
@@ -147,16 +171,24 @@ export function eval_class_json(value?: any): ClassProp {
 }
 
 export function eval_node_prop_json(value?: any): NodeProp {
-    if (value == undefined) {
+    if (value === undefined) {
         return new NodeProp();
     }
     return new NodeProp(eval_class_json(value.clazz), value.name, value.content, value.href, value.styles, value.type)
 }
 
+export function eval_form_prop_json(value?: any): FormProp {
+    if (value === undefined) {
+        return new FormProp()
+    }
+
+    return new FormProp(value.method, value.url)
+}
+
 export function eval_widget_json(value: any): Widget {
     if (value.type == 'CONTAINER' || value.type == 'FORM') {
         let children = value.children.map((slot: any) => new SlotProp(slot.size, slot.children.map((child: any) => eval_widget_json(child))))
-        return new Container(value.id, value.type, children, eval_node_prop_json(value.node_prop))
+        return new Container(value.id, value.type, children, eval_node_prop_json(value.node_prop), eval_form_prop_json(value.form_prop))
     } else {
         return new Widget(value.id, value.type, eval_node_prop_json(value.node_prop))
     }
@@ -189,5 +221,12 @@ export const class_group = {
         create_class_item("mdui-text-center", "居中"),
         create_class_item("mdui-text-left", "左对齐"),
         create_class_item("mdui-text-right", "右对齐"),
+    ]
+}
+
+export const form_group = {
+    method: [
+        craete_form_method("POST"),
+        craete_form_method("GET")
     ]
 }

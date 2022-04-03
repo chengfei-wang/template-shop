@@ -1,6 +1,7 @@
 <script lang="ts">
 import { ref } from "vue";
-import { Container, Widget } from "../widget";
+import { Container, FormProp, Widget } from "../widget";
+import { form_group } from "../widget"
 
 export default {
     name: "ConfigPanelContainer"
@@ -14,21 +15,11 @@ let props = defineProps<{
 
 const is_form = ref<Array<number>>(props.selected_item.is_form() ? [0] : [])
 
-class FormProp {
-    method: string
-    url: string
-
-    constructor(method: string = 'POST', url: string = '') {
-        this.method = method
-        this.url = url
-    }
-}
-
-const form_prop = ref<FormProp>(new FormProp())
+const form_prop = ref<FormProp>((<Container>props.selected_item).form_prop)
 
 console.log(is_form.value.length == 1)
 
-function change_form_or_container(event: Event) {
+function change_form_or_container(_event: Event) {
     if (is_form.value.length === 0) {
         props.selected_item.type = 'CONTAINER'
     } else {
@@ -57,29 +48,16 @@ function change_form_or_container(event: Event) {
         <div class="style_editor_group">
             <p>表单提交方式</p>
             <div class="mdui-container-fluid">
-                <div class="mdui-col-xs-6 mdui-text-center">
+                <div v-for="method in form_group.method" class="mdui-col-xs-6 mdui-text-center">
                     <label class="mdui-radio">
                         <input
                             type="radio"
                             name="form-method"
                             v-model="form_prop.method"
-                            value="POST"
+                            :value="method.name"
                         />
                         <i class="mdui-radio-icon" />
-                        POST
-                    </label>
-                </div>
-
-                <div class="mdui-col-xs-6 mdui-text-center">
-                    <label class="mdui-radio">
-                        <input
-                            type="radio"
-                            name="form-method"
-                            v-model="form_prop.method"
-                            value="GET"
-                        />
-                        <i class="mdui-radio-icon" />
-                        GET
+                        {{method.name}}
                     </label>
                 </div>
             </div>

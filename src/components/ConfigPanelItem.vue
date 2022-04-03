@@ -14,19 +14,17 @@ defineProps<{
 
 
 function item_set_text_color(selected_item: Widget, clazz: string) {
-  if (selected_item.node_prop != undefined) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-      prop.clazz = new ClassProp()
+        prop.clazz = new ClassProp()
     }
     prop.clazz.textColor = clazz
-  }
 }
 
 function item_set_text_size(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-      prop.clazz = new ClassProp()
+        prop.clazz = new ClassProp()
     }
     prop.clazz.textSize = clazz
 
@@ -35,7 +33,7 @@ function item_set_text_size(selected_item: Widget, clazz: string) {
 function item_set_background_color(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-      prop.clazz = new ClassProp()
+        prop.clazz = new ClassProp()
     }
     prop.clazz.backgroundColor = clazz
 }
@@ -43,10 +41,10 @@ function item_set_background_color(selected_item: Widget, clazz: string) {
 function item_set_text_align(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-      prop.clazz = new ClassProp()
+        prop.clazz = new ClassProp()
     }
     prop.clazz.textAlign = clazz
-  
+
 }
 </script>
 
@@ -107,5 +105,21 @@ function item_set_text_align(selected_item: Widget, clazz: string) {
             v-model="selected_item.node_prop.content"
             placeholder="内容文本"
         />
+    </div>
+
+    <div class="style_editor_group">
+        <p>字段名称</p>
+        <input
+            class="mdui-textfield-input"
+            type="text"
+            v-model="selected_item.node_prop.name"
+            placeholder="字段名称"
+        />
+    </div>
+
+    <div v-if="selected_item.type === 'INPUT'">
+        <div class="style_editor_group">
+            
+        </div>
     </div>
 </template>
