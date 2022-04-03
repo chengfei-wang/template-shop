@@ -6,6 +6,7 @@ import PageBody from "./PageBody.vue";
 import { request } from "../requests";
 import { Template } from "../model";
 import { ref } from "vue"
+import mdui from "mdui";
 
 export default {
   name: "CraftPage",
@@ -25,6 +26,28 @@ function getTemplateList() {
   })
 }
 
+function createTemplate() {
+  mdui.prompt('模版标题', (value: string) => {
+    if (value.length > 0) {
+      request("template/insert", { title: value, content: JSON.stringify([]) }, (status, obj) => {
+        if (status == 200 && obj?.code === 200 && obj.data != null) {
+          mdui.snackbar({
+            message: '创建成功',
+            position: 'bottom',
+          });
+
+          window.location.href = `editor?tid=${obj.data.tid}`
+        }
+      })
+    } else {
+      mdui.snackbar({
+        message: '请输入标题',
+        position: 'bottom',
+      });
+    }
+  })
+}
+
 getTemplateList()
 </script>
 
@@ -39,5 +62,13 @@ getTemplateList()
         thumbnail="/thumbnail.png"
       />
     </div>
+
+    <button
+      @click="createTemplate"
+      class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-green mdui-text-color-white"
+      style="margin-bottom: 48px"
+    >
+      <i class="mdui-icon material-icons">add</i>
+    </button>
   </page-body>
 </template>
