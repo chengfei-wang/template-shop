@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { NodeProp } from "../widget";
-import { type_render_functions, template_unknown } from "../template";
+import { type_render_functions, template_unknown } from "./Template";
 
 export default {
     name: "TemplateComponent",

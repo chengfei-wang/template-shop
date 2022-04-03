@@ -1,6 +1,6 @@
 import { Widget } from "../widget";
 import { eval_widget_json } from "../widget"
-import { preview_page } from "../template";
+import { preview_page } from "./Template";
 import { defineComponent, ref } from "vue";
 import { request } from "../requests";
 import { eval_template } from "../model";

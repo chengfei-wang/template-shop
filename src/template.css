@@ -5,7 +5,7 @@
 }
 
 .template-slot {
-    /* border: 1px dotted #aaaaaa; */
+     border: 1px dotted #aaaaaa;
     min-height: 36px !important;
     padding: 1px !important;
     margin: 0 !important;

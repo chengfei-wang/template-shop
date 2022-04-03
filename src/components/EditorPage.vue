@@ -4,6 +4,8 @@ import SlotDraggable from "./SlotDraggable.vue";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
 import TemplateComponent from "./TemplateComponent.vue";
+import ConfigPanelItem from "./ConfigPanelItem.vue";
+import ConfigPanelContainer from "./ConfigPanelContainer.vue";
 
 import { ref } from "vue";
 import { template_widgets, eval_widget_json } from "../widget"
@@ -14,13 +16,11 @@ import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, SlotDraggable, Toolbar, PageBody, TemplateComponent }
+  components: { Draggable, SlotDraggable, Toolbar, PageBody, TemplateComponent, ConfigPanelItem, ConfigPanelContainer }
 }
 </script>
 
 <script setup lang="ts">
-import ConfigPanelItem from "./ConfigPanelItem.vue";
-import ConfigPanelContainer from "./ConfigPanelContainer.vue";
 const content_template = template_widgets
 const content_editor = ref<Array<Widget>>([])
 
@@ -234,7 +234,7 @@ get_template()
   </page-body>
 </template>
 
-<style lang="css" scoped>
+<style lang="css">
 @import "../template.css";
 
 .template-container-root {
