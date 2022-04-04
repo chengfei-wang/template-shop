@@ -6,6 +6,7 @@ import PageBody from "./PageBody.vue";
 import TemplateComponent from "./TemplateComponent.vue";
 import ConfigPanelItem from "./ConfigPanelItem.vue";
 import ConfigPanelContainer from "./ConfigPanelContainer.vue";
+import TemplateDraggable from "./TemplateDraggable";
 
 import { ref } from "vue";
 import { template_widgets, eval_widget_json } from "../Widget"
@@ -132,34 +133,7 @@ get_template()
     <div class="mdui-container-fluid">
       <div class="mdui-col-md-3">
         <div id="template-source" class="template-source mdui-center">
-          <draggable
-            :list="content_template"
-            :clone="clone_item"
-            v-bind="{ animation: 200 }"
-            :group="{ name: 'editor', pull: 'clone', put: false }"
-            item-key="id"
-          >
-            <template #item="{ element }">
-              <div
-                v-if="element.is_container()"
-                class="template-container template-item mdui-container-fluid"
-              >
-                <slot-draggable
-                  :id="`${element.id}-${index}`"
-                  :select_item="() => { }"
-                  :selected_item="selected_item"
-                  v-for="(slot, index) in element.children"
-                  :slot="slot"
-                ></slot-draggable>
-              </div>
-              <template-component
-                v-else-if="!element.is_container()"
-                :type="element.type"
-                :node_prop="element.node_prop"
-              ></template-component>
-              <div v-else>Unknown</div>
-            </template>
-          </draggable>
+          <template-draggable :source="true" :data="content_template" />
         </div>
 
         <div class="mdui-divider" style="margin: 16px 0;"></div>
@@ -186,41 +160,7 @@ get_template()
             <input class="mdui-textfield-input" type="text" v-model="page_title" />
           </div>
         </div>
-        <draggable
-          id="template-container-root"
-          class="template-container-root"
-          :list="content_editor"
-          v-bind="{ animation: 200 }"
-          @click="select_item(undefined)"
-          group="editor"
-          item-key="id"
-        >
-          <template #item="{ element }">
-            <div
-              v-if="element.is_container()"
-              :id="element.id"
-              @click.stop="select_item(element)"
-              class="template-container template-item mdui-container-fluid"
-              :class="{ 'template-selected': element.id === selected_item?.id }"
-            >
-              <slot-draggable
-                :id="`${element.id}-${index}`"
-                v-for="(slot, index) in element.children"
-                :slot="slot"
-                :select_item="select_item"
-                :selected_item="selected_item"
-              ></slot-draggable>
-            </div>
-            <template-component
-              v-else-if="!element.is_container()"
-              @click.stop="select_item(element)"
-              :type="element.type"
-              :node_prop="element.node_prop"
-              :class="{ 'template-selected': element.id === selected_item?.id }"
-            ></template-component>
-            <div v-else>Unknown</div>
-          </template>
-        </draggable>
+        <template-draggable :source="false" :data="content_editor" />
       </div>
 
       <div class="mdui-col-md-3">
