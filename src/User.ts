@@ -1,4 +1,4 @@
-import {request, Response} from "./requests"
+import {request, Response} from "./Request"
 
 export class User {
     constructor(uid: string, name: string, email: string) {

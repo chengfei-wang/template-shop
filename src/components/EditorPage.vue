@@ -8,10 +8,10 @@ import ConfigPanelItem from "./ConfigPanelItem.vue";
 import ConfigPanelContainer from "./ConfigPanelContainer.vue";
 
 import { ref } from "vue";
-import { template_widgets, eval_widget_json } from "../widget"
-import { Widget } from "../widget"
-import { request } from "../requests";
-import { eval_template, Template } from "../model";
+import { template_widgets, eval_widget_json } from "../Widget"
+import { Widget } from "../Widget"
+import { request } from "../Request";
+import { eval_template, Template } from "../Model";
 import mdui from "mdui"
 
 export default {

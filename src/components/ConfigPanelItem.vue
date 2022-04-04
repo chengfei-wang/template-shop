@@ -1,6 +1,6 @@
 <script lang="ts">
-import { class_group } from "../widget"
-import { ClassProp, Widget } from "../widget";
+import { class_group } from "../Widget"
+import { ClassProp, Widget } from "../Widget";
 
 export default {
     name: "ConfigPanelItem"

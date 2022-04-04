@@ -3,8 +3,8 @@ import Toolbar from "./Toolbar.vue"
 import TemplateCardItem from "./TemplateCardItem.vue";
 import PageBody from "./PageBody.vue";
 
-import { request } from "../requests";
-import { Template } from "../model";
+import { request } from "../Request";
+import { Template } from "../Model";
 import { ref } from "vue"
 import mdui from "mdui";
 

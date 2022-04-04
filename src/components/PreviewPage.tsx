@@ -1,9 +1,9 @@
-import { Widget } from "../widget";
-import { eval_widget_json } from "../widget"
+import { Widget } from "../Widget";
+import { eval_widget_json } from "../Widget"
 import { preview_page } from "./Template";
 import { defineComponent, ref } from "vue";
-import { request } from "../requests";
-import { eval_template } from "../model";
+import { request } from "../Request";
+import { eval_template } from "../Model";
 import mdui from "mdui";
 
 import "../template.css"

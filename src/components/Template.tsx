@@ -1,4 +1,4 @@
-import { Widget, Container, ClassProp, NodeProp, FormProp, SlotProp } from "../widget";
+import { Widget, Container, ClassProp, NodeProp, FormProp, SlotProp } from "../Widget";
 
 function create_class_list(init: Array<string>, prop?: ClassProp): Array<string> {
     let classList = Array.from(init)

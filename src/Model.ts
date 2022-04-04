@@ -4,7 +4,6 @@ export class Template {
     title: string
     content?: string
 
-
     constructor(tid: string, creator: string, title: string, content?: string) {
         this.tid = tid;
         this.creator = creator;

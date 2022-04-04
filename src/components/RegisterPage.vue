@@ -2,7 +2,7 @@
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
 
-import {register} from "../user";
+import {register} from "../User";
 import {ref} from "vue";
 import mdui from "mdui";
 

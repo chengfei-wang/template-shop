@@ -1,7 +1,7 @@
 <script lang="ts">
 import {ref} from "vue"
-import {request} from "../requests";
-import {logout} from "../user";
+import {request} from "../Request";
+import {logout} from "../User";
 import mdui from "mdui";
 import BottomNavigationView from "./BottomNavigationView.vue"
 import ShoppingPage from "./ShoppingPage.vue"

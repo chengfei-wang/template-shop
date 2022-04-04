@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { NodeProp } from "../widget";
+import { NodeProp } from "../Widget";
 import { type_render_functions, template_unknown } from "./Template";
 
 export default {

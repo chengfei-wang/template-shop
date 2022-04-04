@@ -1,7 +1,7 @@
 <script lang="ts">
 import { ref } from "vue";
-import { Container, FormProp, Widget } from "../widget";
-import { form_group } from "../widget"
+import { Container, FormProp, Widget } from "../Widget";
+import { form_group } from "../Widget"
 
 export default {
     name: "ConfigPanelContainer"

@@ -2,7 +2,7 @@
 import Draggable from "vuedraggable"
 import TemplateComponent from "./TemplateComponent.vue";
 
-import { SlotProp, Widget } from "../widget";
+import { SlotProp, Widget } from "../Widget";
 
 export default {
   name: "SlotDraggable",
