@@ -138,7 +138,7 @@ function create_class_item(className: string, classDesc: string): ClassItem {
     return new ClassItem(className, classDesc)
 }
 
-function craete_form_method(method: string): FormMethod {
+function create_form_method(method: string): FormMethod {
     return new FormMethod(method)
 }
 
@@ -240,7 +240,7 @@ export const class_group = {
 
 export const form_group = {
     method: [
-        craete_form_method("POST"),
-        craete_form_method("GET")
+        create_form_method("POST"),
+        create_form_method("GET")
     ]
 }
