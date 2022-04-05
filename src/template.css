@@ -5,7 +5,9 @@
 }
 
 .template-slot {
-     border: 1px dotted #aaaaaa;
+    border: 1px dotted #aaaaaa;
+    box-sizing: border-box;
+    
     min-height: 36px !important;
     padding: 1px !important;
     margin: 0 !important;
@@ -54,4 +56,8 @@ p {
     vertical-align: center;
     min-height: 36px;
     margin: 0 !important;
+}
+
+.header-footer {
+    height: 36px;
 }

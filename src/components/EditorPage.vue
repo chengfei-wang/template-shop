@@ -124,8 +124,8 @@ get_template()
     </a>
   </toolbar>
   <page-body>
-    <div class="mdui-container-fluid">
-      <div class="mdui-col-md-3">
+    <div class="mdui-container">
+      <div class="mdui-col-md-4">
         <div id="template-source" class="template-source mdui-center">
           <template-draggable :preview="true" :data="content_template" :selected_item="selected_item" :select_item="select_item" />
         </div>
@@ -147,19 +147,15 @@ get_template()
         </div>
       </div>
 
-      <div class="mdui-col-md-6">
-        <div class="mdui-container-fluid">
-          <div class="mdui-textfield">
-            <label class="mdui-textfield-label">页面标题</label>
-            <input class="mdui-textfield-input" type="text" v-model="page_title" />
-          </div>
+      <div class="mdui-col-md-4">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">页面标题</label>
+          <input class="mdui-textfield-input" type="text" v-model="page_title" />
         </div>
-        <div id="template-container-root" class="template-container-root" @click="(e) => { select_item(undefined) }">
-          <template-draggable :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
-        </div>
+        <template-draggable @click="(e) => { select_item(undefined) }" id="template-container-root" class="template-container-root" :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
       </div>
 
-      <div class="mdui-col-md-3">
+      <div class="mdui-col-md-4">
         <div v-if="selected_item !== undefined">
           <config-panel-container
             v-if="selected_item.is_container()"
@@ -171,7 +167,7 @@ get_template()
             :selected_item="selected_item"
             :key="`item-${selected_item.id}`"
           />
-          <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre>
+          <!-- <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre> -->
         </div>
       </div>
     </div>
@@ -183,9 +179,16 @@ get_template()
 
 .template-container-root {
   min-height: 720px;
+  max-height: 720px;
   border: 1px solid #aaaaaa !important;
   height: auto;
-  padding: 2px;
+  padding: 4px;
+  overflow-y: scroll;
+  overflow-x: hidden; 
+}
+
+.template-container-root::-webkit-scrollbar {
+  width: 2px;
 }
 
 .template-trash {
@@ -198,10 +201,12 @@ get_template()
 
 .template-selected {
   border: 2px solid #000000 !important;
+  box-sizing: border-box;
 }
 
 .choice_selected {
   border: 2px solid #cccccc;
+  box-sizing: border-box;
 
   height: 32px;
   background-color: #dddddd;
@@ -210,6 +215,8 @@ get_template()
 }
 
 .choice_unselected {
+  box-sizing: border-box;
+
   height: 32px;
   background-color: #eeeeee;
   text-align: center;

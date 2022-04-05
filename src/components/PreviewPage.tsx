@@ -53,8 +53,10 @@ export default defineComponent({
     get_template()
 
     return () => (
-      <div>
-        {preview_page(content_widgets.value)}
+      <div class='mdui-container'>
+        <div class='mdui-col-md-4'></div>
+        <div class='mdui-col-md-4'>{preview_page(content_widgets.value)}</div>
+        <div class='mdui-col-md-4'></div>
       </div>
     )
   }
