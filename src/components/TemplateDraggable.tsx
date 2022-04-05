@@ -1,4 +1,4 @@
-import { defineComponent } from "vue"
+import { defineComponent, PropType } from "vue"
 
 import VueDraggable from "vuedraggable"
 import { Container, SlotProp, Widget } from "../Widget"
@@ -7,9 +7,9 @@ import { template_unknown, type_render_functions, preview_container } from "./Te
 const TemplateDraggable = defineComponent({
     props: {
         preview: { type: Boolean, required: true },
-        data: { type: Array, default: () => [], required: true },
-        select_item: { type: Function, required: true },
-        selected_item: { type: Widget }
+        data: { type: Array as PropType<Widget[]>, default: () => [], required: true },
+        select_item: { type: Function as PropType<(widget?: Widget) => void>, required: true },
+        selected_item: { type: Object as PropType<Widget> }
     },
     components: {
         VueDraggable
