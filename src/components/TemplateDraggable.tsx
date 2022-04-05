@@ -20,17 +20,7 @@ const TemplateDraggable = defineComponent({
                 item: (slot_props: { element: Widget, index: number }): JSX.Element => {
                     let element = slot_props.element
                     if (element.is_container()) {
-                        let container = element as Container
-                        if (element.is_form()) {
-                            let form_prop = container.form_prop
-                            return (
-                                <form method={form_prop.method} action={form_prop.url}>
-                                    {preview_container(container)}
-                                </form>
-                            )
-                        } else {
-                            return preview_container(container)
-                        }
+                        return preview_container(element as Container)
                     } else {
                         const render = type_render_functions[element.type] || template_unknown
                         return (
@@ -59,17 +49,7 @@ const TemplateDraggable = defineComponent({
                     let element = slot_props.element
                     const selected_class = props.selected_item?.id == element.id ? 'template-selected' : ''
                     if (element.is_container()) {
-                        let container = element as Container
-                        if (element.is_form()) {
-                            let form_prop = container.form_prop
-                            return (
-                                <form method={form_prop.method} action={form_prop.url}>
-                                    {function_draggable_inner(container, selected_class)}
-                                </form>
-                            )
-                        } else {
-                            return function_draggable_inner(container, selected_class)
-                        }
+                        return function_draggable_inner(element as Container, selected_class)
                     } else {
                         const render = type_render_functions[element.type] || template_unknown
                         return (
