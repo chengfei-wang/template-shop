@@ -119,7 +119,7 @@ function item_set_text_align(selected_item: Widget, clazz: string) {
 
     <div v-if="selected_item.type === 'INPUT'">
         <div class="style_editor_group">
-            
+            <p>类型</p>
         </div>
     </div>
 </template>

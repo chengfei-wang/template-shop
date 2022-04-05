@@ -218,8 +218,8 @@ export const class_group = {
         create_class_item("mdui-typo-body-1", "正文1"),
     ],
     textAlign: [
-        create_class_item("mdui-text-center", "居中"),
         create_class_item("mdui-text-left", "左对齐"),
+        create_class_item("mdui-text-center", "居中"),
         create_class_item("mdui-text-right", "右对齐"),
     ]
 }
