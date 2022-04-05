@@ -154,7 +154,7 @@ get_template()
             <input class="mdui-textfield-input" type="text" v-model="page_title" />
           </div>
         </div>
-        <div id="template-container-root" class="template-container-root" @click="(e) => { select_item(undefined);e.stopPropagation() }">
+        <div id="template-container-root" class="template-container-root" @click="(e) => { select_item(undefined) }">
           <template-draggable :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
         </div>
       </div>
