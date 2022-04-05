@@ -112,25 +112,14 @@ export const type_render_functions: { [key: string]: (prop: NodeProp) => JSX.Ele
     'CONTAINER': template_container,
 }
 
-// function preview_form(container: Container): JSX.Element {
-//     let form_prop: FormProp = container.form_prop
-//     let children: SlotProp[] = container.children
-
-//     let items = children.map((child: SlotProp, index: number) => {
-//         return (
-//             <div class={`templat-slot mdui-col-xs-${child.size}`} id={`${container.id}-${index}`}>
-//                 {preview_page(child.children)}
-//             </div>
-//         )
-//     })
-//     return (
-//         <form method={form_prop.method} action={form_prop.url}>
-//             <div class="template-item mdui-container-fluid" id={container.id}>
-//                 {items}
-//             </div>
-//         </form>
-//     )
-// }
+function preview_form(container: Container): JSX.Element {
+    let form_prop: FormProp = container.form_prop
+    return (
+        <form method={form_prop.method} action={form_prop.url}>
+            {preview_container(container)}
+        </form>
+    )
+}
 
 export function preview_container(container: Container): JSX.Element {
     let children: SlotProp[] = container.children
@@ -156,15 +145,10 @@ export function preview_page(widgets: Widget[]): JSX.Element {
             {widgets.map((widget: Widget) => {
                 if (widget.is_container()) {
                     let container: Container = widget as Container
-                    if (widget.is_form()) {
-                        let form_prop: FormProp = container.form_prop
-                        return (
-                            <form method={form_prop.method} action={form_prop.url}>
-                                {preview_container(container)}
-                            </form>
-                        )
+                    if (container.is_form()) {
+                        return preview_form(container)
                     } else {
-                        return preview_container(widget as Container)
+                        return preview_container(container)
                     }
                 } else {
                     let render = type_render_functions[widget.type] || template_unknown
