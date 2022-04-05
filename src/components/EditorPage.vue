@@ -2,7 +2,6 @@
 import Draggable from "vuedraggable";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
-import TemplateComponent from "./TemplateComponent.vue";
 import ConfigPanelItem from "./ConfigPanelItem.vue";
 import ConfigPanelContainer from "./ConfigPanelContainer.vue";
 import TemplateDraggable from "./TemplateDraggable";
@@ -16,7 +15,7 @@ import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, Toolbar, PageBody, TemplateComponent, TemplateDraggable, ConfigPanelItem, ConfigPanelContainer }
+  components: { Draggable, Toolbar, PageBody, TemplateDraggable, ConfigPanelItem, ConfigPanelContainer }
 }
 </script>
 

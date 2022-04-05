@@ -95,10 +95,6 @@ export function template_radio(prop: NodeProp): JSX.Element {
     )
 }
 
-export function template_container(prop: NodeProp): JSX.Element {
-    return (<div>容器组件</div>)
-}
-
 export function template_unknown(prop: NodeProp): JSX.Element {
     return (<div>未知组件{prop}</div>)
 }
@@ -109,10 +105,9 @@ export const type_render_functions: { [key: string]: (prop: NodeProp) => JSX.Ele
     'BUTTON': template_button,
     'CHECKBOX': template_checkbox,
     'RADIO': template_radio,
-    'CONTAINER': template_container,
 }
 
-function preview_form(container: Container): JSX.Element {
+export function preview_form(container: Container): JSX.Element {
     let form_prop: FormProp = container.form_prop
     return (
         <form method={form_prop.method} action={form_prop.url}>
