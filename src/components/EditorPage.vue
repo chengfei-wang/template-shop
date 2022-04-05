@@ -1,6 +1,5 @@
 <script lang="ts">
 import Draggable from "vuedraggable";
-import SlotDraggable from "./SlotDraggable.vue";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
 import TemplateComponent from "./TemplateComponent.vue";
@@ -17,7 +16,7 @@ import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, SlotDraggable, Toolbar, PageBody, TemplateComponent, ConfigPanelItem, ConfigPanelContainer }
+  components: { Draggable, Toolbar, PageBody, TemplateComponent, TemplateDraggable, ConfigPanelItem, ConfigPanelContainer }
 }
 </script>
 
@@ -29,10 +28,6 @@ const page_title = ref<string>("")
 const page_tid = ref<string>("")
 
 const selected_item = ref<Widget | undefined>(undefined)
-
-function clone_item(item: Widget): Widget {
-  return item.clone()
-}
 
 function export_data(): string {
   return JSON.stringify(content_editor.value)
@@ -133,7 +128,7 @@ get_template()
     <div class="mdui-container-fluid">
       <div class="mdui-col-md-3">
         <div id="template-source" class="template-source mdui-center">
-          <template-draggable :source="true" :data="content_template" />
+          <template-draggable :preview="true" :data="content_template" :selected_item="selected_item" :select_item="select_item" />
         </div>
 
         <div class="mdui-divider" style="margin: 16px 0;"></div>
@@ -146,7 +141,7 @@ get_template()
             group="editor"
             item-key="id"
           >
-            <template #item="{ element }">
+            <template #item="{}">
               <div style="visibility: hidden"></div>
             </template>
           </draggable>
@@ -160,13 +155,23 @@ get_template()
             <input class="mdui-textfield-input" type="text" v-model="page_title" />
           </div>
         </div>
-        <template-draggable :source="false" :data="content_editor" />
+        <div id="template-container-root" class="template-container-root">
+          <template-draggable :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
+        </div>
       </div>
 
       <div class="mdui-col-md-3">
         <div v-if="selected_item !== undefined">
-          <config-panel-container v-if="selected_item.is_container()" :selected_item="(selected_item)" :key="`container-${selected_item.id}`" />
-          <config-panel-item v-else :selected_item="selected_item" :key="`item-${selected_item.id}`" />
+          <config-panel-container
+            v-if="selected_item.is_container()"
+            :selected_item="(selected_item)"
+            :key="`container-${selected_item.id}`"
+          />
+          <config-panel-item
+            v-else
+            :selected_item="selected_item"
+            :key="`item-${selected_item.id}`"
+          />
           <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre>
         </div>
       </div>
@@ -178,22 +183,22 @@ get_template()
 @import "../template.css";
 
 .template-container-root {
-    min-height: 720px;
-    border: 1px solid #aaaaaa !important;
-    height: auto;
-    padding: 2px;
+  min-height: 720px;
+  border: 1px solid #aaaaaa !important;
+  height: auto;
+  padding: 2px;
 }
 
 .template-trash {
-    width: 100%;
-    height: 80px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    border: 1px solid #aaaaaa;
+  width: 100%;
+  height: 80px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #aaaaaa;
 }
 
 .template-selected {
-    border: 2px solid #000000 !important;
+  border: 2px solid #000000 !important;
 }
 
 .choice_selected {

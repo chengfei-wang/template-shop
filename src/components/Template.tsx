@@ -132,7 +132,7 @@ export const type_render_functions: { [key: string]: (prop: NodeProp) => JSX.Ele
 //     )
 // }
 
-function preview_container(container: Container): JSX.Element {
+export function preview_container(container: Container): JSX.Element {
     let children: SlotProp[] = container.children
 
     let items = children.map((child: SlotProp, index: number) => {
