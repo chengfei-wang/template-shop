@@ -202,10 +202,10 @@ get_template()
 }
 
 .choice_selected {
-  border: 2px solid #aaaaaa;
+  border: 2px solid #cccccc;
 
   height: 32px;
-  background-color: #eeeeee;
+  background-color: #dddddd;
   text-align: center;
   line-height: 32px;
 }
@@ -219,7 +219,7 @@ get_template()
 
 .style_editor_group {
   margin-bottom: 12px;
-  border: 1px dotted #cccccc;
+  border: 1px dotted #eeeeee;
   padding: 8px 0;
 }
 
