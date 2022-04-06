@@ -18,9 +18,6 @@ export default {
       <a href="javascript:" class="mdui-typo-title">{{ title }}</a>
       <div class="mdui-toolbar-spacer"></div>
       <slot></slot>
-      <!-- <a href="javascript:" class="mdui-btn mdui-btn-icon">
-        <i class="mdui-icon material-icons">search</i>
-      </a> -->
     </div>
   </div>
 </template>

@@ -4,7 +4,7 @@ import TemplateCardItem from "./TemplateCardItem.vue";
 import PageBody from "./PageBody.vue";
 
 import { request } from "../Request";
-import { Template } from "../Model";
+import { eval_template, Template } from "../Model";
 import { ref } from "vue"
 import mdui from "mdui";
 
@@ -21,7 +21,7 @@ const templates = ref<Array<Template>>([])
 function getTemplateList() {
   request("template/list", {}, (status, obj) => {
     if (status == 200 && obj?.code === 200 && obj.data !== null) {
-      templates.value = (<Array<any>>obj.data.templates).map(value => new Template(value.tid, value.creator, value.title, value.content))
+      templates.value = (<Array<any>>obj.data.templates).map(value => eval_template(value))
     }
   })
 }
@@ -59,6 +59,7 @@ getTemplateList()
         v-for="template in templates"
         :tid="template.tid"
         :title="template.title"
+        :update-time="template.updateTime"
         thumbnail="/thumbnail.png"
       />
     </div>

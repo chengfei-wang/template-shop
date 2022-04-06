@@ -26,6 +26,7 @@ const content_editor = ref<Array<Widget>>([])
 
 const page_title = ref<string>("")
 const page_tid = ref<string>("")
+const page_update_time = ref<Date | undefined>()
 
 const selected_item = ref<Widget | undefined>(undefined)
 
@@ -37,8 +38,6 @@ function import_data(value?: string) {
   if (value == null || value.length == 0) return
   let widget_array = <Array<any>>JSON.parse(value)
   content_editor.value = widget_array.map(eval_widget_json)
-  console.log("import_data")
-  console.log(content_editor.value)
 }
 
 function get_template() {
@@ -51,8 +50,8 @@ function get_template() {
     (status, obj) => {
       if (status == 200 && obj.code == 200 && obj.data != null) {
         let template = eval_template(obj.data.template)
-        // console.log(template)
         page_title.value = template.title
+        page_update_time.value = template.updateTime
         import_data(template.content)
       } else if (status == 200) {
         console.log(obj)
@@ -76,11 +75,12 @@ function save_template() {
       content: export_data(),
     },
     (status, obj) => {
-      if (status == 200 && obj.code == 200) {
+      if (status == 200 && obj.code == 200 && obj.data != null) {
         mdui.snackbar({
           message: '保存成功',
           position: 'bottom',
         });
+        page_update_time.value = new Date(obj.data.updateTime)
       } else if (status == 200 && obj.message != null) {
         mdui.snackbar({
           message: obj.message,
@@ -115,19 +115,20 @@ get_template()
 
 
 // for test only
-
 const headerOn = ref(false)
 const footerOn = ref(false)
 </script>
 
 <template>
   <toolbar title="编辑页面">
-    <a class="mdui-btn mdui-btn-icon" @click="save_template">
-      <i class="mdui-icon material-icons">save</i>
-    </a>
-
+    <div v-if="page_update_time != undefined" class="mdui-typo-caption">
+      最后更新 {{page_update_time.toLocaleString()}}
+    </div>
     <a class="mdui-btn mdui-btn-icon" @click="preview_template">
       <i class="mdui-icon material-icons">photo</i>
+    </a>
+    <a class="mdui-btn mdui-btn-icon" @click="save_template">
+      <i class="mdui-icon material-icons">save</i>
     </a>
   </toolbar>
   <page-body>
