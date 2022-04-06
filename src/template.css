@@ -5,12 +5,12 @@
     height: auto;
     padding: 4px;
     overflow-y: scroll;
-    overflow-x: hidden; 
-  }
-  
-  .template-container-root::-webkit-scrollbar {
+    overflow-x: hidden;
+}
+
+.template-container-root::-webkit-scrollbar {
     width: 2px;
-  }
+}
 
 .template-container {
     height: auto;
@@ -21,7 +21,7 @@
 .template-slot {
     border: 1px solid #aaaaaa;
     box-sizing: border-box;
-    
+
     min-height: 36px !important;
     padding: 1px !important;
     margin: 0 !important;
@@ -29,6 +29,7 @@
 
 .template-item {
     width: 100% !important;
+    margin: 1px 0;
 }
 
 .template-default-button {
