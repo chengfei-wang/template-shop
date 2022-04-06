@@ -1,3 +1,6 @@
+
+import { Template } from "./Model";
+
 const default_headers: { [key: string]: string; } = {
     "Content-Type": "application/json;charset=utf-8",
 }

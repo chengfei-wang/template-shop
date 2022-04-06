@@ -4,6 +4,7 @@ import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
 import ConfigPanelItem from "./ConfigPanelItem.vue";
 import ConfigPanelContainer from "./ConfigPanelContainer.vue";
+import ConfigPanelRoot from "./ConfigPanelRoot";
 import TemplateDraggable from "./TemplateDraggable";
 
 import { ref } from "vue";
@@ -15,7 +16,7 @@ import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, Toolbar, PageBody, TemplateDraggable, ConfigPanelItem, ConfigPanelContainer }
+  components: { Draggable, Toolbar, PageBody, TemplateDraggable, ConfigPanelItem, ConfigPanelContainer, ConfigPanelRoot }
 }
 </script>
 
@@ -111,6 +112,12 @@ if (_tid != null && _tid.length > 0) {
 }
 
 get_template()
+
+
+// for test only
+
+const headerOn = ref(false)
+const footerOn = ref(false)
 </script>
 
 <template>
@@ -168,6 +175,9 @@ get_template()
             :key="`item-${selected_item.id}`"
           />
           <!-- <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre> -->
+        </div>
+        <div v-else>
+          <config-panel-root :is-header-on="headerOn" :is-footer-on="footerOn" @header-on="headerOn = !headerOn" @footer-on="footerOn = !footerOn"/>
         </div>
       </div>
     </div>
