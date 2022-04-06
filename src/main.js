@@ -5,6 +5,7 @@ import EditorPage from './components/EditorPage.vue'
 import PreviewPage from './components/PreviewPage'
 import MainPage from "./components/MainPage.vue";
 import NotFoundPage from "./components/NotFoundPage.vue";
+import "./template.css"
 
 const routes = {
     '/': MainPage,

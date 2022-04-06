@@ -186,22 +186,6 @@ const footerOn = ref(false)
 </template>
 
 <style lang="css">
-@import "../template.css";
-
-.template-container-root {
-  min-height: 720px;
-  max-height: 720px;
-  border: 1px solid #aaaaaa !important;
-  height: auto;
-  padding: 4px;
-  overflow-y: scroll;
-  overflow-x: hidden; 
-}
-
-.template-container-root::-webkit-scrollbar {
-  width: 2px;
-}
-
 .template-trash {
   width: 100%;
   height: 80px;

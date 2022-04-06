@@ -6,8 +6,6 @@ import { request } from "../Request";
 import { eval_template } from "../Model";
 import mdui from "mdui";
 
-import "../template.css"
-
 export default defineComponent({
   setup() {
     const content_widgets = ref<Widget[]>([])

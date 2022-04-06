@@ -1,3 +1,17 @@
+.template-container-root {
+    min-height: 720px;
+    max-height: 720px;
+    border: 1px solid #aaaaaa !important;
+    height: auto;
+    padding: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden; 
+  }
+  
+  .template-container-root::-webkit-scrollbar {
+    width: 2px;
+  }
+
 .template-container {
     height: auto;
     padding: 1px !important;
@@ -5,24 +19,16 @@
 }
 
 .template-slot {
-    border: 1px dotted #aaaaaa;
+    border: 1px solid #aaaaaa;
     box-sizing: border-box;
     
     min-height: 36px !important;
     padding: 1px !important;
     margin: 0 !important;
-    height: auto;
 }
 
 .template-item {
     width: 100% !important;
-}
-
-p {
-    min-width: 20%;
-    width: auto;
-    min-height: 36px;
-    margin: 0 !important;
 }
 
 .template-default-button {
@@ -30,8 +36,7 @@ p {
     display: inline-block;
     box-sizing: border-box;
     height: 36px;
-    margin: 1px !important;
-    padding: 0 16px;
+    padding: 0;
     overflow: hidden;
     font-weight: 500;
     font-size: 14px;
