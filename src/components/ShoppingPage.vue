@@ -1,6 +1,7 @@
 <script lang="ts">
 import Toolbar from "./Toolbar.vue"
 import PageBody from "./PageBody.vue";
+import TemplateSellItem from "./TemplateSellItem.vue";
 import { request } from "../Request";
 import { eval_template_share, TemplateShare } from "../Model";
 import { ref } from "vue";
@@ -33,7 +34,14 @@ getSharedTemplateList()
   <toolbar title="模版市场"/>
   <page-body>
     <div class="mdui-container">
-
+      <template-sell-item
+        v-for="template in templates"
+        :tid="template.tid"
+        :title="template.title"
+        :price="template.price"
+        :share-time="template.shareTime"
+        thumbnail="/thumbnail.png"
+      />
     </div>
   </page-body>
 </template>

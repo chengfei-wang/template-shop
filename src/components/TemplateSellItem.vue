@@ -5,12 +5,12 @@
         <img :src="thumbnail" :alt="title" />
         <div class="mdui-card-primary">
           <div class="mdui-card-primary-title template-card-title">{{ title }}</div>
-          <div class="mdui-card-primary-subtitle">{{ shareTime.toLocaleString }}</div>
+          <div class="mdui-card-primary-subtitle">{{ shareTime.toLocaleString() }}</div>
         </div>
       </div>
       <div class="mdui-card-actions">
-        <p>{{ price / 100 }} 元</p>
-        <button class="mdui-btn mdui-btn-icon mdui-float-right" @click="buy_template">购买</button>
+        <button class="mdui-btn" disabled>¥{{ price / 100 }}</button>
+        <button class="mdui-btn mdui-float-right" @click="buy_template">购买</button>
       </div>
     </div>
   </div>
@@ -36,7 +36,7 @@ const props = defineProps<{
 
 function buy_template() {
   mdui.dialog({
-    title: '购买模版', content: `确认以${props.price}的价格购买模版?`, buttons: [
+    title: '购买模版', content: `确认以${props.price / 100}元的价格购买模版?`, buttons: [
       { text: '取消' },
       {
         text: '确认', onClick: () => {
