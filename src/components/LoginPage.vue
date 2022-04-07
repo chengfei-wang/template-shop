@@ -18,6 +18,10 @@ defineProps<{}>()
 const email = ref("")
 const password = ref("")
 
+function nav_register() {
+  window.location.href = "register"
+}
+
 function login_handler() {
   let _email = email.value
   let _password = password.value
@@ -54,9 +58,7 @@ function login_handler() {
 
 <template>
   <toolbar title="用户登录">
-      <a href="register" class="mdui-btn">
-        <p>注册</p>
-      </a>
+      <button class="mdui-btn" @click="nav_register">注册</button>
   </toolbar>
   <page-body>
     <div class="mdui-container">
