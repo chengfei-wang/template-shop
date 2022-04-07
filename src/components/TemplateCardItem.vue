@@ -2,15 +2,13 @@
   <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-4" style="margin: 16px 0;">
     <div class="mdui-card">
       <div class="mdui-card-media">
-        <img :src="thumbnail" :alt="title"/>
+        <img :src="thumbnail" :alt="title" />
 
         <div class="mdui-card-menu">
-          <button class="mdui-btn mdui-btn-icon mdui-text-color-white"
-                  @click="share_template">
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" @click="share_template">
             <i class="mdui-icon material-icons">share</i>
           </button>
-          <button class="mdui-btn mdui-btn-icon mdui-text-color-white"
-                  @click="edit_template">
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" @click="edit_template">
             <i class="mdui-icon material-icons">edit</i>
           </button>
         </div>
@@ -25,6 +23,9 @@
 </template>
 
 <script lang="ts">
+import mdui from 'mdui';
+import { request } from '../Request';
+
 export default {
   name: "TemplateCardItem"
 }
@@ -43,14 +44,34 @@ function edit_template() {
 }
 
 function share_template() {
-  console.log('Share Template ' + props.tid)
+  mdui.prompt('请输入购买价格', '共享模版', (value: string) => {
+    // 判断price是否为数字且大于0
+    if (value.length > 0 && !isNaN(parseFloat(value)) && parseFloat(value) > 0) {
+      // 将value转换为整数
+      const price = parseFloat(value)
+      request("template/share", { tid: props.tid, price: price }, (status, obj) => {
+        if (status == 200 && obj?.code === 200 && obj.data != null) {
+          mdui.snackbar({
+            message: '共享成功',
+            position: 'bottom',
+          });
+          console.log(obj.data) // 共享成功后的数据
+        }
+      })
+    } else {
+      mdui.snackbar({
+        message: '请输入正确的价格',
+        position: 'bottom',
+      });
+    }
+  })
 }
 </script>
 
 <style>
 .template-card-title {
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 </style>
