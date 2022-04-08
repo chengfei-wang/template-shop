@@ -1,39 +1,43 @@
-export class Template {
+import { eval_user_simple, UserSimple } from "./User"
+
+export interface Template {
     tid: string
     creator: string
     title: string
     content?: string
     updateTime: Date
-
-    constructor(tid: string, creator: string, title: string, updateTime: string, content?: string) {
-        this.tid = tid;
-        this.creator = creator;
-        this.title = title;
-        this.updateTime = new Date(updateTime);
-        this.content = content;
-    }
 }
 
 export function eval_template(obj: any): Template {
-    return new Template(obj.tid, obj.creator, obj.title, obj.updateTime, obj.content)
+    return { tid: obj.tid, creator: obj.creator, title: obj.title, updateTime: new Date(obj.updateTime), content: obj.content }
 }
 
-export class TemplateShare {
+export interface TemplateShare {
     tid: string
     creator: string
     title: string
     price: number
     shareTime: Date
-
-    constructor(tid: string, creator: string, title: string, price: number, shareTime: string) {
-        this.tid = tid;
-        this.creator = creator;
-        this.title = title;
-        this.price = price;
-        this.shareTime = new Date(shareTime);
-    }
 }
 
 export function eval_template_share(obj: any): TemplateShare {
-    return new TemplateShare(obj.tid, obj.creator, obj.title, obj.price, obj.shareTime)
+    return { tid: obj.tid, creator: obj.creator, title: obj.title, price: obj.price, shareTime: new Date(obj.shareTime) }
+}
+
+export interface TemplateOrder {
+    orderId: string
+    template: TemplateShare
+    buyer: UserSimple
+    price: number
+    orderTime: Date
+}
+
+export function eval_template_order(obj: any): TemplateOrder {
+    return {
+        orderId: obj.orderId,
+        template: eval_template_share(obj.template),
+        buyer: eval_user_simple(obj.buyer),
+        price: obj.price,
+        orderTime: new Date(obj.orderTime)
+    }
 }
