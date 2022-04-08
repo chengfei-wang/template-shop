@@ -19,7 +19,11 @@ function user_logout() {
 }
 
 function goto_history() {
-  window.location.href = "/history"
+  window.location.href = "history"
+}
+
+function deploy_template() {
+  window.location.href = "deploy"
 }
 
 function get_user_info() {
@@ -59,6 +63,10 @@ get_user_info()
         <ul class="mdui-list">
           <li class="mdui-list-item mdui-ripple" @click="goto_history">
             <div class="mdui-list-item-content">模版购买记录</div>
+            <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
+          </li>
+          <li class="mdui-list-item mdui-ripple" @click="deploy_template">
+            <div class="mdui-list-item-content">一键部署模版</div>
             <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
           </li>
         </ul>
