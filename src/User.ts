@@ -1,9 +1,14 @@
 import { request, Response } from "./Request"
 
-export interface User {
+export interface UserInfo {
     uid: string
     name: string
-    email: string
+    email: string,
+    balance: number
+}
+
+export function eval_user_info(value: any): UserInfo {
+    return { uid: value.uid, name: value.name, email: value.email, balance: value.balance }
 }
 
 export function logout() {

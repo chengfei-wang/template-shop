@@ -124,10 +124,10 @@ const footerOn = ref(false)
     <div v-if="page_update_time != undefined" class="mdui-typo-caption">
       最后更新 {{page_update_time.toLocaleString()}}
     </div>
-    <a class="mdui-btn mdui-btn-icon" @click="preview_template">
+    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="preview_template">
       <i class="mdui-icon material-icons">photo</i>
     </a>
-    <a class="mdui-btn mdui-btn-icon" @click="save_template">
+    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="save_template">
       <i class="mdui-icon material-icons">save</i>
     </a>
   </toolbar>

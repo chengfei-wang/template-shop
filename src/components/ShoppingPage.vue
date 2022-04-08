@@ -31,7 +31,11 @@ getSharedTemplateList()
 
 
 <template>
-  <toolbar title="模版市场"/>
+  <toolbar title="模版市场">
+    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="getSharedTemplateList">
+      <i class="mdui-icon material-icons">refresh</i>
+    </a>
+  </toolbar>
   <page-body>
     <div class="mdui-container">
       <template-sell-item
