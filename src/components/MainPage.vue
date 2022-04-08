@@ -33,13 +33,13 @@ function onPageChange(position: number) {
 
 if (localStorage.getItem("token") == null) {
   console.log("Token == null")
-  window.location.href = "/login"
+  window.location.href = "login"
 } else {
   request("user/verify", {}, ((status, obj) => {
     if (status == 200) {
       if (obj.code != 200) {
         logout()
-        window.location.href = "/login"
+        window.location.href = "login"
       } else {
         // mdui.snackbar({
         //   message: `欢迎 ${obj.data.name}`,

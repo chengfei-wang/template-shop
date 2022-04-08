@@ -34,9 +34,12 @@ function createTemplate() {
           mdui.snackbar({
             message: '创建成功',
             position: 'bottom',
+            buttonText: '编辑',
+            onButtonClick: () => {
+              window.open(`editor?tid=${obj.data.tid}`)
+            }
           });
-
-          window.location.href = `editor?tid=${obj.data.tid}`
+          getTemplateList()
         }
       })
     } else {

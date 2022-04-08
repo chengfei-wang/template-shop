@@ -64,7 +64,7 @@ function register_handler() {
         position: 'bottom',
       });
     } else {
-      window.location.href = "/login"
+      window.location.href = "login"
     }
   })
 

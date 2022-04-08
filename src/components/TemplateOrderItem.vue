@@ -19,8 +19,11 @@ function create_from_template() {
       mdui.snackbar({
         message: '创建成功',
         position: 'bottom',
+        buttonText: '编辑',
+        onButtonClick: () => {
+          window.open(`editor?tid=${obj.data.tid}`)
+        }
       });
-      window.location.href = `/editor?tid=${obj.data.tid}`
     } else {
       // 创建失败
       mdui.snackbar({
@@ -51,3 +54,11 @@ function create_from_template() {
     </div>
   </div>
 </template>
+
+<style>
+.template-card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

@@ -1,21 +1,3 @@
-<template>
-  <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-4" style="margin: 16px 0;">
-    <div class="mdui-card">
-      <div class="mdui-card-media">
-        <img :src="thumbnail" :alt="title" />
-          <div class="mdui-card-primary mdui-card-media-covered">
-            <div class="mdui-card-primary-title template-card-title">{{ title }}</div>
-            <div class="mdui-card-primary-subtitle">{{ updateTime.toLocaleString() }}</div>
-          </div>
-      </div>
-      <div class="mdui-card-actions">
-        <button class="mdui-btn mdui-ripple" @click="share_template">分享</button>
-        <button class="mdui-btn mdui-ripple mdui-float-right mdui-color-green mdui-text-color-white" @click="edit_template">编辑</button>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import mdui from 'mdui';
 import { request } from '../Request';
@@ -34,7 +16,7 @@ const props = defineProps<{
 }>()
 
 function edit_template() {
-  window.location.href = `editor?tid=${props.tid}`
+  window.open(`editor?tid=${props.tid}`)
 }
 
 function share_template() {
@@ -60,7 +42,36 @@ function share_template() {
     }
   })
 }
+
+function preview_template() {
+  window.open(`preview?tid=${props.tid}`)
+}
 </script>
+
+<template>
+  <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-4" style="margin: 16px 0;">
+    <div class="mdui-card">
+      <div class="mdui-card-media">
+        <img :src="thumbnail" :alt="title" />
+        <div class="mdui-card-primary mdui-card-media-covered">
+          <div class="mdui-card-primary-title template-card-title">{{ title }}</div>
+          <div class="mdui-card-primary-subtitle">{{ updateTime.toLocaleString() }}</div>
+        </div>
+      </div>
+      <div class="mdui-card-actions">
+        <button class="mdui-btn mdui-ripple" @click="share_template">分享</button>
+        <div class="mdui-float-right">
+          <button class="mdui-btn mdui-btn-icon" @click="preview_template">
+            <i class="mdui-icon material-icons">photo</i>
+          </button>
+          <button class="mdui-btn mdui-btn-icon" @click="edit_template">
+            <i class="mdui-icon material-icons">edit</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style>
 .template-card-title {

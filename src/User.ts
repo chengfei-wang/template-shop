@@ -13,7 +13,7 @@ export function eval_user_info(value: any): UserInfo {
 
 export function logout() {
     localStorage.clear()
-    window.location.href = "/login"
+    window.location.href = "login"
 }
 
 export function login(email: string, password: string, callback: (code: number, data: any | null) => void) {

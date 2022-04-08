@@ -97,7 +97,7 @@ function save_template() {
 }
 
 function preview_template() {
-  window.location.href = `preview?tid=${page_tid.value}`
+  window.open(`preview?tid=${page_tid.value}`)
 }
 
 function select_item(widget?: Widget) {
