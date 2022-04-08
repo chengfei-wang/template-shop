@@ -3,20 +3,14 @@
     <div class="mdui-card">
       <div class="mdui-card-media">
         <img :src="thumbnail" :alt="title" />
-
-        <div class="mdui-card-menu">
-          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" @click="share_template">
-            <i class="mdui-icon material-icons">share</i>
-          </button>
-          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" @click="edit_template">
-            <i class="mdui-icon material-icons">edit</i>
-          </button>
-        </div>
+          <div class="mdui-card-primary mdui-card-media-covered">
+            <div class="mdui-card-primary-title template-card-title">{{ title }}</div>
+            <div class="mdui-card-primary-subtitle">{{ updateTime.toLocaleString() }}</div>
+          </div>
       </div>
-
-      <div class="mdui-card-primary">
-        <div class="mdui-card-primary-title template-card-title">{{ title }}</div>
-        <div class="mdui-card-primary-subtitle">{{ updateTime.toLocaleString() }}</div>
+      <div class="mdui-card-actions">
+        <button class="mdui-btn mdui-ripple" @click="share_template">分享</button>
+        <button class="mdui-btn mdui-ripple mdui-float-right mdui-color-green mdui-text-color-white" @click="edit_template">编辑</button>
       </div>
     </div>
   </div>

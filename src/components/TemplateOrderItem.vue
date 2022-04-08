@@ -37,7 +37,7 @@ function create_from_template() {
     <div class="mdui-card">
       <div class="mdui-card-media">
         <img src="/thumbnail.png" :alt="template_order.template.title" />
-        <div class="mdui-card-primary">
+        <div class="mdui-card-primary mdui-card-media-covered">
           <div
             class="mdui-card-primary-title template-card-title"
           >{{ template_order.template.title }}</div>
