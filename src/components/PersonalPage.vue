@@ -18,6 +18,10 @@ function user_logout() {
   logout()
 }
 
+function goto_history() {
+  window.location.href = "/history"
+}
+
 function get_user_info() {
   request("user/info", {}, (status, obj) => {
     if (status == 200 && obj?.code === 200) {
@@ -51,7 +55,14 @@ get_user_info()
             <button class="mdui-btn mdui-ripple mdui-float-right">充值</button>
           </div>
         </div>
-        <div style="height: 32px;"></div>
+        <div class="normal-divider"></div>
+        <ul class="mdui-list">
+          <li class="mdui-list-item mdui-ripple" @click="goto_history">
+            <div class="mdui-list-item-content">模版购买记录</div>
+            <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
+          </li>
+        </ul>
+        <div class="normal-divider"></div>
         <button class="mdui-btn mdui-btn-block mdui-color-red" @click="user_logout">退出登录</button>
       </div>
       <div class="mdui-col-md-3"></div>
@@ -59,3 +70,8 @@ get_user_info()
   </page-body>
 </template>
 
+<style>
+.normal-divider {
+  height: 32px;
+}
+</style>

@@ -4,7 +4,7 @@ import TemplateCardItem from "./TemplateCardItem.vue";
 import PageBody from "./PageBody.vue";
 
 import { request } from "../Request";
-import { eval_template, eval_template_order, eval_template_share, Template } from "../Model";
+import { eval_template, Template } from "../Model";
 import { ref } from "vue"
 import mdui from "mdui";
 
@@ -48,24 +48,11 @@ function createTemplate() {
   })
 }
 
-function createTemplateFromShared() {
-  // template/bought/list
-  request("template/bought/list", {}, (status, obj) => {
-    if (status == 200 && obj?.code === 200 && obj.data != null) {
-      let template_list = (<Array<any>>obj.data.templates).map(value => eval_template_order(value))
-      console.log(template_list)
-    }
-  })
-}
-
 getTemplateList()
 </script>
 
 <template>
   <toolbar title="开始创作">
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="createTemplateFromShared">
-      <i class="mdui-icon material-icons">wb_cloudy</i>
-    </a>
     <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="createTemplate">
       <i class="mdui-icon material-icons">add</i>
     </a>

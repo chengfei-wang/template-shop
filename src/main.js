@@ -5,6 +5,7 @@ import EditorPage from './components/EditorPage.vue'
 import PreviewPage from './components/PreviewPage'
 import MainPage from "./components/MainPage.vue";
 import NotFoundPage from "./components/NotFoundPage.vue";
+import HistoryOrderPage from './components/HistoryOrderPage.vue'
 import "./template.css"
 
 const routes = {
@@ -12,7 +13,8 @@ const routes = {
     '/login': LoginPage,
     '/editor': EditorPage,
     '/preview': PreviewPage,
-    '/register': RegisterPage
+    '/register': RegisterPage,
+    '/history': HistoryOrderPage,
 }
 
 const router = {
