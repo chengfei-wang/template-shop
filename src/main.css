@@ -1,0 +1,9 @@
+.template-card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.normal-divider {
+    height: 32px;
+}

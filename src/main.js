@@ -4,9 +4,11 @@ import RegisterPage from './components/RegisterPage.vue'
 import EditorPage from './components/EditorPage.vue'
 import PreviewPage from './components/PreviewPage'
 import MainPage from "./components/MainPage.vue";
-import NotFoundPage from "./components/NotFoundPage.vue";
-import HistoryOrderPage from './components/HistoryOrderPage.vue'
+import NotFoundPage from './components/NotFoundPage.vue';
+import HistoryOrderPage from './components/HistoryOrderPage.vue';
+import DeployPage from './components/DeployPage.vue';
 import "./template.css"
+import "./main.css"
 
 const routes = {
     '/': MainPage,
@@ -15,6 +17,7 @@ const routes = {
     '/preview': PreviewPage,
     '/register': RegisterPage,
     '/history': HistoryOrderPage,
+    '/deploy': DeployPage,
 }
 
 const router = {

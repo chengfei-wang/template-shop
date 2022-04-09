@@ -61,11 +61,3 @@ function buy_template() {
   })
 }
 </script>
-
-<style>
-.template-card-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-</style>

@@ -77,9 +77,3 @@ get_user_info()
     </div>
   </page-body>
 </template>
-
-<style>
-.normal-divider {
-  height: 32px;
-}
-</style>

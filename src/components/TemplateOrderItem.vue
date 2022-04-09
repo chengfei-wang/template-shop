@@ -54,11 +54,3 @@ function create_from_template() {
     </div>
   </div>
 </template>
-
-<style>
-.template-card-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-</style>
