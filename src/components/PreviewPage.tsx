@@ -52,9 +52,9 @@ export default defineComponent({
 
     return () => (
       <div class='mdui-container'>
-        <div class='mdui-col-md-4'></div>
-        <div class='mdui-col-md-4'>{preview_page(content_widgets.value)}</div>
-        <div class='mdui-col-md-4'></div>
+        <div class='mdui-col-md-4 mdui-col-sm-2'></div>
+        <div class='mdui-col-md-4 mdui-col-sm-8'>{preview_page(content_widgets.value)}</div>
+        <div class='mdui-col-md-4 mdui-col-sm-2'></div>
       </div>
     )
   }

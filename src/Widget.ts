@@ -156,6 +156,7 @@ export const template_widgets: Widget[] = [
     create_widget("BUTTON"),
     create_widget("CHECKBOX"),
     create_widget("RADIO"),
+    create_widget("IMAGE"),
     create_container(create_slots(12), "FORM"),
     create_container(create_slots(12, 4, 4, 4), "CONTAINER"),
     create_container(create_slots(6, 6), "CONTAINER"),

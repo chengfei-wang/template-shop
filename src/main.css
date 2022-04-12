@@ -11,4 +11,14 @@
 .image-preview-cover {
     object-fit: cover;
     height: 240px;
+    width: 100%;
+}
+
+.image-selector-container::-webkit-scrollbar {
+    width: 2px;
+}
+
+.image-selector-container {
+    overflow: scroll;
+    max-height: 600px;
 }

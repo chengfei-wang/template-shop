@@ -96,7 +96,11 @@ export function template_radio(prop: NodeProp): JSX.Element {
 }
 
 export function template_image(prop: NodeProp): JSX.Element {
-    return (<img src={prop.url} />)
+    let classList: Array<string> = create_class_list(['template-item'], prop.clazz)
+    if (prop.url == undefined || prop.url.length == 0) {
+        return (<img class={classList} src='/thumbnail.png' />)
+    }
+    return (<img class={classList} src={prop.url} />)
 }
 
 export function template_unknown(prop: NodeProp): JSX.Element {
@@ -109,6 +113,7 @@ export const type_render_functions: { [key: string]: (prop: NodeProp) => JSX.Ele
     'BUTTON': template_button,
     'CHECKBOX': template_checkbox,
     'RADIO': template_radio,
+    'IMAGE': template_image,
 }
 
 export function preview_form(container: Container): JSX.Element {
