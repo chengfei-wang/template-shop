@@ -98,7 +98,7 @@ export class NodeProp {
     clazz?: ClassProp
     name?: string
     content?: string
-    href?: string
+    url?: string
     styles?: { [key: string]: string }
     type?: string
 
@@ -106,7 +106,7 @@ export class NodeProp {
         this.clazz = clazz
         this.name = name
         this.content = content
-        this.href = href
+        this.url = href
         this.styles = styles
         this.type = type
     }

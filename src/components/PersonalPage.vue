@@ -26,6 +26,10 @@ function deploy_template() {
   window.location.href = "deploy"
 }
 
+function image_bed_manage() {
+  window.location.href = "image-bed"
+}
+
 function get_user_info() {
   request("user/info", {}, (status, obj) => {
     if (status == 200 && obj?.code === 200) {
@@ -67,6 +71,10 @@ get_user_info()
           </li>
           <li class="mdui-list-item mdui-ripple" @click="deploy_template">
             <div class="mdui-list-item-content">一键部署模版</div>
+            <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
+          </li>
+          <li class="mdui-list-item mdui-ripple" @click="image_bed_manage">
+            <div class="mdui-list-item-content">图床图片管理</div>
             <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
           </li>
         </ul>

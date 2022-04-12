@@ -95,6 +95,10 @@ export function template_radio(prop: NodeProp): JSX.Element {
     )
 }
 
+export function template_image(prop: NodeProp): JSX.Element {
+    return (<img src={prop.url} />)
+}
+
 export function template_unknown(prop: NodeProp): JSX.Element {
     return (<div>未知组件{prop}</div>)
 }

@@ -41,3 +41,14 @@ export function eval_template_order(obj: any): TemplateOrder {
         orderTime: new Date(obj.orderTime)
     }
 }
+
+
+export interface Image {
+    imageId: string
+    imageOwner: string
+    uploadTime: Date
+}
+
+export function eval_image(obj: any): Image {
+    return { imageId: obj.imageId, imageOwner: obj.imageOwner, uploadTime: new Date(obj.uploadTime) }
+}
