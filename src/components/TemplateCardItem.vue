@@ -21,8 +21,8 @@ function edit_template() {
 
 function share_template() {
   mdui.prompt('请输入购买价格', '共享模版', (value: string) => {
-    // 判断price是否为数字且大于0
-    if (value.length > 0 && !isNaN(parseFloat(value)) && parseFloat(value) > 0) {
+    // 判断price是否为数字且大于等于0
+    if (value.length > 0 && !isNaN(parseFloat(value)) && parseFloat(value) >= 0) {
       // 将value四舍五入转换为整数
       const price = Math.round(parseFloat(value) * 100)
       request("template/share", { tid: props.tid, price: price }, (status, obj) => {

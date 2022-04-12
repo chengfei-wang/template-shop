@@ -175,7 +175,7 @@ export function eval_node_prop_json(value?: any): NodeProp {
     if (value === undefined) {
         return new NodeProp();
     }
-    return new NodeProp(eval_class_json(value.clazz), value.name, value.content, value.href, value.styles, value.type)
+    return new NodeProp(eval_class_json(value.clazz), value.name, value.content, value.url, value.styles, value.type)
 }
 
 export function eval_form_prop_json(value?: any): FormProp {
