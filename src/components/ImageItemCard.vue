@@ -25,7 +25,7 @@ defineProps<{
                 <img class="image-preview-cover" :src="api(`image/${image.imageId}`)" />
             </div>
             <div class="mdui-card-actions">
-                <button class="mdui-btn mdui-ripple" disabled>上传于 {{ image.uploadTime.toLocaleString() }}</button>
+                <button class="mdui-btn mdui-ripple mdui-dense" disabled>{{ image.uploadTime.toLocaleString() }}</button>
                 <div class="mdui-float-right">
                     <button class="mdui-btn mdui-btn-icon" @click="delete_image(image)">
                         <i class="mdui-icon material-icons">delete</i>

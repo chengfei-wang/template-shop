@@ -79,7 +79,7 @@ function delete_image(image: Image) {
 }
 
 function preview_image(image: Image) {
-
+    
 }
 
 get_all_images()
