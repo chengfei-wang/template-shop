@@ -6,7 +6,7 @@ const protocol = document.location.protocol
 const host = (document.location.host + ":").split(":")[0] //防止本身有端口时出现两次端口号
 const port = "8082"
 
-function api(route: string): string {
+export function api(route: string): string {
     return `${protocol}//${host}:${port}/${route}`
 }
 

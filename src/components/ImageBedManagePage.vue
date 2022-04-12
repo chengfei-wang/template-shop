@@ -1,22 +1,31 @@
 <script lang="ts">
 import PageBody from './PageBody.vue';
 import Toolbar from './Toolbar.vue';
-import { request, request_urlencoded } from '../Request';
-import { ref } from 'vue';
+import ImageItemCard from './ImageItemCard.vue';
+import { api, request, request_urlencoded } from '../Request';
 import mdui from 'mdui';
+import { eval_image, Image } from '../Model';
+import { ref } from 'vue';
 
 export default {
     name: "ImageBedManagePage",
+    components: {
+        PageBody,
+        Toolbar,
+        ImageItemCard,
+    },
 }
 </script>
 
 
 <script setup lang="ts">
+const all_images = ref<Image[]>([])
 
 function get_all_images() {
-    request('/image/list', {}, (status, data) => {
-        if (status === 200 && data.code === 200) {
-            console.log(data.data);
+    request('image/list', {}, (status, result) => {
+        if (status === 200 && result.code === 200) {
+            console.log(result.data);
+            all_images.value = (result.data as any[]).map(item => eval_image(item));
         }
     });
 }
@@ -46,6 +55,33 @@ function upload_image() {
     }
 }
 
+function delete_image(image: Image) {
+    console.log(image)
+    mdui.confirm(`确定要删除这张图片吗？`, (yes) => {
+        if (yes) {
+            request('image/delete', { imageId: image.imageId }, (status, result) => {
+                if (status === 200 && result.code === 200) {
+                    mdui.snackbar({
+                        message: result.message,
+                        position: 'bottom',
+                    });
+                } else {
+                    mdui.snackbar({
+                        message: result.message || '删除失败',
+                        position: 'bottom',
+                    });
+                }
+
+                get_all_images()
+            });
+        }
+    });
+}
+
+function preview_image(image: Image) {
+
+}
+
 get_all_images()
 </script>
 
@@ -61,7 +97,7 @@ get_all_images()
     </toolbar>
     <page-body>
         <div class="mdui-container">
-
+            <image-item-card v-for="image in all_images" :delete_image="delete_image" :preview_image="preview_image" :image="image" />
         </div>
     </page-body>
 </template>
