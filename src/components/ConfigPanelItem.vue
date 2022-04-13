@@ -19,7 +19,7 @@ defineProps<{
 function item_set_text_color(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-        prop.clazz = new ClassProp()
+        prop.clazz = {}
     }
     prop.clazz.textColor = clazz
 }
@@ -27,7 +27,7 @@ function item_set_text_color(selected_item: Widget, clazz: string) {
 function item_set_text_size(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-        prop.clazz = new ClassProp()
+        prop.clazz = {}
     }
     prop.clazz.textSize = clazz
 
@@ -36,7 +36,7 @@ function item_set_text_size(selected_item: Widget, clazz: string) {
 function item_set_background_color(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-        prop.clazz = new ClassProp()
+        prop.clazz = {}
     }
     prop.clazz.backgroundColor = clazz
 }
@@ -44,7 +44,7 @@ function item_set_background_color(selected_item: Widget, clazz: string) {
 function item_set_text_align(selected_item: Widget, clazz: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-        prop.clazz = new ClassProp()
+        prop.clazz = {}
     }
     prop.clazz.textAlign = clazz
 
@@ -53,7 +53,7 @@ function item_set_text_align(selected_item: Widget, clazz: string) {
 function item_set_url(selected_item: Widget, url: string) {
     let prop = selected_item.node_prop
     if (prop.clazz == undefined) {
-        prop.clazz = new ClassProp()
+        prop.clazz = {}
     }
     prop.url = url
 }
@@ -81,7 +81,7 @@ get_all_images()
     </div>
 
 
-    <div v-if="selected_item.type == 'IMAGE'">
+    <div v-if="selected_item.type === 'IMAGE'">
         <div class="style_editor_group">
             <p>图片内容</p>
             <div class="mdui-textfield">
@@ -91,7 +91,7 @@ get_all_images()
             </div>
             <div class="mdui-container-fluid image-selector-container">
                 <div v-for="image in all_images" style="margin: 16px 0;">
-                    <img class="image-preview-cover" :src="api(`image/${image.imageId}`)"
+                    <img class="image-preview-cover" :src="api(`image/${image.imageId}`)" alt='image-select'
                         @click="item_set_url(selected_item, api(`image/${image.imageId}`))" />
                 </div>
             </div>

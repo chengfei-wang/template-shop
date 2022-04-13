@@ -41,9 +41,7 @@ function create_from_template() {
       <div class="mdui-card-media">
         <img src="/thumbnail.png" :alt="template_order.template.title" />
         <div class="mdui-card-primary mdui-card-media-covered">
-          <div
-            class="mdui-card-primary-title template-card-title"
-          >{{ template_order.template.title }}</div>
+          <div class="mdui-card-primary-title template-card-title">{{ template_order.template.title }}</div>
           <div class="mdui-card-primary-subtitle">{{ template_order.orderTime.toLocaleString() }}</div>
         </div>
       </div>

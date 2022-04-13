@@ -1,9 +1,9 @@
 import { Widget } from "../Widget";
-import { eval_widget_json } from "../Widget"
-import { preview_page } from "./Template";
+import { template_render_function } from "./Template";
 import { defineComponent, ref } from "vue";
 import { request } from "../Request";
 import { eval_template } from "../Model";
+
 import mdui from "mdui";
 
 export default defineComponent({
@@ -19,10 +19,7 @@ export default defineComponent({
 
     const import_data = (value?: string) => {
       if (value == null || value.length == 0) return
-      let widget_array = JSON.parse(value) as Array<any>
-      content_widgets.value = widget_array.map(eval_widget_json)
-      console.log("import_data")
-      console.log(content_widgets.value)
+      content_widgets.value = JSON.parse(value) as Widget[]
     }
 
     const get_template = () => {
@@ -53,7 +50,11 @@ export default defineComponent({
     return () => (
       <div class='mdui-container'>
         <div class='mdui-col-md-4 mdui-col-sm-2'></div>
-        <div class='mdui-col-md-4 mdui-col-sm-8'>{preview_page(content_widgets.value)}</div>
+        <div class='mdui-col-md-4 mdui-col-sm-8'>{
+          content_widgets.value.map(widget => {
+            return template_render_function(widget).release_view(widget)
+          })
+        }</div>
         <div class='mdui-col-md-4 mdui-col-sm-2'></div>
       </div>
     )

@@ -57,9 +57,14 @@
     color: #FFFFFF;
 }
 
-.template-default-p {
+.template-default-text-single {
     line-height: 36px;
     vertical-align: center;
+    min-height: 36px;
+    margin: 0 !important;
+}
+
+.template-default-text-multi {
     min-height: 36px;
     margin: 0 !important;
 }

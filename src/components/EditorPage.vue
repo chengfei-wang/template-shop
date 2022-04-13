@@ -5,24 +5,23 @@ import PageBody from "./PageBody.vue";
 import ConfigPanelItem from "./ConfigPanelItem.vue";
 import ConfigPanelContainer from "./ConfigPanelContainer.vue";
 import ConfigPanelRoot from "./ConfigPanelRoot";
-import TemplateDraggable from "./TemplateDraggable";
-
+import { TemplateDraggable } from "./TemplateDraggable";
+import { TemplateDraggableSource } from "./TemplateDraggable";
 import { ref } from "vue";
-import { template_widgets, eval_widget_json } from "../Widget"
+import { template_widgets, widget_is_container } from "../Widget"
 import { Widget } from "../Widget"
 import { request } from "../Request";
-import { eval_template, Template } from "../Model";
+import { eval_template } from "../Model";
 import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, Toolbar, PageBody, TemplateDraggable, ConfigPanelItem, ConfigPanelContainer, ConfigPanelRoot }
+  components: { Draggable, Toolbar, PageBody, TemplateDraggable, TemplateDraggableSource, ConfigPanelItem, ConfigPanelContainer, ConfigPanelRoot }
 }
 </script>
 
 <script setup lang="ts">
-const content_template = template_widgets
-const content_editor = ref<Array<Widget>>([])
+const content_editor = ref<Widget[]>([])
 
 const page_title = ref<string>("")
 const page_tid = ref<string>("")
@@ -36,8 +35,7 @@ function export_data(): string {
 
 function import_data(value?: string) {
   if (value == null || value.length == 0) return
-  let widget_array = <Array<any>>JSON.parse(value)
-  content_editor.value = widget_array.map(eval_widget_json)
+  content_editor.value = JSON.parse(value) as Widget[]
 }
 
 function get_template() {
@@ -121,8 +119,8 @@ const footerOn = ref(false)
 
 <template>
   <toolbar title="编辑页面">
-    <div v-if="page_update_time != undefined" class="mdui-typo-caption">
-      最后更新 {{page_update_time.toLocaleString()}}
+    <div v-if="page_update_time !== undefined" class="mdui-typo-caption">
+      最后更新 {{ page_update_time.toLocaleString() }}
     </div>
     <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="preview_template">
       <i class="mdui-icon material-icons">photo</i>
@@ -135,19 +133,14 @@ const footerOn = ref(false)
     <div class="mdui-container">
       <div class="mdui-col-md-4">
         <div id="template-source" class="template-source mdui-center">
-          <template-draggable :preview="true" :data="content_template" :selected_item="selected_item" :select_item="select_item" />
+          <template-draggable-source />
         </div>
 
         <div class="mdui-divider" style="margin: 16px 0;"></div>
 
         <div>
           <div class="mdui-text-center mdui-center">垃圾桶</div>
-          <draggable
-            id="template-trash"
-            class="template-trash mdui-center"
-            group="editor"
-            item-key="id"
-          >
+          <draggable id="template-trash" class="template-trash mdui-center" group="editor" item-key="id">
             <template #item="{}">
               <div style="visibility: hidden"></div>
             </template>
@@ -160,25 +153,20 @@ const footerOn = ref(false)
           <label class="mdui-textfield-label">页面标题</label>
           <input class="mdui-textfield-input" type="text" v-model="page_title" />
         </div>
-        <template-draggable @click="(e) => { select_item(undefined) }" id="template-container-root" class="template-container-root" :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
+        <template-draggable @click="select_item(undefined)" id="template-container-root" class="template-container-root"
+          :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item"
+          :select_item="select_item" />
       </div>
 
       <div class="mdui-col-md-4">
         <div v-if="selected_item !== undefined">
-          <config-panel-container
-            v-if="selected_item.is_container()"
-            :selected_item="(selected_item)"
-            :key="`container-${selected_item.id}`"
-          />
-          <config-panel-item
-            v-else
-            :selected_item="selected_item"
-            :key="`item-${selected_item.id}`"
-          />
-          <!-- <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre> -->
+          <config-panel-container v-if="widget_is_container(selected_item)" :selected_item="(selected_item)"
+            :key="`container-${selected_item.id}`" />
+          <config-panel-item v-else :selected_item="selected_item" :key="`item-${selected_item.id}`" />
         </div>
         <div v-else>
-          <config-panel-root :is-header-on="headerOn" :is-footer-on="footerOn" @header-on="headerOn = !headerOn" @footer-on="footerOn = !footerOn"/>
+          <config-panel-root :is-header-on="headerOn" :is-footer-on="footerOn" @header-on="headerOn = !headerOn"
+            @footer-on="footerOn = !footerOn" />
         </div>
       </div>
     </div>
@@ -224,7 +212,7 @@ const footerOn = ref(false)
   padding: 8px 0;
 }
 
-.style_editor_group > p {
+.style_editor_group>p {
   text-align: center;
   height: 32px;
   line-height: 32px;

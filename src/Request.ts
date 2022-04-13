@@ -32,7 +32,6 @@ export function request_urlencoded(route: string, form_data: FormData, callback:
     let token = window.localStorage.getItem("token")
     if (token != null) {
         headers = {
-            // "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": token
         }
     }

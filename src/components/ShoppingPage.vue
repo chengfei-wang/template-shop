@@ -8,16 +8,15 @@ import { ref } from "vue";
 
 export default {
   name: "ShoppingPage",
-  components: {Toolbar, PageBody}
+  components: { Toolbar, PageBody, TemplateSellItem }
 }
 </script>
 
 <script setup lang="ts">
-
 const templates = ref<Array<TemplateShare>>([])
 
 // 获取共享模版列表
-function getSharedTemplateList() {
+function get_shared_template_list() {
   request("template/share/list", {}, (status, obj) => {
     if (status == 200 && obj?.code === 200 && obj.data !== null) {
       console.log(obj.data)
@@ -26,26 +25,20 @@ function getSharedTemplateList() {
   })
 }
 
-getSharedTemplateList()
+get_shared_template_list()
 </script>
 
 
 <template>
   <toolbar title="模版市场">
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="getSharedTemplateList">
+    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="get_shared_template_list">
       <i class="mdui-icon material-icons">refresh</i>
     </a>
   </toolbar>
   <page-body>
     <div class="mdui-container">
-      <template-sell-item
-        v-for="template in templates"
-        :tid="template.tid"
-        :title="template.title"
-        :price="template.price"
-        :share-time="template.shareTime"
-        thumbnail="/thumbnail.png"
-      />
+      <template-sell-item v-for="template in templates" :tid="template.tid" :title="template.title"
+        :price="template.price" :share-time="template.shareTime" thumbnail="/thumbnail.png" />
     </div>
   </page-body>
 </template>

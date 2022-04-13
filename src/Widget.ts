@@ -1,4 +1,4 @@
-export function randomId(): string {
+export function random_id(): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     const len = chars.length
     let s = ''
@@ -8,240 +8,154 @@ export function randomId(): string {
     return s
 }
 
-export class SlotProp {
+export interface SlotProp {
     size: number
-
-    children: Array<Widget>
-
-    constructor(size: number = 12, children: Array<Widget> = []) {
-        this.size = size
-        this.children = children
-    }
-
-    clone(): SlotProp {
-        return new SlotProp(this.size)
-    }
-
-    static clone_props(props: Array<SlotProp>): Array<SlotProp> {
-        return props.map(value => value.clone())
-    }
+    children: Widget[]
 }
 
-export class FormProp {
-    method: string
-    url: string
-
-    constructor(method: string = 'POST', url: string = '') {
-        this.method = method
-        this.url = url
-    }
+export function clone_slot_props(props: Array<SlotProp>): SlotProp[] {
+    return props.map(value => ({ size: value.size, children: [] }))
 }
 
-export class Widget {
+export interface FormProp {
+    method?: string
+    url?: string
+}
+
+export interface Widget {
     id: string
     type: string
     node_prop: NodeProp
-
-    constructor(id: string, type: string, node_prop: NodeProp) {
-        this.id = id
-        this.type = type
-        this.node_prop = node_prop
-    }
-
-    clone(): Widget {
-        let widget = new Widget(randomId(), this.type, new NodeProp())
-        console.log(widget)
-        return widget
-    }
-
-    is_container(): boolean {
-        return this.type === 'CONTAINER' || this.type === 'FORM'
-    }
-
-    is_form(): boolean {
-        return this.type === 'FORM'
-    }
-}
-
-export class Container extends Widget {
-    children: Array<SlotProp>
+    children: SlotProp[]
     form_prop: FormProp
+}
 
-    constructor(id: string, type: string, children: Array<SlotProp>, node_prop: NodeProp, form_prop: FormProp) {
-        super(id, type, node_prop)
-        this.children = children
-        this.form_prop = form_prop
-    }
+export function widget_is_container(widget: Widget): boolean {
+    return widget.type === 'CONTAINER' || widget.type === 'FORM'
+}
 
-    clone(): Container {
-        let container = new Container(randomId(), this.type, SlotProp.clone_props(this.children), new NodeProp(), new FormProp())
-        console.log(container)
-        return container
+export function widget_is_form(widget: Widget): boolean {
+    return widget.type === 'FORM'
+}
+
+export function clone_widget(widget: Widget): Widget {
+    return {
+        id: random_id(),
+        type: widget.type,
+        node_prop: {},
+        children: clone_slot_props(widget.children),
+        form_prop: { method: widget.form_prop.method, url: widget.form_prop.url }
     }
 }
 
-export class ClassProp {
+export interface ClassProp {
     textColor?: string
     textSize?: string
     backgroundColor?: string
     textAlign?: string
-
-    constructor(textColor?: string, textSize?: string, backgroundColor?: string, textAlign?: string) {
-        this.textColor = textColor
-        this.textSize = textSize
-        this.backgroundColor = backgroundColor
-        this.textAlign = textAlign
-    }
 }
 
-export class NodeProp {
+export interface NodeProp {
     clazz?: ClassProp
     name?: string
     content?: string
     url?: string
     styles?: { [key: string]: string }
     type?: string
-
-    constructor(clazz?: ClassProp, name?: string, content?: string, href?: string, styles?: { [key: string]: string }, type?: string) {
-        this.clazz = clazz
-        this.name = name
-        this.content = content
-        this.url = href
-        this.styles = styles
-        this.type = type
-    }
 }
 
-export class ClassItem {
+export interface ClassItem {
     className: string
     classDesc: string
-
-    constructor(className: string, classDesc: string) {
-        this.className = className
-        this.classDesc = classDesc
-    }
 }
 
-export class FormMethod {
+export interface FormMethod {
     name: string
-
-    constructor(name: string) {
-        this.name = name
-    }
 }
 
-function create_slots(...sizes: number[]): SlotProp[] {
-    return sizes.map(value => new SlotProp(value))
-}
-
-function create_class_item(className: string, classDesc: string): ClassItem {
-    return new ClassItem(className, classDesc)
-}
-
-function create_form_method(method: string): FormMethod {
-    return new FormMethod(method)
-}
-
-function create_widget(type: string, node_prop: NodeProp = new NodeProp()): Widget {
-    return new Widget(randomId(), type, node_prop)
-}
-
-function create_container(children: Array<SlotProp>, type: string, node_prop: NodeProp = new NodeProp(), form_prop = new FormProp()): Container {
-    return new Container(randomId(), type, children, node_prop, form_prop)
-}
 
 export const template_widgets: Widget[] = [
-    create_widget("P"),
-    create_widget("INPUT"),
-    create_widget("BUTTON"),
-    create_widget("CHECKBOX"),
-    create_widget("RADIO"),
-    create_widget("IMAGE"),
-    create_container(create_slots(12), "FORM"),
-    create_container(create_slots(12, 4, 4, 4), "CONTAINER"),
-    create_container(create_slots(6, 6), "CONTAINER"),
-    create_container(create_slots(3, 9), "CONTAINER")
+    { id: '0', type: 'P', node_prop: {}, children: [], form_prop: {} },
+    { id: '1', type: 'INPUT', node_prop: {}, children: [], form_prop: {} },
+    { id: '2', type: 'BUTTON', node_prop: {}, children: [], form_prop: {} },
+    { id: '3', type: 'CHECKBOX', node_prop: {}, children: [], form_prop: {} },
+    { id: '4', type: 'RADIO', node_prop: {}, children: [], form_prop: {} },
+    { id: '5', type: 'IMAGE', node_prop: {}, children: [], form_prop: {} },
+    { id: '6', type: 'FORM', node_prop: {}, children: [{ size: 12, children: [] }], form_prop: {} },
+    { id: '7', type: 'CONTAINER', node_prop: {}, children: [{ size: 12, children: [] }], form_prop: {} },
+    { id: '8', type: 'CONTAINER', node_prop: {}, children: [{ size: 12, children: [] }, { size: 4, children: [] }, { size: 4, children: [] }, { size: 4, children: [] }], form_prop: {} },
+    { id: '9', type: 'CONTAINER', node_prop: {}, children: [{ size: 6, children: [] }, { size: 6, children: [] }], form_prop: {} },
+    { id: 'a', type: 'CONTAINER', node_prop: {}, children: [{ size: 9, children: [] }, { size: 3, children: [] }], form_prop: {} },
 ]
 
-export function eval_class_json(value?: any): ClassProp {
-    if (value == undefined) {
-        return new ClassProp()
-    }
-
-    return new ClassProp(value.textColor, value.textSize, value.backgroundColor, value.textAlign)
-}
-
-export function eval_node_prop_json(value?: any): NodeProp {
-    if (value === undefined) {
-        return new NodeProp();
-    }
-    return new NodeProp(eval_class_json(value.clazz), value.name, value.content, value.url, value.styles, value.type)
-}
-
-export function eval_form_prop_json(value?: any): FormProp {
-    if (value === undefined) {
-        return new FormProp()
-    }
-
-    return new FormProp(value.method, value.url)
-}
-
-export function eval_widget_json(value: any): Widget {
-    if (value.type == 'CONTAINER' || value.type == 'FORM') {
-        let children = value.children.map((slot: any) => new SlotProp(slot.size, slot.children.map((child: any) => eval_widget_json(child))))
-        return new Container(value.id, value.type, children, eval_node_prop_json(value.node_prop), eval_form_prop_json(value.form_prop))
-    } else {
-        return new Widget(value.id, value.type, eval_node_prop_json(value.node_prop))
-    }
-}
-
-export const class_group = {
+export const class_group: {
+    textColor: ClassItem[],
+    backgroundColor: ClassItem[],
+    textSize: ClassItem[],
+    textAlign: ClassItem[]
+} = {
     textColor: [
-        create_class_item("mdui-text-color-green", "绿色"),
-        create_class_item("mdui-text-color-blue", "蓝色"),
-        create_class_item("mdui-text-color-white", "白色"),
-        create_class_item("mdui-text-color-black", "黑色"),
-        create_class_item("mdui-text-color-red", "红色"),
-        create_class_item("mdui-text-color-yellow", "黄色"),
-        create_class_item("mdui-text-color-orange", "橙色"),
-        create_class_item("mdui-text-color-cyan", "青色"),
-        create_class_item("mdui-text-color-purple", "紫色"),
-        create_class_item("mdui-text-color-blue-grey", "蓝灰色"),
-        create_class_item("mdui-text-color-light-blue", "浅蓝色"),
-        create_class_item("mdui-text-color-pink", "粉色"),
+        { className: 'mdui-text-color-green', classDesc: '绿色' },
+        { className: 'mdui-text-color-blue', classDesc: '蓝色' },
+        { className: 'mdui-text-color-red', classDesc: '红色' },
+        { className: 'mdui-text-color-yellow', classDesc: '黄色' },
+        { className: 'mdui-text-color-purple', classDesc: '紫色' },
+        { className: 'mdui-text-color-orange', classDesc: '橙色' },
+        { className: 'mdui-text-color-pink', classDesc: '粉色' },
+        { className: 'mdui-text-color-grey', classDesc: '灰色' },
+        { className: 'mdui-text-color-black', classDesc: '黑色' },
+        { className: 'mdui-text-color-white', classDesc: '白色' },
+        { className: 'mdui-text-color-blue-grey', classDesc: '蓝灰色' },
+        { className: 'mdui-text-color-deep-purple', classDesc: '深紫色' },
+        { className: 'mdui-text-color-indigo', classDesc: '靛青色' },
+        { className: 'mdui-text-color-cyan', classDesc: '青色' },
+        { className: 'mdui-text-color-teal', classDesc: '青绿色' },
+        { className: 'mdui-text-color-lime', classDesc: '黄绿色' },
+        { className: 'mdui-text-color-light-green', classDesc: '浅绿色' },
+        { className: 'mdui-text-color-deep-orange', classDesc: '深橙色' },
+        { className: 'mdui-text-color-brown', classDesc: '褐色' },
     ],
     backgroundColor: [
-        create_class_item("mdui-color-green", "绿色"),
-        create_class_item("mdui-color-blue", "蓝色"),
-        create_class_item("mdui-color-white", "白色"),
-        create_class_item("mdui-color-black", "黑色"),
-        create_class_item("mdui-color-red", "红色"),
-        create_class_item("mdui-color-yellow", "黄色"),
-        create_class_item("mdui-color-orange", "橙色"),
-        create_class_item("mdui-color-cyan", "青色"),
-        create_class_item("mdui-color-purple", "紫色"),
-        create_class_item("mdui-color-blue-grey", "蓝灰色"),
-        create_class_item("mdui-color-light-blue", "浅蓝色"),
-        create_class_item("mdui-color-pink", "粉色"),
+        { className: "mdui-color-green", classDesc: "绿色" },
+        { className: "mdui-color-blue", classDesc: "蓝色" },
+        { className: "mdui-color-white", classDesc: "白色" },
+        { className: "mdui-color-black", classDesc: "黑色" },
+        { className: "mdui-color-red", classDesc: "红色" },
+        { className: "mdui-color-yellow", classDesc: "黄色" },
+        { className: "mdui-color-orange", classDesc: "橙色" },
+        { className: "mdui-color-cyan", classDesc: "青色" },
+        { className: "mdui-color-purple", classDesc: "紫色" },
+        { className: "mdui-color-blue-grey", classDesc: "蓝灰色" },
+        { className: "mdui-color-light-blue", classDesc: "浅蓝色" },
+        { className: "mdui-color-pink", classDesc: "粉色" },
+        { className: "mdui-color-grey", classDesc: "灰色" },
+        { className: "mdui-color-teal", classDesc: "青绿色" },
+        { className: "mdui-color-deep-orange", classDesc: "深橙色" },
+        { className: "mdui-color-deep-purple", classDesc: "深紫色" },
+        { className: "mdui-color-indigo", classDesc: "靛青色" },
+        { className: "mdui-color-light-green", classDesc: "浅绿色" },
+        { className: "mdui-color-brown", classDesc: "褐色" },
     ],
     textSize: [
-        create_class_item("mdui-typo-headline", "大标题"),
-        create_class_item("mdui-typo-title", "标题"),
-        create_class_item("mdui-typo-subheading", "副标题"),
-        create_class_item("mdui-typo-caption", "小标题"),
-        create_class_item("mdui-typo-body-2", "正文2"),
-        create_class_item("mdui-typo-body-1", "正文1"),
+        { className: "mdui-typo-headline", classDesc: "大标题" },
+        { className: "mdui-typo-title", classDesc: "标题" },
+        { className: "mdui-typo-subtitle", classDesc: "副标题" },
+        { className: "mdui-typo-body-1", classDesc: "正文1" },
+        { className: "mdui-typo-body-2", classDesc: "正文2" },
+        { className: "mdui-typo-caption", classDesc: "提示文字" },
+        { className: "mdui-typo-footnote", classDesc: "脚注" },
+        { className: "mdui-typo-menu", classDesc: "菜单" },
     ],
     textAlign: [
-        create_class_item("mdui-text-left", "左对齐"),
-        create_class_item("mdui-text-center", "居中"),
-        create_class_item("mdui-text-right", "右对齐"),
+        { className: "mdui-text-left", classDesc: "左对齐" },
+        { className: "mdui-text-center", classDesc: "居中" },
+        { className: "mdui-text-right", classDesc: "右对齐" },
     ]
 }
 
-export const form_group = {
+export const form_group: { method: FormMethod[] } = {
     method: [
-        create_form_method("POST"),
-        create_form_method("GET")
+        { name: 'GET' },
+        { name: 'POST' },
     ]
 }

@@ -21,8 +21,7 @@ const bought_templates = ref<Array<TemplateOrder>>([])
 function get_template_bought_list() {
     request("template/bought/list", {}, (status, obj) => {
         if (status == 200 && obj?.code === 200 && obj.data != null) {
-            let template_orders = (<Array<any>>obj.data.templates).map(value => eval_template_order(value))
-            bought_templates.value = template_orders
+            bought_templates.value = (<Array<any>>obj.data.templates).map(value => eval_template_order(value))
             console.log(bought_templates.value)
         } else {
             mdui.snackbar({

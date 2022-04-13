@@ -18,7 +18,7 @@ export default {
 const templates = ref<Array<Template>>([])
 
 
-function getTemplateList() {
+function get_template_list() {
   request("template/list", {}, (status, obj) => {
     if (status == 200 && obj?.code === 200 && obj.data !== null) {
       templates.value = (<Array<any>>obj.data.templates).map(value => eval_template(value))
@@ -26,7 +26,7 @@ function getTemplateList() {
   })
 }
 
-function createTemplate() {
+function create_template() {
   mdui.prompt('模版标题', (value: string) => {
     if (value.length > 0) {
       request("template/insert", { title: value, content: JSON.stringify([]) }, (status, obj) => {
@@ -39,7 +39,7 @@ function createTemplate() {
               window.open(`editor?tid=${obj.data.tid}`)
             }
           });
-          getTemplateList()
+          get_template_list()
         }
       })
     } else {
@@ -51,24 +51,19 @@ function createTemplate() {
   })
 }
 
-getTemplateList()
+get_template_list()
 </script>
 
 <template>
   <toolbar title="开始创作">
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="createTemplate">
+    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="create_template">
       <i class="mdui-icon material-icons">add</i>
     </a>
   </toolbar>
   <page-body>
     <div class="mdui-container">
-      <template-card-item
-        v-for="template in templates"
-        :tid="template.tid"
-        :title="template.title"
-        :update-time="template.updateTime"
-        thumbnail="/thumbnail.png"
-      />
+      <template-card-item v-for="template in templates" :tid="template.tid" :title="template.title"
+        :update-time="template.updateTime" thumbnail="/thumbnail.png" />
     </div>
   </page-body>
 </template>

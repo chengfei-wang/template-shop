@@ -110,7 +110,7 @@ get_all_images()
                 :image="image" />
         </div>
         <div class="preview-picture-modal" v-if="preview_state" @click="hidden_image">
-            <img class="preview-picture-content" :src="image_to_preview" />
+            <img class="preview-picture-content" :src="image_to_preview" alt="full-image" />
         </div>
     </page-body>
 </template>
