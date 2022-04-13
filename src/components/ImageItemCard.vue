@@ -22,7 +22,7 @@ defineProps<{
     <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-4" style="margin: 16px 0;">
         <div class="mdui-card">
             <div class="mdui-card-media">
-                <img class="image-preview-cover" :src="api(`image/${image.imageId}`)" />
+                <img class="image-preview-cover" :src="api(`image/${image.imageId}`)" @click="preview_image(image)" />
             </div>
             <div class="mdui-card-actions">
                 <button class="mdui-btn mdui-ripple mdui-dense" disabled>{{ image.uploadTime.toLocaleString() }}</button>
