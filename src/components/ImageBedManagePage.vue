@@ -20,6 +20,8 @@ export default {
 
 <script setup lang="ts">
 const all_images = ref<Image[]>([])
+const image_to_preview = ref<string>("")
+const preview_state = ref<boolean>(false)
 
 function get_all_images() {
     request('image/list', {}, (status, result) => {
@@ -79,7 +81,14 @@ function delete_image(image: Image) {
 }
 
 function preview_image(image: Image) {
-    
+    // 对话框展示图片原图
+    image_to_preview.value = api(`image/full/${image.imageId}`)
+    preview_state.value = true
+}
+
+function hidden_image() {
+    image_to_preview.value = ""
+    preview_state.value = false
 }
 
 get_all_images()
@@ -97,7 +106,11 @@ get_all_images()
     </toolbar>
     <page-body>
         <div class="mdui-container">
-            <image-item-card v-for="image in all_images" :delete_image="delete_image" :preview_image="preview_image" :image="image" />
+            <image-item-card v-for="image in all_images" :delete_image="delete_image" :preview_image="preview_image"
+                :image="image" />
+        </div>
+        <div class="preview-picture-modal" v-if="preview_state" @click="hidden_image">
+            <img class="preview-picture-content" :src="image_to_preview" />
         </div>
     </page-body>
 </template>
@@ -107,5 +120,24 @@ get_all_images()
     visibility: hidden;
     position: absolute;
     top: 0;
+}
+
+.preview-picture-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.preview-picture-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>
