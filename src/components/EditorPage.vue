@@ -7,16 +7,17 @@ import ConfigPanelContainer from "./ConfigPanelContainer.vue";
 import ConfigPanelRoot from "./ConfigPanelRoot";
 import { TemplateDraggable } from "./TemplateDraggable";
 import { TemplateDraggableSource } from "./TemplateDraggable";
+import { TemplateDraggableTrash } from "./TemplateDraggable";
 import { ref } from "vue";
-import { template_widgets, widget_is_container } from "../Widget"
-import { Widget } from "../Widget"
+import { widget_is_container } from "../Widget";
+import { Widget } from "../Widget";
 import { request } from "../Request";
 import { eval_template } from "../Model";
 import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, Toolbar, PageBody, TemplateDraggable, TemplateDraggableSource, ConfigPanelItem, ConfigPanelContainer, ConfigPanelRoot }
+  components: { Draggable, Toolbar, PageBody, TemplateDraggable, TemplateDraggableSource, TemplateDraggableTrash: TemplateDraggableTrash, ConfigPanelItem, ConfigPanelContainer, ConfigPanelRoot }
 }
 </script>
 
@@ -140,11 +141,9 @@ const footerOn = ref(false)
 
         <div>
           <div class="mdui-text-center mdui-center">垃圾桶</div>
-          <draggable id="template-trash" class="template-trash mdui-center" group="editor" item-key="id">
-            <template #item="{}">
-              <div style="visibility: hidden"></div>
-            </template>
-          </draggable>
+          <div id="template-trash">
+            <template-draggable-trash  class="template-trash mdui-center" />
+          </div>
         </div>
       </div>
 
@@ -154,8 +153,7 @@ const footerOn = ref(false)
           <input class="mdui-textfield-input" type="text" v-model="page_title" />
         </div>
         <template-draggable @click="select_item(undefined)" id="template-container-root" class="template-container-root"
-          :preview="false" :data="content_editor" @select_item="select_item" :selected_item="selected_item"
-          :select_item="select_item" />
+          :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
       </div>
 
       <div class="mdui-col-md-4">

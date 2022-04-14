@@ -1,4 +1,5 @@
-import { Widget, ClassProp, NodeProp, FormProp, SlotProp, widget_is_container, widget_is_form, random_id } from "../Widget";
+import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
+import { TemplateDraggable } from "./TemplateDraggable";
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
     let classList = Array.from(init)
@@ -45,7 +46,7 @@ const unknown: TemplateWidget = {
 
 export const button: TemplateWidget = {
     name: "BUTTON",
-    preview: (<button class={['template-item', 'template-default-button']}>普通按钮</button>),
+    preview: (<button class='template-item template-default-button'>普通按钮</button>),
     template: () => {
         return { id: random_id(), type: 'BUTTON', node_prop: {}, children: [], form_prop: {} }
     },
@@ -69,7 +70,7 @@ export const button: TemplateWidget = {
 
 export const text_single: TemplateWidget = {
     name: "TEXT_SINGLE",
-    preview: (<p class='template-item template-default-text-single'>单行文本</p>),
+    preview: (<p class='template-item template-default-text-single mdui-text-center'>单行文本</p>),
     template: () => {
         return { id: random_id(), type: 'TEXT_SINGLE', node_prop: {}, children: [], form_prop: {} }
     },
@@ -93,7 +94,7 @@ export const text_single: TemplateWidget = {
 
 export const text_multi: TemplateWidget = {
     name: "TEXT_MULTI",
-    preview: (<p class='template-item template-default-text-multi'>多行文本<br />多行文本</p>),
+    preview: (<p class='template-item template-default-text-multi mdui-text-center'>多行文本<br />多行文本</p>),
     template: () => {
         return { id: random_id(), type: 'TEXT_MULTI', node_prop: {}, children: [], form_prop: {} }
     },
@@ -292,26 +293,14 @@ export const container: TemplateWidget = {
         return { id: random_id(), type: 'CONTAINER', node_prop: {}, children: [{ size: 6, children: [] }, { size: 6, children: [] }], form_prop: {} }
     },
     editor_view: (content: Widget) => {
-        let children: SlotProp[] = content.children
-
-        let items = children.map((child: SlotProp, index: number) => {
-            return (
-                <div class={`template-slot mdui-col-xs-${child.size}`} id={`${content.id}-${index}`}>
-                    {
-                        child.children.map(
-                            (widget: Widget) => {
-                                let render = template_render_function(widget)
-                                return render.editor_view(widget)
-                            }
-                        )
-                    }
-                </div>
-            )
-        })
-
         return (
-            <div class="template-container template-item mdui-container-fluid" id={content.id}>
-                {items}
+            <div class="template-item template-container mdui-container-fluid">
+                <div class='template-slot mdui-col-xs-6'>
+                    <p class='template-default-text-single mdui-text-center'>容器插槽</p>
+                </div>
+                <div class='template-slot mdui-col-xs-6'>
+                    <p class='template-default-text-single mdui-text-center'>容器插槽</p>
+                </div>
             </div>
         )
     },
@@ -354,26 +343,14 @@ export const form: TemplateWidget = {
         return { id: random_id(), type: 'FORM', node_prop: {}, children: [{ size: 12, children: [] }], form_prop: { method: 'POST', url: '' } }
     },
     editor_view: (content: Widget) => {
-        let children: SlotProp[] = content.children
-
-        let items = children.map((child: SlotProp, index: number) => {
-            return (
-                <div class={`template-slot mdui-col-xs-${child.size}`} id={`${content.id}-${index}`}>
-                    {
-                        child.children.map(
-                            (widget: Widget) => {
-                                let render = template_render_function(widget)
-                                return render.editor_view(widget)
-                            }
-                        )
-                    }
-                </div>
-            )
-        })
-
         return (
-            <div class="template-container template-item mdui-container-fluid" id={content.id}>
-                {items}
+            <div class="template-item template-container mdui-container-fluid">
+                <div class='template-slot mdui-col-xs-6'>
+                    <p class='template-default-text-single mdui-text-center'>容器插槽</p>
+                </div>
+                <div class='template-slot mdui-col-xs-6'>
+                    <p class='template-default-text-single mdui-text-center'>容器插槽</p>
+                </div>
             </div>
         )
     },

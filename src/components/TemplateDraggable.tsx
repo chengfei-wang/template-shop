@@ -6,7 +6,6 @@ import { SlotProp, Widget, widget_is_container } from "../Widget"
 export const TemplateDraggable = defineComponent({
     name: "TemplateDraggable",
     props: {
-        preview: { type: Boolean, required: true },
         data: { type: Array as PropType<Widget[]>, default: () => [], required: true },
         select_item: { type: Function as PropType<(widget?: Widget) => void>, required: true },
         selected_item: { type: Object as PropType<Widget> }
@@ -16,7 +15,6 @@ export const TemplateDraggable = defineComponent({
     },
     setup(props, _) {
         const group_data = { name: "editor" }
-        const sort_data = true
         const slots_data = {
             item: (slot_props: { element: Widget, index: number }): JSX.Element => {
                 let element = slot_props.element
@@ -49,7 +47,6 @@ export const TemplateDraggable = defineComponent({
         }
 
         const attr_data = {
-            sort: sort_data,
             group: group_data,
             animation: 200
         }
@@ -68,7 +65,7 @@ export const TemplateDraggableSource = defineComponent({
         const slots_data = {
             item: (slot_props: { element: TemplateWidget, index: number }): JSX.Element => {
                 let element = slot_props.element
-                return element.preview
+                return <div class='template-preview'>{element.preview}</div>
             }
         }
 
@@ -80,6 +77,28 @@ export const TemplateDraggableSource = defineComponent({
 
         return () => (
             <VueDraggable list={templates} item-key='name' v-slots={slots_data} {...attr_data} />
+        )
+    }
+})
+
+export const TemplateDraggableTrash = defineComponent({
+    name: "TemplateDraggableTrash",
+    components: {
+        VueDraggable
+    },
+    setup() {
+        const slots_data = {
+            item: (slot_props: { element: TemplateWidget, index: number }): JSX.Element => {
+                return <></>
+            }
+        }
+
+        const attr_data = {
+            group: { name: 'editor' },
+        }
+
+        return () => (
+            <VueDraggable  list={[]}  item-key="id" v-slots={slots_data} {...attr_data} />
         )
     }
 })
