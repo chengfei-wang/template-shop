@@ -152,10 +152,6 @@
 }
 
 .template-image-title {
-    height: 18px;
-    line-height: 18px;
-    font-size: 12px;
-    vertical-align: center;
     text-align: center;
     max-width: 100%;
     overflow: hidden;

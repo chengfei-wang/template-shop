@@ -128,9 +128,13 @@ export const input: TemplateWidget = {
             prop.content = '默认文本框'
         }
 
+        if (prop.type == undefined) {
+            prop.type = 'text'
+        }
+
         let classList: string[] = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
 
-        return (<input type='text' class={classList} name={prop.name} placeholder={prop.content} disabled />)
+        return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} disabled />)
     },
     release_view: (content: Widget) => {
         const prop = content.node_prop
@@ -138,9 +142,13 @@ export const input: TemplateWidget = {
             prop.content = '请输入文本'
         }
 
+        if (prop.type == undefined) {
+            prop.type = 'text'
+        }
+
         let classList: string[] = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
 
-        return (<input type='text' class={classList} name={prop.name} placeholder={prop.content} />)
+        return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} />)
     }
 }
 

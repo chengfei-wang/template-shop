@@ -147,15 +147,40 @@ export const class_group: {
         { className: "mdui-typo-menu", classDesc: "菜单" },
     ],
     textAlign: [
-        { className: "mdui-text-left", classDesc: "左对齐" },
-        { className: "mdui-text-center", classDesc: "居中" },
-        { className: "mdui-text-right", classDesc: "右对齐" },
+        { className: "mdui-text-left", classDesc: "format_align_left" },
+        { className: "mdui-text-center", classDesc: "format_align_center" },
+        { className: "mdui-text-right", classDesc: "format_align_right" },
     ]
 }
+
+export const input_type_group: { type: string, desc: string }[] = [
+    { type: 'text', desc: '文本' },
+    { type: 'password', desc: '密码' },
+    { type: 'number', desc: '数字' },
+    { type: 'email', desc: '邮箱' },
+    { type: 'tel', desc: '电话' },
+    { type: 'url', desc: '网址' },
+    { type: 'date', desc: '日期' },
+    { type: 'time', desc: '时间' },
+]
 
 export const form_group: { method: FormMethod[] } = {
     method: [
         { name: 'GET' },
         { name: 'POST' },
+    ]
+}
+
+export const config_items = {
+    IMAGE: [
+        'IMAGE',
+    ],
+    NAME: [
+        'INPUT',
+        'CHECKBOX',
+        'RADIO',
+    ],
+    TYPE: [
+        'INPUT',
     ]
 }
