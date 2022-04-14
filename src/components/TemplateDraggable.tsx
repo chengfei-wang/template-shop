@@ -20,35 +20,30 @@ export const TemplateDraggable = defineComponent({
                 let element = slot_props.element
                 const selected_class = props.selected_item?.id == element.id ? 'template-selected' : ''
                 if (widget_is_container(element)) {
-                    return function_draggable_inner(element, selected_class)
+                    return (
+                        <div class={`template-container mdui-container-fluid ${selected_class}`} onClick={(e) => { props.select_item(element); e.stopPropagation() }}>
+                            {element.children.map((slot_prop: SlotProp, index: number) => {
+                                return (
+                                    <div id={`${element.id}-${index}`}>
+                                        <TemplateDraggable class={`template-slot mdui-col-xs-${slot_prop.size}`} data={slot_prop.children} select_item={props.select_item} selected_item={props.selected_item} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )
                 } else {
-                    const render = template_render_function(element)
                     return (
                         <div class={`template-item ${selected_class}`} id={element.id} onClick={(e) => { props.select_item(element); e.stopPropagation() }}>
-                            {render.editor_view(element)}
+                            {template_render_function(element).editor_view(element)}
                         </div>
                     )
                 }
             }
         }
 
-        const function_draggable_inner = (container: Widget, selected_class: string) => {
-            return (
-                <div class={`template-container mdui-container-fluid ${selected_class}`} onClick={(e) => { props.select_item(container); e.stopPropagation() }}>
-                    {container.children.map((slot: SlotProp, index: number) => {
-                        return (
-                            <div id={`${container.id}-${index}`}>
-                                <TemplateDraggable class={`template-slot mdui-col-xs-${slot.size}`} preview={false} data={slot.children} select_item={props.select_item} selected_item={props.selected_item} />
-                            </div>
-                        )
-                    })}
-                </div>
-            )
-        }
-
         const attr_data = {
             group: group_data,
-            animation: 200
+            animation: 200,
         }
         return () => (
             <VueDraggable list={props.data} v-slots={slots_data} item-key="id" {...attr_data} />
@@ -98,7 +93,7 @@ export const TemplateDraggableTrash = defineComponent({
         }
 
         return () => (
-            <VueDraggable  list={[]}  item-key="id" v-slots={slots_data} {...attr_data} />
+            <VueDraggable list={[]} item-key="id" v-slots={slots_data} {...attr_data} />
         )
     }
 })
