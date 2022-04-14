@@ -1,6 +1,7 @@
 import { defineComponent } from "vue";
 
 const ConfigPanelRoot = defineComponent({
+    name: "ConfigPanelRoot",
     props: {
         // prop of is-header-on
         isHeaderOn: { type: Boolean, required: true },

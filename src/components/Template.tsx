@@ -320,7 +320,7 @@ export const container: TemplateWidget = {
 
         let items = children.map((child: SlotProp, index: number) => {
             return (
-                <div class={`template-slot mdui-col-xs-${child.size}`} id={`${content.id}-${index}`}>
+                <div class={`template-slot-release mdui-col-xs-${child.size}`} id={`${content.id}-${index}`}>
                     {
                         child.children.map(
                             (widget: Widget) => {
@@ -334,7 +334,7 @@ export const container: TemplateWidget = {
         })
 
         return (
-            <div class="template-container template-item mdui-container-fluid" id={content.id}>
+            <div class="mdui-container-fluid template-container-release" id={content.id}>
                 {items}
             </div>
         )
@@ -384,7 +384,7 @@ export const form: TemplateWidget = {
 
         let items = children.map((child: SlotProp, index: number) => {
             return (
-                <div class={`template-slot mdui-col-xs-${child.size}`} id={`${content.id}-${index}`}>
+                <div class={`template-slot-release mdui-col-xs-${child.size}`} id={`${content.id}-${index}`}>
                     <div>
                         {
                             child.children.map(
@@ -400,7 +400,7 @@ export const form: TemplateWidget = {
         })
         return (
             <form method={form_prop.method} action={form_prop.url} onSubmit={() => false}>
-                <div class="template-container template-item mdui-container-fluid" id={content.id}>
+                <div class="mdui-container-fluid template-container-release" id={content.id}>
                     {items}
                 </div>
             </form>

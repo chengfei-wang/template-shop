@@ -4,6 +4,7 @@ import VueDraggable from "vuedraggable"
 import { SlotProp, Widget, widget_is_container } from "../Widget"
 
 export const TemplateDraggable = defineComponent({
+    name: "TemplateDraggable",
     props: {
         preview: { type: Boolean, required: true },
         data: { type: Array as PropType<Widget[]>, default: () => [], required: true },
@@ -59,6 +60,7 @@ export const TemplateDraggable = defineComponent({
 })
 
 export const TemplateDraggableSource = defineComponent({
+    name: "TemplateDraggableSource",
     components: {
         VueDraggable
     },

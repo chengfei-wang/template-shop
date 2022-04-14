@@ -72,3 +72,13 @@
 .header-footer {
     height: 36px;
 }
+
+.template-slot-release {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.template-container-release {
+    padding: 0 !important;
+    margin: 0 !important;
+}
