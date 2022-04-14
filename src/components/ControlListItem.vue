@@ -19,6 +19,8 @@ defineProps<{
             <slot></slot>
         </div>
     </div>
+
+    <div class="normal-divider"></div>
 </template>
 
 <style>

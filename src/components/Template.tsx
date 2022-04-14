@@ -254,25 +254,56 @@ export const radio: TemplateWidget = {
 
 export const image: TemplateWidget = {
     name: "IMAGE",
-    preview: (<img class='template-item' src='/thumbnail.png' alt='图片' />),
+    preview: (
+        <div>
+            <img class='template-item' src='/thumbnail.png' alt='图片' />
+            <div class='template-image-title'>图片标题</div>
+        </div>
+    ),
     template: () => {
         return { id: random_id(), type: 'IMAGE', node_prop: {}, children: [], form_prop: {} }
     },
     editor_view: (content: Widget) => {
         let prop = content.node_prop
         let classList: string[] = create_class_list(['template-item'], prop.clazz)
-        if (prop.url == undefined || prop.url.length == 0) {
-            return (<img class={classList} src='/thumbnail.png' alt='template_image' />)
+        if (prop.url === undefined || prop.url.length === 0) {
+            prop.url = '/thumbnail.png'
         }
-        return (<img class={classList} src={prop.url} alt='图片' />)
+        if (prop.content === undefined || prop.content.length === 0) {
+            return (
+                <div>
+                    <img class={classList} src={prop.url} alt='图片' />
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <img class={classList} src={prop.url} alt='图片' />
+                    <div class={['template-image-title', ...classList]}>{prop.content}</div>
+                </div>
+            )
+        }
     },
     release_view: (content: Widget) => {
         let prop = content.node_prop
         let classList: string[] = create_class_list(['template-item'], prop.clazz)
         if (prop.url == undefined || prop.url.length == 0) {
-            return (<img class={classList} src='/thumbnail.png' alt='template_image' />)
+            prop.url = '/thumbnail.png'
         }
-        return (<img class={classList} src={prop.url} alt='图片' />)
+        if (prop.content === undefined || prop.content.length === 0) {
+            return (
+                <div>
+                    <img class={classList} src={prop.url} alt='图片' />
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <img class={classList} src={prop.url} alt='图片' />
+                    <div class={['template-image-title', ...classList]}>{prop.content}</div>
+                </div>
+            )
+        }
     }
 }
 

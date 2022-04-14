@@ -107,48 +107,60 @@ get_all_images()
                     <div>手动输入地址</div>
                 </template>
                 <template #default>
-                    <div class="mdui-textfield">
-                        <label class="mdui-textfield-label">地址</label>
-                        <input class="mdui-textfield-input" type="url" v-model="selected_item.node_prop.url" />
-                    </div>
+                    <el-input type="url" v-model="selected_item.node_prop.url" />
                 </template>
             </el-popover>
         </div>
     </control-list-item>
-
-    <div class="normal-divider"></div>
 
     <control-list-item title="文本颜色">
-        <div class="mdui-col-xs-12">
-            <el-popover :width="360" trigger="click">
-                <template #reference>
-                    <div>
-                        <i class="mdui-icon material-icons mdui-text-color-grey">color_lens</i>
-                        <span :class="[selected_item.node_prop.clazz?.textColor]">示例颜色</span>
+        <el-popover :width="360" trigger="click">
+            <template #reference>
+                <div>
+                    <i class="mdui-icon material-icons mdui-text-color-grey">color_lens</i>
+                    <span :class="[selected_item.node_prop.clazz?.textColor]">示例颜色</span>
+                </div>
+            </template>
+            <template #default>
+                <div class="mdui-container-fluid">
+                    <div v-for="choice in class_group.textColor" class="mdui-col-xs-4 template-color-choice-cell"
+                        @click="item_set_text_color(selected_item, choice.className)">
+                        <i class="mdui-icon material-icons" :class="choice.className">color_lens</i>
+                        <div>{{ choice.classDesc }}</div>
                     </div>
-                </template>
-                <template #default>
-                    <div class="mdui-container-fluid">
-                        <div v-for="choice in class_group.textColor" class="mdui-col-xs-4 template-color-choice-cell"
-                            @click="item_set_text_color(selected_item, choice.className)">
-                            <i class="mdui-icon material-icons" :class="choice.className">color_lens</i>
-                            <div style="width: 48px;">
-                                {{ choice.classDesc }}
-                            </div>
+                </div>
+            </template>
+        </el-popover>
+    </control-list-item>
+
+    <control-list-item title="背景颜色">
+        <el-popover :width="360" trigger="click">
+            <template #reference>
+                <div>
+                    <i class="mdui-icon material-icons mdui-text-color-grey">color_lens</i>
+                    <span :class="[selected_item.node_prop.clazz?.backgroundColor]">示例背景</span>
+                </div>
+            </template>
+            <template #default>
+                <div class="mdui-container-fluid">
+                    <div v-for="choice in class_group.backgroundColor" class="mdui-col-xs-4 template-color-choice-cell"
+                        @click="item_set_background_color(selected_item, choice.className)">
+                        <i class="mdui-icon material-icons mdui-text-color-light-grey" :class="choice.className">color_lens</i>
+                        <div>
+                            {{ choice.classDesc }}
                         </div>
                     </div>
-                </template>
-            </el-popover>
-        </div>
+                </div>
+            </template>
+        </el-popover>
     </control-list-item>
-    <div class="normal-divider"></div>
 
     <div class="style_editor_group">
-        <p>背景颜色</p>
+        <p></p>
         <div class="mdui-container-fluid">
             <div v-for="choice in class_group.backgroundColor" class="mdui-col-xs-3"
                 :class="[choice.className, selected_item.node_prop.clazz?.backgroundColor === choice.className ? 'choice_selected' : 'choice_unselected']"
-                @click="item_set_background_color(selected_item, choice.className)">{{ choice.classDesc }}</div>
+                >{{ choice.classDesc }}</div>
         </div>
     </div>
 
@@ -170,15 +182,13 @@ get_all_images()
         </div>
     </div>
 
-    <div class="style_editor_group">
-        <p>内容文本</p>
-        <input class="mdui-textfield-input" type="text" v-model="selected_item.node_prop.content" placeholder="内容文本" />
-    </div>
+    <control-list-item title="内容文本">
+        <el-input type="text" v-model="selected_item.node_prop.content" placeholder="内容文本" />
+    </control-list-item>
 
-    <div class="style_editor_group">
-        <p>字段名称</p>
-        <input class="mdui-textfield-input" type="text" v-model="selected_item.node_prop.name" placeholder="字段名称" />
-    </div>
+    <control-list-item title="字段名称">
+        <el-input type="text" v-model="selected_item.node_prop.name" placeholder="字段名称" />
+    </control-list-item>
 </template>
 
 <style>
