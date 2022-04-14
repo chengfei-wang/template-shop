@@ -44,6 +44,7 @@ export const TemplateDraggable = defineComponent({
         const attr_data = {
             group: group_data,
             animation: 200,
+            ghostClass: "template-ghost",
         }
         return () => (
             <VueDraggable list={props.data} v-slots={slots_data} item-key="id" {...attr_data} />

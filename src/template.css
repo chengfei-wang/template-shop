@@ -66,7 +66,7 @@
 
 .template-default-text-multi {
     min-height: 36px;
-    margin: 0 !important;
+    margin: 8px 0 !important;
 }
 
 .header-footer {
@@ -88,4 +88,9 @@
     padding: 2px;
     border: #aaaaaa 1px dotted;
     border-radius: 2px;
+}
+
+.template-ghost {
+    background: #eeeeee;
+    opacity: 0.5;
 }
