@@ -164,8 +164,8 @@ export const input_type_group: { type: string, desc: string }[] = [
     { type: 'time', desc: '时间' },
 ]
 
-export const form_group: { method: FormMethod[] } = {
-    method: [
+export const form_group: { methods: FormMethod[] } = {
+    methods: [
         { name: 'GET' },
         { name: 'POST' },
     ]
@@ -182,5 +182,8 @@ export const config_items = {
     ],
     TYPE: [
         'INPUT',
-    ]
+    ],
+    FORM_METHOD: [
+        'FORM',
+    ],
 }
