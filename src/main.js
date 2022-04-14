@@ -8,7 +8,6 @@ import NotFoundPage from './components/NotFoundPage.vue';
 import HistoryOrderPage from './components/HistoryOrderPage.vue';
 import DeployPage from './components/DeployPage.vue';
 import ImageBedManagePage from './components/ImageBedManagePage.vue';
-import "./template.css"
 import "./main.css"
 
 const routes = {

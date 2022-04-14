@@ -1,5 +1,4 @@
 import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
-import { TemplateDraggable } from "./TemplateDraggable";
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
     let classList = Array.from(init)

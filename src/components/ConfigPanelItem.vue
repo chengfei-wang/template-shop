@@ -1,12 +1,13 @@
 <script lang="ts">
 import { ref } from "vue";
 import { class_group } from "../Widget"
-import { ClassProp, Widget } from "../Widget";
+import { Widget } from "../Widget";
 import { eval_image, Image } from "../Model";
 import { request, api } from "../Request";
-
 export default {
-    name: "ConfigPanelItem"
+    name: "ConfigPanelItem",
+    components: {
+    },
 }
 </script>
 
@@ -73,27 +74,24 @@ get_all_images()
 </script>
 
 <template>
-
     <div v-if="selected_item.type === 'INPUT'">
         <div class="style_editor_group">
             <p>类型</p>
         </div>
     </div>
 
+    <div class="style_editor_group" v-if="selected_item.type === 'IMAGE'">
+        <p>图片内容</p>
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label">图片地址</label>
+            <input class="mdui-textfield-input" type="text" v-model="selected_item.node_prop.url"
+                placeholder="输入外部链接" />
+        </div>
 
-    <div v-if="selected_item.type === 'IMAGE'">
-        <div class="style_editor_group">
-            <p>图片内容</p>
-            <div class="mdui-textfield">
-                <label class="mdui-textfield-label">图片地址</label>
-                <input class="mdui-textfield-input" type="text" v-model="selected_item.node_prop.url"
-                    placeholder="输入外部链接" />
-            </div>
-            <div class="mdui-container-fluid image-selector-container">
-                <div v-for="image in all_images" style="margin: 16px 0;">
-                    <img class="image-preview-cover" :src="api(`image/${image.imageId}`)" alt='image-select'
-                        @click="item_set_url(selected_item, api(`image/${image.imageId}`))" />
-                </div>
+        <div class="mdui-container-fluid image-selector-container">
+            <div v-for="image in all_images" style="margin: 16px 0;">
+                <img class="image-preview-cover" :src="api(`image/${image.imageId}`)" alt='image-select'
+                    @click="item_set_url(selected_item, api(`image/${image.imageId}`))" />
             </div>
         </div>
     </div>
