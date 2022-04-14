@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "element-plus": "^2.1.9",
     "mdui": "^1.0.2",
     "vue": "^3.2.31",
     "vuedraggable": "^4.1.0"

@@ -1,4 +1,7 @@
 import {createApp, h} from 'vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 import LoginPage from './components/LoginPage.vue'
 import RegisterPage from './components/RegisterPage.vue'
 import EditorPage from './components/EditorPage.vue'
@@ -36,4 +39,5 @@ const router = {
 }
 
 let app = createApp(router)
+app.use(ElementPlus)
 app.mount('#app')
