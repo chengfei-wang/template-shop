@@ -118,7 +118,7 @@ export const text_multi: TemplateWidget = {
 
 export const input: TemplateWidget = {
     name: "INPUT",
-    preview: (<input class='template-item mdui-textfield-input' placeholder='默认文本框' type='text' disabled />),
+    preview: (<input class='template-item template-default-input' placeholder='默认文本框' type='text' disabled />),
     template: () => {
         return { id: random_id(), type: 'INPUT', node_prop: {}, children: [], form_prop: {} }
     },
@@ -132,7 +132,7 @@ export const input: TemplateWidget = {
             prop.type = 'text'
         }
 
-        let classList: string[] = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
+        let classList: string[] = create_class_list(['template-item', 'template-default-input'], prop.clazz)
 
         return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} disabled />)
     },
@@ -146,7 +146,7 @@ export const input: TemplateWidget = {
             prop.type = 'text'
         }
 
-        let classList: string[] = create_class_list(['template-item', 'mdui-textfield-input'], prop.clazz)
+        let classList: string[] = create_class_list(['template-item', 'template-default-input'], prop.clazz)
 
         return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} />)
     }

@@ -1,4 +1,7 @@
+
+import { ElInput, ElRadioButton, ElRadioGroup } from "element-plus";
 import { defineComponent } from "vue";
+import ControlListItem from "./ControlListItem.vue";
 
 const ConfigPanelRoot = defineComponent({
     name: "ConfigPanelRoot",
@@ -12,6 +15,14 @@ const ConfigPanelRoot = defineComponent({
     setup(props, ctx) {
         return () => (
             <div class=''>
+                <ControlListItem title='应用栏'>
+                    <ElRadioGroup>
+                        <ElRadioButton label='显示' value={true} onInput={() => { ctx.emit("headerOn") }} />
+                        <ElRadioButton label='隐藏' value={false} onInput={() => { ctx.emit("headerOn") }} />
+                    </ElRadioGroup>
+
+                </ControlListItem>
+                <ElInput></ElInput>
                 <div class='style_editor_group'>
                     <p>开启Header</p>
                     <div class={'mdui-text-center'}>

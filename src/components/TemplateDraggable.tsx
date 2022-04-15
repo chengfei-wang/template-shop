@@ -45,6 +45,7 @@ export const TemplateDraggable = defineComponent({
             group: group_data,
             animation: 200,
             ghostClass: "template-ghost",
+            dragClass: "template-drag",
         }
         return () => (
             <VueDraggable list={props.data} v-slots={slots_data} item-key="id" {...attr_data} />
@@ -68,7 +69,7 @@ export const TemplateDraggableSource = defineComponent({
         const attr_data = {
             sort: false,
             group: { name: 'editor', pull: 'clone', put: false },
-            clone: (element: TemplateWidget) => element.template()
+            clone: (element: TemplateWidget) => element.template(),
         }
 
         return () => (
@@ -91,6 +92,8 @@ export const TemplateDraggableTrash = defineComponent({
 
         const attr_data = {
             group: { name: 'editor' },
+            dragClass: "template-drag",
+            ghostClass: "template-ghost",
         }
 
         return () => (

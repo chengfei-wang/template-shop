@@ -9,7 +9,7 @@ import { TemplateDraggable } from "./TemplateDraggable";
 import { TemplateDraggableSource } from "./TemplateDraggable";
 import { TemplateDraggableTrash } from "./TemplateDraggable";
 import { ref } from "vue";
-import { widget_is_container } from "../Widget";
+import { config_items } from "../Widget";
 import { Widget } from "../Widget";
 import { request } from "../Request";
 import { eval_template } from "../Model";
@@ -159,8 +159,8 @@ const footerOn = ref(false)
 
       <div class="template-editor-area template-editor-area-prop">
         <div v-if="selected_item !== undefined">
-          <config-panel-container v-if="widget_is_container(selected_item)" :selected_item="(selected_item)"
-            :key="`container-${selected_item.id}`" />
+          <config-panel-container v-if="config_items.CONTAINER.includes(selected_item.type)"
+            :selected_item="(selected_item)" :key="`container-${selected_item.id}`" />
           <config-panel-item v-else :selected_item="selected_item" :key="`item-${selected_item.id}`" />
         </div>
         <div v-else>

@@ -184,4 +184,8 @@ export const config_items = {
     FORM_METHOD: [
         'FORM',
     ],
+    CONTAINER: [
+        'CONTAINER',
+        'FORM',
+    ],
 }
