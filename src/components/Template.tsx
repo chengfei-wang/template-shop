@@ -315,6 +315,32 @@ export const image: TemplateWidget = {
     }
 }
 
+export const divider: TemplateWidget = {
+    name: "DIVIDER",
+    preview: (
+        <div class='template-item template-divider'>分割线</div>
+    ),
+    template: () => { return { id: random_id(), type: 'DIVIDER', node_prop: {}, children: [], form_prop: {} } },
+    editor_view: (content: Widget) => {
+        let prop = content.node_prop
+        let classList: string[] = create_class_list(['template-item'], prop.clazz)
+        return (
+            <div class={classList}>
+                <div class='template-item template-divider'>{prop.content}</div>
+            </div>
+        )
+    },
+    release_view: (content: Widget) => {
+        let prop = content.node_prop
+        let classList: string[] = create_class_list(['template-item'], prop.clazz)
+        return (
+            <div class={classList}>
+                <div class='template-item template-divider'>{prop.content}</div>
+            </div>
+        )
+    }
+}
+
 export const container: TemplateWidget = {
     name: "CONTAINER",
     preview: (
@@ -431,6 +457,7 @@ export const templates: TemplateWidget[] = [
     checkbox,
     radio,
     image,
+    divider,
     container,
     form,
 ]
@@ -444,6 +471,7 @@ export const template_render: { [key: string]: TemplateWidget } = {
     "CHECKBOX": checkbox,
     "RADIO": radio,
     "IMAGE": image,
+    "DIVIDER": divider,
     "CONTAINER": container,
     "FORM": form,
 }

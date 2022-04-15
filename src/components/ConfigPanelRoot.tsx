@@ -22,7 +22,6 @@ const ConfigPanelRoot = defineComponent({
                     </ElRadioGroup>
 
                 </ControlListItem>
-                <ElInput></ElInput>
                 <div class='style_editor_group'>
                     <p>开启Header</p>
                     <div class={'mdui-text-center'}>

@@ -135,6 +135,29 @@
     overflow: hidden;
 }
 
+.template-divider {
+    display: flex;
+    flex-direction: row;
+    min-height: 12px;
+}
+
+.template-divider:before,
+.template-divider:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 1px solid;
+    margin: auto;
+}
+
+.template-divider:before {
+    margin-right: 0px
+}
+
+.template-divider:after {
+    margin-left: 0px
+}
+
+
 .header-footer {
     height: 36px;
 }
