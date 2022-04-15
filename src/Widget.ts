@@ -139,7 +139,7 @@ export const class_group: {
     textSize: [
         { className: "mdui-typo-headline", classDesc: "大标题" },
         { className: "mdui-typo-title", classDesc: "标题" },
-        { className: "mdui-typo-subtitle", classDesc: "副标题" },
+        { className: "mdui-typo-subheading", classDesc: "副标题" },
         { className: "mdui-typo-body-1", classDesc: "正文1" },
         { className: "mdui-typo-body-2", classDesc: "正文2" },
         { className: "mdui-typo-caption", classDesc: "提示文字" },
