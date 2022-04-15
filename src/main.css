@@ -79,6 +79,13 @@
     line-height: 32px;
 }
 
+.slot-control-item-handle {
+    float: left;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  
+
 /* template css */
 .template-container-root {
     min-height: 720px;

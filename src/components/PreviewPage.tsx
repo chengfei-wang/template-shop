@@ -7,6 +7,7 @@ import { eval_template } from "../Model";
 import mdui from "mdui";
 
 export default defineComponent({
+  name: "PreviewPage",
   setup() {
     const content_widgets = ref<Widget[]>([])
     const page_tid = ref("")

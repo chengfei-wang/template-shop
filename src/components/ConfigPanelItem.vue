@@ -98,7 +98,7 @@ get_all_images()
         <div class="mdui-col-xs-6">
             <el-popover :width="360" trigger="click">
                 <template #reference>
-                    <div>从图床选择</div>
+                    <div>图床选择</div>
                 </template>
                 <template #default>
                     <div class="mdui-container-fluid">
@@ -113,7 +113,7 @@ get_all_images()
         <div class="mdui-col-xs-6">
             <el-popover :width="360" trigger="click">
                 <template #reference>
-                    <div>手动输入地址</div>
+                    <div>输入地址</div>
                 </template>
                 <template #default>
                     <el-input type="url" v-model="selected_item.node_prop.url" />

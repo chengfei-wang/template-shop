@@ -143,8 +143,6 @@ export const class_group: {
         { className: "mdui-typo-body-1", classDesc: "正文1" },
         { className: "mdui-typo-body-2", classDesc: "正文2" },
         { className: "mdui-typo-caption", classDesc: "提示文字" },
-        { className: "mdui-typo-footnote", classDesc: "脚注" },
-        { className: "mdui-typo-menu", classDesc: "菜单" },
     ],
     textAlign: [
         { className: "mdui-text-left", classDesc: "format_align_left" },
