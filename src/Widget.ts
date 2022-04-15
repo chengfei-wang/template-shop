@@ -30,14 +30,6 @@ export interface Widget {
     form_prop: FormProp
 }
 
-export function widget_is_container(widget: Widget): boolean {
-    return widget.type === 'CONTAINER' || widget.type === 'FORM'
-}
-
-export function widget_is_form(widget: Widget): boolean {
-    return widget.type === 'FORM'
-}
-
 export function clone_widget(widget: Widget): Widget {
     return {
         id: random_id(),
@@ -188,4 +180,8 @@ export const config_items = {
         'CONTAINER',
         'FORM',
     ],
+}
+
+export function is_container(widget: Widget): boolean {
+    return config_items.CONTAINER.includes(widget.type)
 }

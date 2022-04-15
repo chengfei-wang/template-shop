@@ -1,7 +1,7 @@
 import { defineComponent, PropType } from "vue"
 import { TemplateWidget, templates, template_render_function } from "./Template"
 import VueDraggable from "vuedraggable"
-import { SlotProp, Widget, widget_is_container } from "../Widget"
+import { SlotProp, Widget, is_container } from "../Widget"
 
 export const TemplateDraggable = defineComponent({
     name: "TemplateDraggable",
@@ -19,7 +19,7 @@ export const TemplateDraggable = defineComponent({
             item: (slot_props: { element: Widget, index: number }): JSX.Element => {
                 let element = slot_props.element
                 const selected_class = props.selected_item?.id == element.id ? 'template-selected' : ''
-                if (widget_is_container(element)) {
+                if (is_container(element)) {
                     return (
                         <div class={`template-container mdui-container-fluid ${selected_class}`} onClick={(e) => { props.select_item(element); e.stopPropagation() }}>
                             {element.children.map((slot_prop: SlotProp, index: number) => {
