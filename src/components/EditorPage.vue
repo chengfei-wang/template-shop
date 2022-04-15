@@ -132,7 +132,7 @@ const footerOn = ref(false)
   </toolbar>
   <page-body>
     <div class="mdui-container">
-      <div class="mdui-col-md-4">
+      <div class="template-editor-area template-editor-area-widget">
         <div id="template-source" class="template-source mdui-center">
           <template-draggable-source />
         </div>
@@ -142,21 +142,22 @@ const footerOn = ref(false)
         <div>
           <div class="mdui-text-center mdui-center">垃圾桶</div>
           <div id="template-trash">
-            <template-draggable-trash  class="template-trash mdui-center" />
+            <template-draggable-trash class="template-trash mdui-center" />
           </div>
         </div>
       </div>
 
-      <div class="mdui-col-md-4">
+      <div class="template-editor-area template-editor-area-content">
         <div class="mdui-textfield">
           <label class="mdui-textfield-label">页面标题</label>
           <input class="mdui-textfield-input" type="text" v-model="page_title" />
         </div>
-        <template-draggable @click="select_item(undefined)" id="template-container-root" class="template-container-root"
-          :data="content_editor" @select_item="select_item" :selected_item="selected_item" :select_item="select_item" />
+        <template-draggable @click="select_item(undefined)" id="template-container-root"
+          class="template-container-root mdui-center" :data="content_editor" :selected_item="selected_item"
+          :select_item="select_item" />
       </div>
 
-      <div class="mdui-col-md-4">
+      <div class="template-editor-area template-editor-area-prop">
         <div v-if="selected_item !== undefined">
           <config-panel-container v-if="widget_is_container(selected_item)" :selected_item="(selected_item)"
             :key="`container-${selected_item.id}`" />
@@ -170,3 +171,37 @@ const footerOn = ref(false)
     </div>
   </page-body>
 </template>
+
+<style scoped>
+.template-editor-area {
+  position: fixed;
+  top: 64px;
+  height: calc(100% - 84px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 8px 4px;
+  background-color: white;
+}
+
+.template-editor-area::-webkit-scrollbar {
+  width: 0px;
+}
+
+.template-editor-area-widget {
+  left: 0;
+  width: 20%;
+  /* margin: 8px 40px; */
+}
+
+.template-editor-area-prop {
+  right: 0;
+  width: 20%;
+  /* padding: 8px 16px; */
+}
+
+.template-editor-area-content {
+  left: 25%;
+  width: 50%;
+  overflow-x: scroll;
+}
+</style>
