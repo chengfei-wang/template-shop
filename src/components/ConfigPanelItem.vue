@@ -6,12 +6,14 @@ import { eval_image, Image } from "../Model";
 import { request, api } from "../Request";
 import { ElButton, ElPopover } from "element-plus";
 import ControlListItem from "./ControlListItem.vue";
+import { UniversalPropEditor } from "./Template";
 export default {
     name: "ConfigPanelItem",
     components: {
         ElButton,
         ElPopover,
         ControlListItem,
+        UniversalPropEditor,
     },
 }
 </script>
@@ -203,6 +205,8 @@ get_all_images()
     <control-list-item title="字段名称" v-if="config_items.NAME.includes(selected_item.type)">
         <el-input type="text" v-model="selected_item.node_prop.name" placeholder="字段名称" />
     </control-list-item>
+
+    <universal-prop-editor :selected_item="selected_item" :key="`universal-${selected_item.id}`" />
 </template>
 
 <style>

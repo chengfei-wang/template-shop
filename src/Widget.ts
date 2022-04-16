@@ -28,6 +28,7 @@ export interface Widget {
     node_prop: NodeProp
     children: SlotProp[]
     form_prop: FormProp
+    universal_prop?: any
 }
 
 export function clone_widget(widget: Widget): Widget {
@@ -64,21 +65,6 @@ export interface ClassItem {
 export interface FormMethod {
     name: string
 }
-
-
-export const template_widgets: Widget[] = [
-    { id: '0', type: 'P', node_prop: {}, children: [], form_prop: {} },
-    { id: '1', type: 'INPUT', node_prop: {}, children: [], form_prop: {} },
-    { id: '2', type: 'BUTTON', node_prop: {}, children: [], form_prop: {} },
-    { id: '3', type: 'CHECKBOX', node_prop: {}, children: [], form_prop: {} },
-    { id: '4', type: 'RADIO', node_prop: {}, children: [], form_prop: {} },
-    { id: '5', type: 'IMAGE', node_prop: {}, children: [], form_prop: {} },
-    { id: '6', type: 'FORM', node_prop: {}, children: [{ size: 12, children: [] }], form_prop: {} },
-    { id: '7', type: 'CONTAINER', node_prop: {}, children: [{ size: 12, children: [] }], form_prop: {} },
-    { id: '8', type: 'CONTAINER', node_prop: {}, children: [{ size: 12, children: [] }, { size: 4, children: [] }, { size: 4, children: [] }, { size: 4, children: [] }], form_prop: {} },
-    { id: '9', type: 'CONTAINER', node_prop: {}, children: [{ size: 6, children: [] }, { size: 6, children: [] }], form_prop: {} },
-    { id: 'a', type: 'CONTAINER', node_prop: {}, children: [{ size: 9, children: [] }, { size: 3, children: [] }], form_prop: {} },
-]
 
 export const class_group: {
     textColor: ClassItem[],

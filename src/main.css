@@ -8,6 +8,10 @@
     height: 32px;
 }
 
+.normal-divider-min {
+    height: 16px;
+}
+
 .image-preview-cover {
     object-fit: cover;
     height: 240px;

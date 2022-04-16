@@ -17,7 +17,17 @@ import mdui from "mdui"
 
 export default {
   name: "EditorPage",
-  components: { Draggable, Toolbar, PageBody, TemplateDraggable, TemplateDraggableSource, TemplateDraggableTrash: TemplateDraggableTrash, ConfigPanelItem, ConfigPanelContainer, ConfigPanelRoot }
+  components: {
+    Draggable,
+    Toolbar,
+    PageBody,
+    TemplateDraggable,
+    TemplateDraggableSource,
+    TemplateDraggableTrash,
+    ConfigPanelItem,
+    ConfigPanelContainer,
+    ConfigPanelRoot,
+  }
 }
 </script>
 
@@ -111,7 +121,6 @@ if (_tid != null && _tid.length > 0) {
 }
 
 get_template()
-
 
 // for test only
 const headerOn = ref(false)

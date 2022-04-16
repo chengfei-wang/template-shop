@@ -20,26 +20,26 @@ defineProps<{
         </div>
     </div>
 
-    <div class="normal-divider"></div>
+    <div class="normal-divider-min"></div>
 </template>
 
 <style>
 .list-item {
-    height: 36px;
-    border: 1px solid #e0e0e0;
+    min-height: 36px;
+    /* border: 1px solid #e0e0e0; */
     border-radius: 2px;
 }
 
 .list-item-title {
     font-size: 14px;
     font-weight: bold;
-    line-height: 36px;
-    height: 36px;
-    text-align: center;
+    /* line-height: 36px; */
+    min-height: 36px;
+    text-align: start;
 }
 
 .list-item-control {
-    text-align: center;
+    text-align: end;
 }
 
 .list-item-control div {

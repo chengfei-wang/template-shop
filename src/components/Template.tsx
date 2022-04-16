@@ -1,4 +1,7 @@
-import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
+import { ElInput, ElRadio, ElRadioGroup } from "element-plus";
+import { defineComponent, PropType } from "vue";
+import { Widget, ClassProp, FormProp, SlotProp, random_id, NodeProp } from "../Widget";
+import ControlListItem from "./ControlListItem.vue";
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
     let classList = Array.from(init)
@@ -21,12 +24,14 @@ function create_class_list(init: string[], prop?: ClassProp): string[] {
     return classList
 }
 
-export interface TemplateWidget {
+export interface TemplateWidget<T = any> {
     name: string
     preview: JSX.Element
     template: () => Widget
     editor_view: (content: Widget) => JSX.Element
     release_view: (content: Widget) => JSX.Element
+    universal_prop?: () => T
+    configuration?: (widget: Widget) => JSX.Element
 }
 
 const unknown: TemplateWidget = {
@@ -449,6 +454,109 @@ export const form: TemplateWidget = {
     }
 }
 
+export const radio_group: TemplateWidget<{
+    options: {
+        label: string
+        value: string
+    }[],
+}> = {
+    universal_prop() {
+        return {
+            options: [
+                { label: "Option 1", value: "option1" },
+                { label: "Option 2", value: "option2" },
+                { label: "Option 3", value: "option3" }
+            ]
+        }
+    },
+
+    configuration: (widget) => {
+        return (
+            <div>
+                <ControlListItem title="字段名称">
+                    <ElInput v-model={widget.node_prop.name}></ElInput>
+                </ControlListItem>
+                <ControlListItem title="选项列表">
+                    
+                </ControlListItem>
+            </div>
+        )
+    },
+    name: "RADIO_GROUP",
+    preview: (
+        <div class='mdui-container-fluid'>
+            <label class="mdui-col-xs-12 mdui-radio">
+                <input type="radio" name='radio-group-demo' value='' disabled />
+                <i class="mdui-radio-icon"></i>
+                Option 1
+            </label>
+            <label class="mdui-col-xs-12 mdui-radio">
+                <input type="radio" name='radio-group-demo' value='' disabled />
+                <i class="mdui-radio-icon"></i>
+                Option 1
+            </label>
+            <label class="mdui-col-xs-12 mdui-radio">
+                <input type="radio" name='radio-group-demo' value='' disabled />
+                <i class="mdui-radio-icon"></i>
+                Option 1
+            </label>
+        </div>
+    ),
+    template() {
+        return {
+            id: random_id(),
+            type: "RADIO_GROUP",
+            node_prop: { name: "radio-group-demo", content: "多选框" },
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop?.()
+        }
+    },
+    editor_view: function (content: Widget): JSX.Element {
+        const classList = create_class_list(['template-item'], content.node_prop.clazz)
+        return (
+            <div class={classList}>
+                <div class="template-default-text-single">
+                    {content.node_prop.content}
+                </div>
+                {content.universal_prop.options.map((option: { label: string, value: string }, index: number) => {
+                    return (
+                        <div>
+                            <label class="mdui-radio">
+                                <input type="radio" name={content.node_prop.name} value={option.value} disabled />
+                                <i class="mdui-radio-icon"></i>
+                                {option.label}
+                            </label>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    },
+    release_view: function (content: Widget): JSX.Element {
+        const classList = create_class_list(['template-item'], content.node_prop.clazz)
+        return (
+            <div class={classList}>
+                <div class="template-default-text-single">
+                    {content.node_prop.content}
+                </div>
+                {content.universal_prop.options.map((option: { label: string, value: string }, index: number) => {
+                    return (
+                        <div>
+                            <label class="mdui-radio">
+                                <input type="radio" name={content.node_prop.name} value={option.value} />
+                                <i class="mdui-radio-icon"></i>
+                                {option.label}
+                            </label>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+}
+
+
 export const templates: TemplateWidget[] = [
     button,
     input,
@@ -460,6 +568,7 @@ export const templates: TemplateWidget[] = [
     divider,
     container,
     form,
+    radio_group,
 ]
 
 export const template_render: { [key: string]: TemplateWidget } = {
@@ -474,8 +583,26 @@ export const template_render: { [key: string]: TemplateWidget } = {
     "DIVIDER": divider,
     "CONTAINER": container,
     "FORM": form,
+    "RADIO_GROUP": radio_group,
 }
 
 export function template_render_function(widget: Widget): TemplateWidget {
     return template_render[widget.type] || unknown
 }
+
+export const UniversalPropEditor = defineComponent({
+    name: "UniversalPropEditor",
+    props: {
+        selected_item: {
+            type: Object as PropType<Widget>,
+            required: true
+        }
+    },
+    setup(props) {
+        return () => (
+            <>
+                {template_render_function(props.selected_item).configuration?.(props.selected_item)}
+            </>
+        )
+    }
+})
