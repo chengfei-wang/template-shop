@@ -1,7 +1,8 @@
-import { ElInput, ElRadio, ElRadioGroup } from "element-plus";
+import { ElInput } from "element-plus";
 import { defineComponent, PropType } from "vue";
-import { Widget, ClassProp, FormProp, SlotProp, random_id, NodeProp } from "../Widget";
+import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
 import ControlListItem from "./ControlListItem.vue";
+import { DraggableEditor } from "./SlotEditor";
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
     let classList = Array.from(init)
@@ -471,13 +472,30 @@ export const radio_group: TemplateWidget<{
     },
 
     configuration: (widget) => {
+        const universal_prop = widget.universal_prop
+        let item_slot = {
+            item: (props: { element: { label: string, value: string }, index: number }) => {
+                return (
+                    <div class='mdui-container-fluid'>
+                        <ElInput v-model={props.element.value} placeholder='选项' class='mdui-col-xs-12'></ElInput>
+                    </div>
+                )
+            },
+            add_item: () => {
+                universal_prop.options.push({ label: "", value: "" })
+            },
+            remove_item: (index: number) => {
+                universal_prop.options.splice(index, 1)
+            }
+        }
+
         return (
             <div>
                 <ControlListItem title="字段名称">
                     <ElInput v-model={widget.node_prop.name}></ElInput>
                 </ControlListItem>
-                <ControlListItem title="选项列表">
-                    
+                <ControlListItem title="选项列表" vertical={true}>
+                    <DraggableEditor items={widget.universal_prop.options} item_slot={item_slot}></DraggableEditor>
                 </ControlListItem>
             </div>
         )
@@ -525,7 +543,7 @@ export const radio_group: TemplateWidget<{
                             <label class="mdui-radio">
                                 <input type="radio" name={content.node_prop.name} value={option.value} disabled />
                                 <i class="mdui-radio-icon"></i>
-                                {option.label}
+                                {option.value}
                             </label>
                         </div>
                     )
@@ -546,7 +564,7 @@ export const radio_group: TemplateWidget<{
                             <label class="mdui-radio">
                                 <input type="radio" name={content.node_prop.name} value={option.value} />
                                 <i class="mdui-radio-icon"></i>
-                                {option.label}
+                                {option.value}
                             </label>
                         </div>
                     )

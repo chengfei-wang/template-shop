@@ -198,19 +198,19 @@ const footerOn = ref(false)
 
 .template-editor-area-widget {
   left: 0;
-  width: 20%;
+  width: 25%;
   /* margin: 8px 40px; */
 }
 
 .template-editor-area-prop {
   right: 0;
-  width: 20%;
+  width: 25%;
   /* padding: 8px 16px; */
 }
 
 .template-editor-area-content {
-  left: 25%;
-  width: 50%;
+  left: 30%;
+  width: 40%;
   overflow-x: scroll;
 }
 </style>
