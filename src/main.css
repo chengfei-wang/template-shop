@@ -12,6 +12,10 @@
     height: 16px;
 }
 
+.normal-divider-nano {
+    height: 8px;
+}
+
 .image-preview-cover {
     object-fit: cover;
     height: 240px;

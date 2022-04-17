@@ -1,22 +1,50 @@
-<script lang="ts">
-import { Widget } from "../Widget";
+<script lang="tsx">
+import { ElInputNumber } from "element-plus";
+import mdui from "mdui";
+import { SlotProp, Widget } from "../Widget";
 import { form_group, config_items } from "../Widget";
 import ControlListItem from "./ControlListItem.vue";
-import SlotEditor from "./SlotEditor";
+import { ListItemEdit } from "./ListItemEdit";
 
 export default {
     name: "ConfigPanelContainer",
     components: {
         ControlListItem,
-        SlotEditor,
+        ListItemEdit,
     },
 }
 </script>
 
-<script setup lang="ts">
-defineProps<{
+<script setup lang="tsx">
+const props = defineProps<{
     selected_item: Widget
 }>()
+
+const children_slot = {
+    item: (item: { element: SlotProp, index: number }): JSX.Element => {
+        return (
+            <ElInputNumber v-model={item.element.size} min={1} max={12}></ElInputNumber>
+        )
+    },
+    add_item(size: number = 6) {
+        props.selected_item.children.push(
+            {
+                size: size,
+                children: []
+            }
+        )
+    },
+    remove_item(index: number) {
+        if (props.selected_item.children[index].children.length > 0) {
+            mdui.snackbar({
+                message: "删除前请先清空子项",
+                position: "bottom",
+            })
+        } else {
+            props.selected_item.children.splice(index, 1)
+        }
+    }
+}
 </script>
 
 <template>
@@ -35,14 +63,7 @@ defineProps<{
         </el-radio-group>
     </control-list-item>
 
-    <control-list-item title="容器插槽">
-        <el-popover :width="350" trigger="click">
-            <template #reference>
-                <div>编辑插槽</div>
-            </template>
-            <template #default>
-                <slot-editor :container_slot="selected_item.children"></slot-editor>
-            </template>
-        </el-popover>
+    <control-list-item title="容器插槽" :vertical="true">
+        <list-item-edit :items="selected_item.children" :item_slot="children_slot"></list-item-edit>
     </control-list-item>
 </template>

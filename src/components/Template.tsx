@@ -2,7 +2,7 @@ import { ElInput } from "element-plus";
 import { defineComponent, PropType } from "vue";
 import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
 import ControlListItem from "./ControlListItem.vue";
-import { DraggableEditor } from "./SlotEditor";
+import { ListItemEdit } from "./ListItemEdit";
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
     let classList = Array.from(init)
@@ -495,7 +495,7 @@ export const radio_group: TemplateWidget<{
                     <ElInput v-model={widget.node_prop.name}></ElInput>
                 </ControlListItem>
                 <ControlListItem title="选项列表" vertical={true}>
-                    <DraggableEditor items={widget.universal_prop.options} item_slot={item_slot}></DraggableEditor>
+                    <ListItemEdit items={widget.universal_prop.options} item_slot={item_slot}></ListItemEdit>
                 </ControlListItem>
             </div>
         )
