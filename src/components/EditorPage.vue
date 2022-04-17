@@ -173,7 +173,7 @@ const footerOn = ref(false)
           <config-panel-item v-else :selected_item="selected_item" :key="`item-${selected_item.id}`" />
         </div>
         <div v-else>
-          <config-panel-root :is-header-on="headerOn" :is-footer-on="footerOn" @header-on="headerOn = !headerOn"
+          <config-panel-root :header-on="headerOn" :footer-on="footerOn" @header-on="headerOn = !headerOn"
             @footer-on="footerOn = !footerOn" />
         </div>
       </div>
