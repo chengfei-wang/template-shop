@@ -455,38 +455,24 @@ export const form: TemplateWidget = {
     }
 }
 
-export const radio_group: TemplateWidget<{
-    options: {
-        label: string
-        value: string
-    }[],
-}> = {
+export const radio_group: TemplateWidget<{ options: { label: string, value: string }[] }> = {
     universal_prop() {
         return {
             options: [
-                { label: "Option 1", value: "option1" },
-                { label: "Option 2", value: "option2" },
-                { label: "Option 3", value: "option3" }
+                { label: "Option 1", value: "Option 1" },
+                { label: "Option 2", value: "Option 2" },
+                { label: "Option 3", value: "Option 3" }
             ]
         }
     },
-
     configuration: (widget) => {
         const universal_prop = widget.universal_prop
         let item_slot = {
-            item: (props: { element: { label: string, value: string }, index: number }) => {
-                return (
-                    <div class='mdui-container-fluid'>
-                        <ElInput v-model={props.element.value} placeholder='选项' class='mdui-col-xs-12'></ElInput>
-                    </div>
-                )
-            },
-            add_item: () => {
-                universal_prop.options.push({ label: "", value: "" })
-            },
-            remove_item: (index: number) => {
-                universal_prop.options.splice(index, 1)
-            }
+            item: (props: { element: { label: string, value: string }, index: number }) => (
+                <ElInput v-model={props.element.value} placeholder='选项'></ElInput>
+            ),
+            add_item: () => universal_prop.options.push({ label: "", value: "" }),
+            remove_item: (index: number) => universal_prop.options.splice(index, 1),
         }
 
         return (
@@ -502,22 +488,31 @@ export const radio_group: TemplateWidget<{
     },
     name: "RADIO_GROUP",
     preview: (
-        <div class='mdui-container-fluid'>
-            <label class="mdui-col-xs-12 mdui-radio">
-                <input type="radio" name='radio-group-demo' value='' disabled />
-                <i class="mdui-radio-icon"></i>
-                Option 1
-            </label>
-            <label class="mdui-col-xs-12 mdui-radio">
-                <input type="radio" name='radio-group-demo' value='' disabled />
-                <i class="mdui-radio-icon"></i>
-                Option 1
-            </label>
-            <label class="mdui-col-xs-12 mdui-radio">
-                <input type="radio" name='radio-group-demo' value='' disabled />
-                <i class="mdui-radio-icon"></i>
-                Option 1
-            </label>
+        <div class='template-item'>
+            <div class="template-default-text-single">
+                单选框
+            </div>
+            <div>
+                <label class="mdui-radio">
+                    <input type="radio" name='radio-group-demo' value='' disabled />
+                    <i class="mdui-radio-icon"></i>
+                    Option 1
+                </label>
+            </div>
+            <div>
+                <label class="mdui-radio">
+                    <input type="radio" name='radio-group-demo' value='' disabled />
+                    <i class="mdui-radio-icon"></i>
+                    Option 1
+                </label>
+            </div>
+            <div>
+                <label class="mdui-radio">
+                    <input type="radio" name='radio-group-demo' value='' disabled />
+                    <i class="mdui-radio-icon"></i>
+                    Option 1
+                </label>
+            </div>
         </div>
     ),
     template() {
@@ -574,19 +569,131 @@ export const radio_group: TemplateWidget<{
     }
 }
 
+export const checkbox_group: TemplateWidget<{ options: { label: string, value: string }[] }> = {
+    universal_prop() {
+        return {
+            options: [
+                { label: "Option 1", value: "Option 1" },
+                { label: "Option 2", value: "Option 2" },
+                { label: "Option 3", value: "Option 3" }
+            ]
+        }
+    },
+    configuration: (widget) => {
+        const universal_prop = widget.universal_prop
+        let item_slot = {
+            item: (props: { element: { label: string, value: string }, index: number }) => (
+                <ElInput v-model={props.element.value} placeholder='选项'></ElInput>
+            ),
+            add_item: () => universal_prop.options.push({ label: "", value: "" }),
+            remove_item: (index: number) => universal_prop.options.splice(index, 1),
+        }
+
+        return (
+            <div>
+                <ControlListItem title="字段名称">
+                    <ElInput v-model={widget.node_prop.name}></ElInput>
+                </ControlListItem>
+                <ControlListItem title="选项列表" vertical={true}>
+                    <ListItemEdit items={widget.universal_prop.options} item_slot={item_slot}></ListItemEdit>
+                </ControlListItem>
+            </div>
+        )
+    },
+    name: "CHECKBOX_GROUP",
+    preview: (
+        <div class='template-item'>
+            <div class="template-default-text-single">
+                多选框
+            </div>
+            <div>
+                <label class="mdui-checkbox">
+                    <input type="checkbox" name='checkbox-group-demo' value='' disabled />
+                    <i class="mdui-checkbox-icon"></i>
+                    Option 1
+                </label>
+            </div>
+            <div>
+                <label class="mdui-checkbox">
+                    <input type="checkbox" name='checkbox-group-demo' value='' disabled />
+                    <i class="mdui-checkbox-icon"></i>
+                    Option 1
+                </label>
+            </div>
+            <div>
+                <label class="mdui-checkbox">
+                    <input type="checkbox" name='checkbox-group-demo' value='' disabled />
+                    <i class="mdui-checkbox-icon"></i>
+                    Option 1
+                </label>
+            </div>
+        </div>
+    ),
+    template() {
+        return {
+            id: random_id(),
+            type: "CHECKBOX_GROUP",
+            node_prop: { name: "checkbox-group-demo", content: "多选框" },
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop?.()
+        }
+    },
+    editor_view: function (content: Widget): JSX.Element {
+        const classList = create_class_list(['template-item'], content.node_prop.clazz)
+        return (
+            <div class={classList}>
+                <div class="template-default-text-single">
+                    {content.node_prop.content}
+                </div>
+                {content.universal_prop.options.map((option: { label: string, value: string }, index: number) => {
+                    return (
+                        <div>
+                            <label class="mdui-checkbox">
+                                <input type="checkbox" name={content.node_prop.name} value={option.value} disabled />
+                                <i class="mdui-checkbox-icon"></i>
+                                {option.value}
+                            </label>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    },
+    release_view: function (content: Widget): JSX.Element {
+        const classList = create_class_list(['template-item'], content.node_prop.clazz)
+        return (
+            <div class={classList}>
+                <div class="template-default-text-single">
+                    {content.node_prop.content}
+                </div>
+                {content.universal_prop.options.map((option: { label: string, value: string }, index: number) => {
+                    return (
+                        <div>
+                            <label class="mdui-checkbox">
+                                <input type="checkbox" name={content.node_prop.name} value={option.value} />
+                                <i class="mdui-checkbox-icon"></i>
+                                {option.value}
+                            </label>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+}
 
 export const templates: TemplateWidget[] = [
     button,
     input,
     text_single,
     text_multi,
-    checkbox,
-    radio,
+    radio_group,
+    checkbox_group,
     image,
     divider,
     container,
     form,
-    radio_group,
 ]
 
 export const template_render: { [key: string]: TemplateWidget } = {
@@ -595,13 +702,12 @@ export const template_render: { [key: string]: TemplateWidget } = {
     "INPUT": input,
     "TEXT_SINGLE": text_single,
     "TEXT_MULTI": text_multi,
-    "CHECKBOX": checkbox,
-    "RADIO": radio,
+    "RADIO_GROUP": radio_group,
+    "CHECKBOX_GROUP": checkbox_group,
     "IMAGE": image,
     "DIVIDER": divider,
     "CONTAINER": container,
     "FORM": form,
-    "RADIO_GROUP": radio_group,
 }
 
 export function template_render_function(widget: Widget): TemplateWidget {

@@ -28,7 +28,7 @@ defineProps<{
         </div>
     </div>
 
-    <div class="normal-divider-min"></div>
+    <div class="normal-divider-micro"></div>
 </template>
 
 <style>
