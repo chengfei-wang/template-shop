@@ -3,7 +3,7 @@ import { ElInputNumber } from "element-plus";
 import mdui from "mdui";
 import { SlotProp, Widget } from "../Widget";
 import { form_group, config_items } from "../Widget";
-import ControlListItem from "./ControlListItem.vue";
+import { ControlListItem } from "./ControlListItem";
 import { ListItemEdit } from "./ListItemEdit";
 
 export default {

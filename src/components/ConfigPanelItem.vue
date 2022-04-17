@@ -5,7 +5,7 @@ import { Widget } from "../Widget";
 import { eval_image, Image } from "../Model";
 import { request, api } from "../Request";
 import { ElButton, ElPopover } from "element-plus";
-import ControlListItem from "./ControlListItem.vue";
+import { ControlListItem } from "./ControlListItem";
 import { UniversalPropEditor } from "./Template";
 export default {
     name: "ConfigPanelItem",
@@ -214,12 +214,6 @@ get_all_images()
     width: 100px;
     height: 100px;
     object-fit: cover;
-}
-
-.template-sample-cell {
-    border-radius: 4px;
-    background-color: argb(0.5, 0, 0, 0);
-    height: 100%;
 }
 
 .template-color-choice-cell {

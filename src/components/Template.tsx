@@ -1,7 +1,7 @@
 import { ElInput } from "element-plus";
 import { defineComponent, PropType } from "vue";
 import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
-import ControlListItem from "./ControlListItem.vue";
+import { ControlListItem } from "./ControlListItem";
 import { ListItemEdit } from "./ListItemEdit";
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
