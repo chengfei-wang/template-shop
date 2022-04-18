@@ -25,37 +25,57 @@ function create_class_list(init: string[], prop?: ClassProp): string[] {
     return classList
 }
 
-export interface TemplateWidget<T = any> {
+export interface TemplateWidget<T = {}> {
     name: string
     preview: JSX.Element
-    template: () => Widget
-    editor_view: (content: Widget) => JSX.Element
-    release_view: (content: Widget) => JSX.Element
-    universal_prop?: () => T
-    configuration?: (widget: Widget) => JSX.Element
+    template(): Widget<T>
+    editor_view(content: Widget<T>): JSX.Element
+    release_view(content: Widget<T>): JSX.Element
+    universal_prop(): T
+    configuration(widget: Widget<T>): JSX.Element
 }
 
 const unknown: TemplateWidget = {
     name: "UNKNOWN",
     preview: <div>未知组件</div>,
-    template: () => {
-        return { id: random_id(), type: "UNKNOWN", node_prop: {}, children: [], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view() {
         return <div>未知组件</div>
     },
-    release_view: (content: Widget) => {
+    release_view() {
         return <div>未知组件</div>
+    },
+    universal_prop() {
+        return {}
+    },
+    configuration() {
+        return <div></div>
     }
 }
 
-export const button: TemplateWidget = {
+export const button: TemplateWidget<{ action: string, arguments: any[] }> = {
     name: "BUTTON",
     preview: (<button class='template-item template-default-button'>普通按钮</button>),
-    template: () => {
-        return { id: random_id(), type: 'BUTTON', node_prop: {}, children: [], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '普通按钮'
@@ -63,23 +83,45 @@ export const button: TemplateWidget = {
         let classList: string[] = create_class_list(['template-item', 'template-default-button'], prop.clazz)
         return (<button class={classList}>{prop.content}</button>)
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '普通按钮'
         }
         let classList: string[] = create_class_list(['template-item', 'template-default-button'], prop.clazz)
         return (<button class={classList} disabled>{prop.content}</button>)
+    },
+    universal_prop() {
+        return {
+            action: '',
+            arguments: []
+        }
+    },
+    configuration(widget) {
+        return (
+            <div>
+                <ControlListItem title='按钮类型'>
+                    <ElInput v-model={widget.universal_prop.action} placeholder='请输入按钮类型' />
+                </ControlListItem>
+            </div>
+        )
     }
 }
 
 export const text_single: TemplateWidget = {
     name: "TEXT_SINGLE",
     preview: (<p class='template-item template-default-text-single mdui-text-center'>单行文本</p>),
-    template: () => {
-        return { id: random_id(), type: 'TEXT_SINGLE', node_prop: {}, children: [], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '单行文本'
@@ -87,23 +129,38 @@ export const text_single: TemplateWidget = {
         let classList: string[] = create_class_list(['template-item', 'template-default-text-single'], prop.clazz)
         return (<p class={classList} style={prop.styles}>{prop.content}</p>)
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '单行文本'
         }
         let classList: string[] = create_class_list(['template-item', 'template-default-text-single'], prop.clazz)
         return (<p class={classList} style={prop.styles}>{prop.content}</p>)
+    },
+    configuration() {
+        return (
+            <div></div>
+        )
+    },
+    universal_prop() {
+        return {}
     }
 }
 
 export const text_multi: TemplateWidget = {
     name: "TEXT_MULTI",
     preview: (<p class='template-item template-default-text-multi mdui-text-center'>多行文本<br />多行文本</p>),
-    template: () => {
-        return { id: random_id(), type: 'TEXT_MULTI', node_prop: {}, children: [], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '多行文本'
@@ -111,13 +168,21 @@ export const text_multi: TemplateWidget = {
         let classList: string[] = create_class_list(['template-item', 'template-default-text-multi'], prop.clazz)
         return (<p class={classList} style={prop.styles}>{prop.content}</p>)
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '多行文本'
         }
         let classList: string[] = create_class_list(['template-item', 'template-default-text-multi'], prop.clazz)
         return (<p class={classList} style={prop.styles}>{prop.content}</p>)
+    },
+    configuration(_) {
+        return (
+            <div></div>
+        )
+    },
+    universal_prop() {
+        return {}
     }
 }
 
@@ -125,10 +190,17 @@ export const text_multi: TemplateWidget = {
 export const input: TemplateWidget = {
     name: "INPUT",
     preview: (<input class='template-item template-default-input' placeholder='默认文本框' type='text' disabled />),
-    template: () => {
-        return { id: random_id(), type: 'INPUT', node_prop: {}, children: [], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '默认文本框'
@@ -138,11 +210,15 @@ export const input: TemplateWidget = {
             prop.type = 'text'
         }
 
+        if (prop.name == undefined) {
+            prop.name = ''
+        }
+        
         let classList: string[] = create_class_list(['template-item', 'template-default-input'], prop.clazz)
 
         return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} disabled />)
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         const prop = content.node_prop
         if (prop.content == undefined) {
             prop.content = '请输入文本'
@@ -152,117 +228,16 @@ export const input: TemplateWidget = {
             prop.type = 'text'
         }
 
+
         let classList: string[] = create_class_list(['template-item', 'template-default-input'], prop.clazz)
 
         return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} />)
-    }
-}
-
-export const checkbox: TemplateWidget = {
-    name: "CHECKBOX",
-    preview: (
-        <div class='template-item'>
-            <label class='mdui-checkbox'>
-                <input type='checkbox' disabled />
-                <i class='mdui-checkbox-icon' />
-                多选框
-            </label>
-        </div>
-    ),
-    template: () => { return { id: random_id(), type: 'CHECKBOX', node_prop: {}, children: [], form_prop: {} } },
-    editor_view: (content: Widget) => {
-        let prop = content.node_prop
-        if (prop.content == undefined) prop.content = '多选框'
-        if (prop.name == undefined) prop.name = 'default_checkbox_group'
-
-        let classList: string[] = create_class_list(['template-item'], prop.clazz)
-
-        return (
-            <div class={classList}>
-                <label class='mdui-checkbox'>
-                    <input type='checkbox' name={prop.name} value={prop.content} disabled />
-                    <i class='mdui-checkbox-icon' />
-                    {prop.content}
-                </label>
-            </div>
-        );
-
     },
-    release_view: (content: Widget) => {
-        let prop = content.node_prop
-        if (prop.content == undefined) prop.content = '多选框'
-        if (prop.name == undefined) prop.name = 'default_checkbox_group'
-
-        let classList: string[] = create_class_list(['template-item'], prop.clazz)
-
-        return (
-            <div class={classList}>
-                <label class='mdui-checkbox'>
-                    <input type='checkbox' name={prop.name} value={prop.content} />
-                    <i class='mdui-checkbox-icon' />
-                    {prop.content}
-                </label>
-            </div>
-        );
-    }
-}
-
-
-export const radio: TemplateWidget = {
-    name: "RADIO",
-    preview: (
-        <div class='template-item'>
-            <label class='mdui-radio'>
-                <input type='radio' disabled />
-                <i class='mdui-radio-icon' />
-                单选框
-            </label>
-        </div>
-    ),
-    template: () => { return { id: random_id(), type: 'RADIO', node_prop: {}, children: [], form_prop: {} } },
-    editor_view: (content: Widget) => {
-        let prop = content.node_prop
-        if (prop.content == undefined) {
-            prop.content = '单选框'
-        }
-
-        if (prop.name == undefined) {
-            prop.name = 'default_radio_group'
-        }
-
-        let classList: string[] = create_class_list(['template-item'], prop.clazz)
-
-        return (
-            <div class={classList}>
-                <label class='mdui-radio'>
-                    <input type='radio' name={prop.name} value={prop.content} disabled />
-                    <i class='mdui-radio-icon' />
-                    {prop.content}
-                </label>
-            </div>
-        )
+    universal_prop() {
+        return {}
     },
-    release_view: (content: Widget) => {
-        let prop = content.node_prop
-        if (prop.content == undefined) {
-            prop.content = '单选框'
-        }
-
-        if (prop.name == undefined) {
-            prop.name = 'default_radio_group'
-        }
-
-        let classList: string[] = create_class_list(['template-item'], prop.clazz)
-
-        return (
-            <div class={classList}>
-                <label class='mdui-radio'>
-                    <input type='radio' name={prop.name} value={prop.content} />
-                    <i class='mdui-radio-icon' />
-                    {prop.content}
-                </label>
-            </div>
-        )
+    configuration() {
+        return <div></div>
     }
 }
 
@@ -274,10 +249,17 @@ export const image: TemplateWidget = {
             <div class='template-image-title'>图片标题</div>
         </div>
     ),
-    template: () => {
-        return { id: random_id(), type: 'IMAGE', node_prop: {}, children: [], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view(content) {
         let prop = content.node_prop
         let classList: string[] = create_class_list(['template-item'], prop.clazz)
         if (prop.url === undefined || prop.url.length === 0) {
@@ -298,7 +280,7 @@ export const image: TemplateWidget = {
             )
         }
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         let prop = content.node_prop
         let classList: string[] = create_class_list(['template-item'], prop.clazz)
         if (prop.url == undefined || prop.url.length == 0) {
@@ -318,6 +300,14 @@ export const image: TemplateWidget = {
                 </div>
             )
         }
+    },
+    universal_prop() {
+        return {}
+    },
+    configuration() {
+        return (
+            <div></div>
+        )
     }
 }
 
@@ -326,8 +316,17 @@ export const divider: TemplateWidget = {
     preview: (
         <div class='template-item template-divider'>分割线</div>
     ),
-    template: () => { return { id: random_id(), type: 'DIVIDER', node_prop: {}, children: [], form_prop: {} } },
-    editor_view: (content: Widget) => {
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
+    },
+    editor_view(content) {
         let prop = content.node_prop
         let classList: string[] = create_class_list(['template-item'], prop.clazz)
         return (
@@ -336,7 +335,7 @@ export const divider: TemplateWidget = {
             </div>
         )
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         let prop = content.node_prop
         let classList: string[] = create_class_list(['template-item'], prop.clazz)
         return (
@@ -344,6 +343,12 @@ export const divider: TemplateWidget = {
                 <div class='template-item template-divider'>{prop.content}</div>
             </div>
         )
+    },
+    universal_prop() {
+        return {}
+    },
+    configuration() {
+        return <div></div>
     }
 }
 
@@ -359,10 +364,17 @@ export const container: TemplateWidget = {
             </div>
         </div>
     ),
-    template: () => {
-        return { id: random_id(), type: 'CONTAINER', node_prop: {}, children: [{ size: 6, children: [] }, { size: 6, children: [] }], form_prop: {} }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {}, children: [{ size: 6, children: [] },
+            { size: 6, children: [] }],
+            form_prop: {},
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view() {
         return (
             <div class="template-item template-container mdui-container-fluid">
                 <div class='template-slot mdui-col-xs-6'>
@@ -374,7 +386,7 @@ export const container: TemplateWidget = {
             </div>
         )
     },
-    release_view: (content: Widget) => {
+    release_view(content) {
         let children: SlotProp[] = content.children
 
         let items = children.map((child: SlotProp, index: number) => {
@@ -397,6 +409,12 @@ export const container: TemplateWidget = {
                 {items}
             </div>
         )
+    },
+    universal_prop() {
+        return {}
+    },
+    configuration() {
+        return <div></div>
     }
 }
 
@@ -409,10 +427,17 @@ export const form: TemplateWidget = {
             </div>
         </div>
     ),
-    template: () => {
-        return { id: random_id(), type: 'FORM', node_prop: {}, children: [{ size: 12, children: [] }], form_prop: { method: 'POST', url: '' } }
+    template() {
+        return {
+            id: random_id(),
+            type: this.name,
+            node_prop: {},
+            children: [{ size: 12, children: [] }],
+            form_prop: { method: 'POST', url: '' },
+            universal_prop: this.universal_prop()
+        }
     },
-    editor_view: (content: Widget) => {
+    editor_view() {
         return (
             <div class="template-item template-container mdui-container-fluid">
                 <div class='template-slot mdui-col-xs-6'>
@@ -424,7 +449,7 @@ export const form: TemplateWidget = {
             </div>
         )
     },
-    release_view: (content: Widget) => {
+    release_view(content: Widget) {
         let form_prop: FormProp = content.form_prop
 
         let children: SlotProp[] = content.children
@@ -452,6 +477,12 @@ export const form: TemplateWidget = {
                 </div>
             </form>
         )
+    },
+    universal_prop() {
+        return {}
+    },
+    configuration() {
+        return <div></div>
     }
 }
 
@@ -465,7 +496,7 @@ export const radio_group: TemplateWidget<{ options: { label: string, value: stri
             ]
         }
     },
-    configuration: (widget) => {
+    configuration(widget) {
         const universal_prop = widget.universal_prop
         let item_slot = {
             item: (props: { element: { label: string, value: string }, index: number }) => (
@@ -518,14 +549,14 @@ export const radio_group: TemplateWidget<{ options: { label: string, value: stri
     template() {
         return {
             id: random_id(),
-            type: "RADIO_GROUP",
+            type: this.name,
             node_prop: { name: "radio-group-demo", content: "多选框" },
             children: [],
             form_prop: {},
-            universal_prop: this.universal_prop?.()
+            universal_prop: this.universal_prop()
         }
     },
-    editor_view: function (content: Widget): JSX.Element {
+    editor_view(content) {
         const classList = create_class_list(['template-item'], content.node_prop.clazz)
         return (
             <div class={classList}>
@@ -546,7 +577,7 @@ export const radio_group: TemplateWidget<{ options: { label: string, value: stri
             </div>
         )
     },
-    release_view: function (content: Widget): JSX.Element {
+    release_view(content): JSX.Element {
         const classList = create_class_list(['template-item'], content.node_prop.clazz)
         return (
             <div class={classList}>
@@ -632,14 +663,14 @@ export const checkbox_group: TemplateWidget<{ options: { label: string, value: s
     template() {
         return {
             id: random_id(),
-            type: "CHECKBOX_GROUP",
+            type: this.name,
             node_prop: { name: "checkbox-group-demo", content: "多选框" },
             children: [],
             form_prop: {},
-            universal_prop: this.universal_prop?.()
+            universal_prop: this.universal_prop()
         }
     },
-    editor_view: function (content: Widget): JSX.Element {
+    editor_view(content) {
         const classList = create_class_list(['template-item'], content.node_prop.clazz)
         return (
             <div class={classList}>
@@ -660,7 +691,7 @@ export const checkbox_group: TemplateWidget<{ options: { label: string, value: s
             </div>
         )
     },
-    release_view: function (content: Widget): JSX.Element {
+    release_view(content) {
         const classList = create_class_list(['template-item'], content.node_prop.clazz)
         return (
             <div class={classList}>
@@ -724,9 +755,9 @@ export const UniversalPropEditor = defineComponent({
     },
     setup(props) {
         return () => (
-            <>
-                {template_render_function(props.selected_item).configuration?.(props.selected_item)}
-            </>
+            <div>
+                {template_render_function(props.selected_item).configuration(props.selected_item)}
+            </div>
         )
     }
 })

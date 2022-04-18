@@ -22,23 +22,13 @@ export interface FormProp {
     url?: string
 }
 
-export interface Widget {
+export interface Widget<T = {}> {
     id: string
     type: string
     node_prop: NodeProp
     children: SlotProp[]
     form_prop: FormProp
-    universal_prop?: any
-}
-
-export function clone_widget(widget: Widget): Widget {
-    return {
-        id: random_id(),
-        type: widget.type,
-        node_prop: {},
-        children: clone_slot_props(widget.children),
-        form_prop: { method: widget.form_prop.method, url: widget.form_prop.url }
-    }
+    universal_prop: T
 }
 
 export interface ClassProp {
