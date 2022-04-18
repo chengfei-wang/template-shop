@@ -6,5 +6,8 @@ export default defineConfig({
     plugins: [vue(), jsx()],
     server: {
         host: '0.0.0.0',
+    },
+    build: {
+        chunkSizeWarningLimit: 1024,
     }
 })
