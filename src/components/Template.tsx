@@ -1,8 +1,26 @@
 import { ElInput } from "element-plus";
 import { defineComponent, PropType } from "vue";
+import { request_urlencoded } from "../Request";
 import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
 import { ControlListItem } from "./ControlListItem";
 import { ListItemEdit } from "./ListItemEdit";
+
+function form_action(payload: Event) {
+    payload.preventDefault();
+    const form = payload.target as HTMLFormElement;
+    const data = new FormData(form);
+    const args: { [key: string]: any[] } = {};
+    for (const [key, value] of data.entries()) {
+        if (!args[key]) {
+            args[key] = [];
+        }
+        args[key].push(value);
+    }
+    console.log(args);
+    request_urlencoded('form/test', data, (status, obj) => {
+        console.log(status, obj);
+    })
+}
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
     let classList = Array.from(init)
@@ -89,12 +107,12 @@ export const button: TemplateWidget<{ action: string, arguments: any[] }> = {
             prop.content = '普通按钮'
         }
         let classList: string[] = create_class_list(['template-item', 'template-default-button'], prop.clazz)
-        return (<button class={classList} disabled>{prop.content}</button>)
+        return (<button class={classList}>{prop.content}</button>)
     },
     universal_prop() {
         return {
             action: '',
-            arguments: []
+            arguments: [],
         }
     },
     configuration(widget) {
@@ -213,7 +231,7 @@ export const input: TemplateWidget = {
         if (prop.name == undefined) {
             prop.name = ''
         }
-        
+
         let classList: string[] = create_class_list(['template-item', 'template-default-input'], prop.clazz)
 
         return (<input type={prop.type} class={classList} name={prop.name} placeholder={prop.content} disabled />)
@@ -471,7 +489,7 @@ export const form: TemplateWidget = {
             )
         })
         return (
-            <form method={form_prop.method} action={form_prop.url} onSubmit={() => false}>
+            <form method={form_prop.method} action={form_prop.url} onSubmit={(payload) => form_action(payload)}>
                 <div class="mdui-container-fluid template-container-release" id={content.id}>
                     {items}
                 </div>
