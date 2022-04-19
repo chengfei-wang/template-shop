@@ -10,6 +10,7 @@ import MainPage from "./components/MainPage.vue";
 import NotFoundPage from './components/NotFoundPage.vue';
 import HistoryOrderPage from './components/HistoryOrderPage.vue';
 import DeployPage from './components/DeployPage.vue';
+import DeployHistoryPage from './components/DeployHistoryPage.vue';
 import ImageBedManagePage from './components/ImageBedManagePage.vue';
 import "./main.css"
 
@@ -21,7 +22,8 @@ const routes = {
     '/register': RegisterPage,
     '/history': HistoryOrderPage,
     '/deploy': DeployPage,
-    '/image-bed': ImageBedManagePage,
+    '/deploy/history': DeployHistoryPage,
+    '/image/manage': ImageBedManagePage,
 }
 
 const router = {

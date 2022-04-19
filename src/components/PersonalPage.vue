@@ -19,15 +19,19 @@ function user_logout() {
 }
 
 function goto_history() {
-  window.location.href = "history"
+  window.location.href = '/history'
 }
 
 function deploy_template() {
-  window.location.href = "deploy"
+  window.location.href = '/deploy'
+}
+
+function deploy_history() {
+  window.location.href = '/deploy/history'
 }
 
 function image_bed_manage() {
-  window.location.href = "image-bed"
+  window.location.href = '/image/manage'
 }
 
 function get_user_info() {
@@ -71,6 +75,10 @@ get_user_info()
           </li>
           <li class="mdui-list-item mdui-ripple" @click="deploy_template">
             <div class="mdui-list-item-content">一键部署模版</div>
+            <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
+          </li>
+          <li class="mdui-list-item mdui-ripple" @click="deploy_history">
+            <div class="mdui-list-item-content">模版部署历史</div>
             <i class="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
           </li>
           <li class="mdui-list-item mdui-ripple" @click="image_bed_manage">

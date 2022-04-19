@@ -19,7 +19,7 @@ const email = ref("")
 const password = ref("")
 
 function nav_register() {
-  window.location.href = "register"
+  window.location.href = '/register'
 }
 
 function login_handler() {
@@ -48,7 +48,7 @@ function login_handler() {
         position: 'bottom',
       });
     } else {
-      window.location.href = "/"
+      window.location.href = '/'
     }
   })
 

@@ -11,18 +11,16 @@ export default {
     components: { Toolbar, PageBody }
 }
 
-</script>
-
-
-<script setup lang="ts">
-interface DeployOption {
+export interface DeployOption {
     id: string
     group: string
     name: string
     price: number
     description: string
 }
+</script>
 
+<script setup lang="ts">
 const all_templates = ref<Template[]>([]);
 const deploy_template = ref<string | undefined>(undefined)
 
@@ -116,17 +114,23 @@ function deploy_page() {
     // console.log(`deploy_price: ¥${deploy_price.value / 100}`)
     let deploy_config = {
         template: deploy_template.value,
-        type: deploy_type.value,
-        user_verify: user_verify.value,
-        addition: deploy_addition.value,
+        deployType: deploy_type.value,
+        userVerify: user_verify.value,
+        deployAddition: deploy_addition.value,
     }
     console.log(deploy_config)
     request('deploy/page', deploy_config, (status, obj) => {
         if (status == 200 && obj?.code === 200) {
-            mdui.snackbar({
-                message: "部署成功",
-                position: "bottom",
-            })
+            if (obj.data.pageId) {
+                mdui.snackbar({
+                    message: "部署成功",
+                    position: "bottom",
+                    buttonText: "查看",
+                    onButtonClick: () => {
+                        window.location.href = '/deploy/history'
+                    }
+                })
+            }
         } else {
             mdui.snackbar({
                 message: obj.message || "部署失败",
