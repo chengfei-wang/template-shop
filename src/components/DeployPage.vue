@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref } from "vue";
+import { computed, ComputedRef, ref } from "vue";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
 import { request } from "../Request";
@@ -15,50 +15,44 @@ export default {
 
 
 <script setup lang="ts">
-interface DeployType {
-    id: string;
-    name: string
-    price: number
-    description: string
-}
-
-interface DeployAddition {
+interface DeployOption {
     id: string
+    group: string
     name: string
     price: number
-    checked: boolean,
     description: string
 }
-
-const deploy_type_list: DeployType[] = [
-    {
-        id: "0",
-        name: "静态部署",
-        price: 0,
-        description: "适合无需交互的网站"
-    },
-    {
-        id: "1",
-        name: "动态部署",
-        price: 499,
-        description: "适合有数据提交的网站"
-    }
-]
-
-const deploy_addition_list = ref<DeployAddition[]>([
-    { id: "1", name: "邮箱验证服务", price: 500, checked: false, description: "用户访问前验证邮箱是否真实" },
-    { id: "2", name: "短信验证服务", price: 1000, checked: false, description: "用户访问前手机号码是否真实" },
-    { id: "3", name: "大容量数据服务", price: 1000, checked: false, description: "可存储数据存储量增加10000条(初始1000条)" },
-    { id: "4", name: "数据导出服务(Beta)", price: 1, checked: false, description: "可以将表单数据进行解析并按表格导出" },
-    { id: "5", name: "访问统计服务(Beta)", price: 1, checked: false, description: "统计网站用户访问状况" },
-])
 
 const all_templates = ref<Template[]>([]);
-
-const deploy_price = ref<number>(0)
-
 const deploy_template = ref<string | undefined>(undefined)
-const deploy_type = ref<string | undefined>("0")
+
+const DEPLOY_OPTION_GROUP = ref<{
+    DEPLOY_TYPE: DeployOption[],
+    USER_VERIFY: DeployOption[],
+    DEPLOY_ADDITION: DeployOption[],
+}>({
+    DEPLOY_TYPE: [],
+    USER_VERIFY: [],
+    DEPLOY_ADDITION: [],
+})
+
+const deploy_type = ref<string | undefined>()
+const user_verify = ref<string | undefined>()
+const deploy_addition = ref<string[]>([])
+
+const deploy_price: ComputedRef<number> = computed(() => {
+    let price = 0;
+    if (deploy_type.value) {
+        price += DEPLOY_OPTION_GROUP.value.DEPLOY_TYPE.find(x => x.id === deploy_type.value)?.price ?? 0;
+    }
+    if (user_verify.value) {
+        price += DEPLOY_OPTION_GROUP.value.USER_VERIFY.find(x => x.id === user_verify.value)?.price ?? 0;
+    }
+    deploy_addition.value.forEach(item => {
+        price += DEPLOY_OPTION_GROUP.value.DEPLOY_ADDITION.find(x => x.id === item)?.price ?? 0;
+    })
+    return price;
+});
 
 function get_all_templates() {
     request("template/list", {}, (status, obj) => {
@@ -73,73 +67,132 @@ function get_all_templates() {
     })
 }
 
-function deploy_page() {
-    console.log("Deploying page...")
-    console.log("Deploy type:", deploy_type.value)
-    console.log("Deploy template:", deploy_template.value)
-    console.log("Deploy addition:", deploy_addition_list.value.filter(value => value.checked).map(value => value.name))
+function get_deploy_option_group() {
+    request('deploy/options', {}, (status, obj) => {
+        if (status == 200 && obj?.code === 200 && obj.data !== null) {
+            const options = obj.data
+            DEPLOY_OPTION_GROUP.value = {
+                DEPLOY_TYPE: options.DEPLOY_TYPE,
+                USER_VERIFY: options.USER_VERIFY,
+                DEPLOY_ADDITION: options.DEPLOY_ADDITION,
+            }
+            console.log(DEPLOY_OPTION_GROUP.value)
+        } else {
+            mdui.snackbar({
+                message: "获取发布选项失败",
+                position: "bottom",
+            })
+        }
+    })
 }
 
-function select_template(event: Event) {
-    const target = event.target as HTMLInputElement
-    deploy_template.value = target.value
+function deploy_page() {
+    if (deploy_template.value === undefined) {
+        mdui.snackbar({
+            message: "请选择部署页面",
+            position: "bottom",
+        })
+        return
+    }
+    if (deploy_type.value === undefined) {
+        mdui.snackbar({
+            message: "请选择发布类型",
+            position: "bottom",
+        })
+        return
+    }
+    if (user_verify.value === undefined) {
+        mdui.snackbar({
+            message: "请选择用户验证方式",
+            position: "bottom",
+        })
+        return
+    }
+    console.log("Deploying page...")
+    // console.log(`deploy_template: ${deploy_template.value}`)
+    // console.log(`deploy_type: ${deploy_type.value}`)
+    // console.log(`user_verify: ${user_verify.value}`)
+    // console.log(`deploy_addition: ${deploy_addition.value}`)
+    // console.log(`deploy_price: ¥${deploy_price.value / 100}`)
+    let deploy_config = {
+        template: deploy_template.value,
+        type: deploy_type.value,
+        user_verify: user_verify.value,
+        addition: deploy_addition.value,
+    }
+    console.log(deploy_config)
+    request('deploy/page', deploy_config, (status, obj) => {
+        if (status == 200 && obj?.code === 200) {
+            mdui.snackbar({
+                message: "部署成功",
+                position: "bottom",
+            })
+        } else {
+            mdui.snackbar({
+                message: obj.message || "部署失败",
+                position: "bottom",
+            })
+        }
+    })
 }
 
 get_all_templates()
+get_deploy_option_group()
 </script>
 
 <template>
     <toolbar title="一键部署">
-        <div class="mdui-typo-caption">预计消费 ¥{{ deploy_price / 100 }}</div>
+        <div class="mdui-typo-caption">¥{{ deploy_price / 100 }}</div>
         <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="deploy_page">
             <i class="mdui-icon material-icons">check</i>
         </a>
     </toolbar>
     <page-body>
         <div class="mdui-container">
-            <div>
-                <p class="mdui-typo-title">部署页面</p>
+            <div class="mdui-typo-title">
+                <p>部署页面</p>
             </div>
-            <select class="mdui-select" v-model="deploy_template" @change="select_template">
-                <option :value="undefined" selected disabled>请选择</option>
-                <option
-                    v-for="template in all_templates"
-                    :key="template.tid"
-                    :value="template.tid"
-                >{{ template.title }}</option>
-            </select>
-
+            <el-select v-model="deploy_template" placeholder="选择部署页面">
+                <el-option v-for="template in all_templates" :key="template.tid" :label="template.title"
+                    :value="template.tid">
+                </el-option>
+            </el-select>
             <div class="normal-divider"></div>
 
             <div>
                 <p class="mdui-typo-title">部署类型</p>
             </div>
             <div class="mdui-container-fluid">
-                <div class="mdui-col-md-4" v-for="option in deploy_type_list">
-                    <label class="mdui-radio">
-                        <input type="radio" :value="option.id" v-model="deploy_type" />
-                        <i class="mdui-radio-icon"></i>
-                        {{ option.name }}&nbsp;
-                        <span class="mdui-typo-caption">¥{{ option.price / 100 }}</span>
-                    </label>
-                </div>
+                <el-radio-group v-model="deploy_type">
+                    <el-radio-button v-for="option in DEPLOY_OPTION_GROUP.DEPLOY_TYPE" :key="option.id"
+                        :label="option.id">
+                        {{ option.name }}&nbsp;¥{{ option.price / 100 }}
+                    </el-radio-button>
+                </el-radio-group>
             </div>
+            <div class="normal-divider"></div>
 
+            <div>
+                <p class="mdui-typo-title">用户验证</p>
+            </div>
+            <div class="mdui-container-fluid">
+                <el-radio-group v-model="user_verify" size="small">
+                    <el-radio-button v-for="option in DEPLOY_OPTION_GROUP.USER_VERIFY" :key="option.id"
+                        :label="option.id">
+                        {{ option.name }}&nbsp;¥{{ option.price / 100 }}
+                    </el-radio-button>
+                </el-radio-group>
+            </div>
             <div class="normal-divider"></div>
 
             <p class="mdui-typo-title">附加服务</p>
-
             <div class="mdui-container-fluid">
-                <div class="mdui-col-md-4" v-for="addition in deploy_addition_list">
-                    <label class="mdui-checkbox">
-                        <input type="checkbox" :value="addition.id" v-model="addition.checked" />
-                        <i class="mdui-checkbox-icon"></i>
-                        {{ addition.name }}&nbsp;
-                        <span
-                            class="mdui-typo-caption"
-                        >¥{{ addition.price / 100 }}</span>
-                    </label>
-                </div>
+                <el-checkbox-group v-model="deploy_addition">
+                    <el-checkbox v-for="option in DEPLOY_OPTION_GROUP.DEPLOY_ADDITION" :key="option.id"
+                        :label="option.id">
+                        {{ option.name }}&nbsp;<span class="mdui-typo-caption">¥{{ option.price / 100 }}</span>
+                    </el-checkbox>
+                </el-checkbox-group>
             </div>
         </div>
     </page-body>
