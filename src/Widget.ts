@@ -143,8 +143,8 @@ export const config_items = {
     ],
     NAME: [
         'INPUT',
-        'CHECKBOX',
-        'RADIO',
+        'CHECKBOX_GROUP',
+        'RADIO_GROUP',
     ],
     TYPE: [
         'INPUT',

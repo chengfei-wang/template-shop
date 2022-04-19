@@ -508,9 +508,6 @@ export const radio_group: TemplateWidget<{ options: { label: string, value: stri
 
         return (
             <div>
-                <ControlListItem title="字段名称">
-                    <ElInput v-model={widget.node_prop.name}></ElInput>
-                </ControlListItem>
                 <ControlListItem title="选项列表" vertical={true}>
                     <ListItemEdit items={widget.universal_prop.options} item_slot={item_slot}></ListItemEdit>
                 </ControlListItem>
@@ -622,9 +619,6 @@ export const checkbox_group: TemplateWidget<{ options: { label: string, value: s
 
         return (
             <div>
-                <ControlListItem title="字段名称">
-                    <ElInput v-model={widget.node_prop.name}></ElInput>
-                </ControlListItem>
                 <ControlListItem title="选项列表" vertical={true}>
                     <ListItemEdit items={widget.universal_prop.options} item_slot={item_slot}></ListItemEdit>
                 </ControlListItem>
