@@ -37,8 +37,6 @@ const DeployHistoryCard = defineComponent({
                             <div class="mdui-card-primary-title">{deploy_history.deployTemplate?.title || ''}</div>
                             <div class="mdui-card-primary-subtitle">{deploy_history.deployTime.toLocaleString()}</div>
                         </div>
-                        <div class="mdui-card-content">
-                        </div>
                         <div class="mdui-card-actions">
                             <ElPopover v-slots={{
                                 reference: () => {
@@ -66,12 +64,12 @@ const DeployHistoryCard = defineComponent({
                                         </div>
                                     )
                                 }
-                            }} width={400}>
+                            }} width={350}>
 
                             </ElPopover>
                         </div>
                     </div>
-                </div >
+                </div>
             )
         }
     }
