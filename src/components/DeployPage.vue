@@ -130,6 +130,11 @@ function deploy_page() {
                         window.location.href = '/deploy/history'
                     }
                 })
+            } else {
+                mdui.snackbar({
+                    message: "部署成功",
+                    position: "bottom",
+                })
             }
         } else {
             mdui.snackbar({

@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { ref, computed, ComputedRef, defineComponent, PropType } from 'vue'
-import { request } from '../Request'
+import { api, request } from '../Request'
 import Toolbar from './Toolbar.vue';
 import PageBody from './PageBody.vue';
 import { eval_template, Template } from '../Model';
@@ -67,6 +67,7 @@ const DeployHistoryCard = defineComponent({
                             }} width={350}>
 
                             </ElPopover>
+                            <a class="mdui-btn mdui-ripple mdui-float-right" href={api(`page/release/${deploy_history.pagePath}`)}>查看</a>
                         </div>
                     </div>
                 </div>
