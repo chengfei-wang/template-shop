@@ -31,7 +31,7 @@ get_shared_template_list()
 
 <template>
   <toolbar title="模版市场">
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="get_shared_template_list">
+    <a class="mdui-btn mdui-btn-icon" @click="get_shared_template_list">
       <i class="mdui-icon material-icons">refresh</i>
     </a>
   </toolbar>

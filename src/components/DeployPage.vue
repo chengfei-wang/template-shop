@@ -152,7 +152,7 @@ get_deploy_option_group()
 <template>
     <toolbar title="一键部署">
         <div class="mdui-typo-caption">¥{{ deploy_price / 100 }}</div>
-        <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="deploy_page">
+        <a class="mdui-btn mdui-btn-icon" @click="deploy_page">
             <i class="mdui-icon material-icons">check</i>
         </a>
     </toolbar>

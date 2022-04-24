@@ -143,7 +143,7 @@ const footerOn = ref(false)
     </div>
     <el-popover trigger="hover" width="128">
       <template #reference>
-        <a class="mdui-btn mdui-btn-icon mdui-ripple mdui-hidden-xs">
+        <a class="mdui-btn mdui-btn-icon mdui-hidden-xs">
           <i class="mdui-icon material-icons">smartphone</i>
         </a>
       </template>
@@ -151,10 +151,10 @@ const footerOn = ref(false)
         <qr-code-image :text="preview_url" />
       </template>
     </el-popover>
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="preview_template">
+    <a class="mdui-btn mdui-btn-icon" @click="preview_template">
       <i class="mdui-icon material-icons">photo</i>
     </a>
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="save_template">
+    <a class="mdui-btn mdui-btn-icon" @click="save_template">
       <i class="mdui-icon material-icons">save</i>
     </a>
   </toolbar>

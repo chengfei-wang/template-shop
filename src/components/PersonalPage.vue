@@ -48,7 +48,7 @@ get_user_info()
 
 <template>
   <toolbar title="个人中心">
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="get_user_info">
+    <a class="mdui-btn mdui-btn-icon" @click="get_user_info">
       <i class="mdui-icon material-icons">refresh</i>
     </a>
   </toolbar>

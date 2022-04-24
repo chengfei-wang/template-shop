@@ -98,7 +98,7 @@ get_all_images()
     <toolbar title="图床管理">
         <!-- select a picture -->
         <div class="input-file-field">
-            <label for="upload_file_field" class="mdui-btn mdui-btn-icon mdui-ripple">
+            <label for="upload_file_field" class="mdui-btn mdui-btn-icon">
                 <input type="file" id="upload_file_field" accept="image/*" @change="upload_image" />
                 <i class="mdui-icon material-icons">add</i>
             </label>

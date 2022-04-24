@@ -56,7 +56,7 @@ get_template_list()
 
 <template>
   <toolbar title="开始创作">
-    <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="create_template">
+    <a class="mdui-btn mdui-btn-icon" @click="create_template">
       <i class="mdui-icon material-icons">add</i>
     </a>
   </toolbar>
