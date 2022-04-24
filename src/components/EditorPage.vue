@@ -8,12 +8,15 @@ import ConfigPanelRoot from "./ConfigPanelRoot";
 import { TemplateDraggable } from "./TemplateDraggable";
 import { TemplateDraggableSource } from "./TemplateDraggable";
 import { TemplateDraggableTrash } from "./TemplateDraggable";
+import { ElPopover } from "element-plus";
 import { ref } from "vue";
 import { config_items } from "../Widget";
 import { Widget } from "../Widget";
 import { request } from "../Request";
 import { eval_template } from "../Model";
-import mdui from "mdui"
+import QrCodeImage from "./QrCodeImage";
+import mdui from "mdui";
+import { computed } from "@vue/reactivity";
 
 export default {
   name: "EditorPage",
@@ -27,6 +30,8 @@ export default {
     ConfigPanelItem,
     ConfigPanelContainer,
     ConfigPanelRoot,
+    QrCodeImage,
+    ElPopover,
   }
 }
 </script>
@@ -114,6 +119,10 @@ function select_item(widget?: Widget) {
   selected_item.value = widget
 }
 
+const preview_url = computed(() => {
+  return `${location.origin}/preview?tid=${page_tid.value}`
+})
+
 const params = new URLSearchParams(location.search)
 const _tid = params.get('tid')
 if (_tid != null && _tid.length > 0) {
@@ -132,6 +141,16 @@ const footerOn = ref(false)
     <div v-if="page_update_time !== undefined" class="mdui-typo-caption">
       最后更新 {{ page_update_time.toLocaleString() }}
     </div>
+    <el-popover trigger="hover" width="128">
+      <template #reference>
+        <a class="mdui-btn mdui-btn-icon mdui-ripple mdui-hidden-xs">
+          <i class="mdui-icon material-icons">smartphone</i>
+        </a>
+      </template>
+      <template #default>
+        <qr-code-image :text="preview_url" />
+      </template>
+    </el-popover>
     <a class="mdui-btn mdui-btn-icon mdui-ripple" @click="preview_template">
       <i class="mdui-icon material-icons">photo</i>
     </a>
