@@ -43,6 +43,8 @@ const page_title = ref<string>("")
 const page_tid = ref<string>("")
 const page_update_time = ref<Date | undefined>()
 
+const content_draggable = ref<boolean>(true)
+
 const selected_item = ref<Widget | undefined>(undefined)
 
 function export_data(): string {
@@ -141,6 +143,7 @@ const footerOn = ref(false)
     <div v-if="page_update_time !== undefined" class="mdui-typo-caption">
       最后更新 {{ page_update_time.toLocaleString() }}
     </div>
+    <el-switch class="mdui-hidden-xs" v-model="content_draggable" active-text="拖拽开启" inactive-text="拖拽关闭"/>
     <el-popover trigger="hover" width="128">
       <template #reference>
         <a class="mdui-btn mdui-btn-icon mdui-hidden-xs">
@@ -180,7 +183,7 @@ const footerOn = ref(false)
           <label class="mdui-textfield-label">页面标题</label>
           <input class="mdui-textfield-input" type="text" v-model="page_title" />
         </div>
-        <template-draggable @click="select_item(undefined)" id="template-container-root"
+        <template-draggable @click="select_item(undefined)" id="template-container-root" :enable_drag="content_draggable"
           class="template-container-root mdui-center" :data="content_editor" :selected_item="selected_item"
           :select_item="select_item" />
       </div>

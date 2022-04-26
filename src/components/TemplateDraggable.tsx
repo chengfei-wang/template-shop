@@ -8,7 +8,8 @@ export const TemplateDraggable = defineComponent({
     props: {
         data: { type: Array as PropType<Widget[]>, default: () => [], required: true },
         select_item: { type: Function as PropType<(widget?: Widget) => void>, required: true },
-        selected_item: { type: Object as PropType<Widget> }
+        selected_item: { type: Object as PropType<Widget> },
+        enable_drag: { type: Boolean, required: true },
     },
     components: {
         VueDraggable
@@ -25,7 +26,7 @@ export const TemplateDraggable = defineComponent({
                             {element.children.map((slot_prop: SlotProp, index: number) => {
                                 return (
                                     <div id={`${element.id}-${index}`}>
-                                        <TemplateDraggable class={`template-slot mdui-col-xs-${slot_prop.size}`} data={slot_prop.children} select_item={props.select_item} selected_item={props.selected_item} />
+                                        <TemplateDraggable class={`template-slot mdui-col-xs-${slot_prop.size}`} data={slot_prop.children} select_item={props.select_item} selected_item={props.selected_item} enable_drag={props.enable_drag} />
                                     </div>
                                 )
                             })}
@@ -48,7 +49,7 @@ export const TemplateDraggable = defineComponent({
             dragClass: "template-drag",
         }
         return () => (
-            <VueDraggable list={props.data} v-slots={slots_data} item-key="id" {...attr_data} />
+            <VueDraggable list={props.data} v-slots={slots_data} item-key="id" {...attr_data} disabled={!(props.enable_drag)} />
         )
     },
 })
