@@ -9,7 +9,7 @@ import { TemplateDraggable } from "./TemplateDraggable";
 import { TemplateClickSource } from "./TemplateDraggable";
 import { TemplateDraggableTrash } from "./TemplateDraggable";
 import { ElPopover } from "element-plus";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { config_items } from "../Widget";
 import { Widget } from "../Widget";
 import { request } from "../Request";
@@ -35,6 +35,14 @@ export default {
 </script>
 
 <script setup lang="ts">
+onMounted(() => {
+    // is mobile
+    if (window.innerWidth > 768) {
+        const params = new URLSearchParams(location.search)
+        const _tid = params.get('tid')
+        window.location.href = `/editor?tid=${_tid}`;
+    }
+});
 const content_editor = ref<Widget[]>([])
 
 const page_title = ref<string>("")

@@ -9,7 +9,7 @@ import { TemplateDraggable } from "./TemplateDraggable";
 import { TemplateDraggableSource } from "./TemplateDraggable";
 import { TemplateDraggableTrash } from "./TemplateDraggable";
 import { ElPopover } from "element-plus";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { config_items } from "../Widget";
 import { Widget } from "../Widget";
 import { request } from "../Request";
@@ -36,6 +36,15 @@ export default {
 </script>
 
 <script setup lang="ts">
+onMounted(() => {
+    // is mobile
+    if (window.innerWidth < 768) {
+        const params = new URLSearchParams(location.search)
+        const _tid = params.get('tid')
+        window.location.href = `/editor/mobile?tid=${_tid}`;
+    }
+});
+
 const content_editor = ref<Widget[]>([])
 
 const page_title = ref<string>("")
@@ -142,7 +151,7 @@ const footerOn = ref(false)
     <div v-if="page_update_time !== undefined" class="mdui-typo-caption">
       最后更新 {{ page_update_time.toLocaleString() }}
     </div>
-    <el-switch class="mdui-hidden-xs" v-model="content_draggable" active-text="拖拽开启" inactive-text="拖拽关闭"/>
+    <el-switch class="mdui-hidden-xs" v-model="content_draggable" active-text="拖拽" inactive-text="滑动"/>
     <el-popover trigger="hover" width="128">
       <template #reference>
         <a class="mdui-btn mdui-btn-icon mdui-hidden-xs">
