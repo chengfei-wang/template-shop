@@ -49,7 +49,7 @@ const page_title = ref<string>("")
 const page_tid = ref<string>("")
 const page_update_time = ref<Date | undefined>()
 
-const content_draggable = ref<boolean>(true)
+const content_draggable = ref<boolean>(false)
 const add_element_drawer = ref<boolean>(false)
 const edit_element_drawer = computed({
     get: function () {
