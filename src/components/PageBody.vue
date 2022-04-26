@@ -1,5 +1,5 @@
 <template>
-<div style="margin-top: 96px;">
+<div style="margin-top: 80px;">
   <slot></slot>
 </div>
 </template>

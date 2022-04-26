@@ -9,14 +9,13 @@ import { TemplateDraggable } from "./TemplateDraggable";
 import { TemplateDraggableSource } from "./TemplateDraggable";
 import { TemplateDraggableTrash } from "./TemplateDraggable";
 import { ElPopover } from "element-plus";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { config_items } from "../Widget";
 import { Widget } from "../Widget";
 import { request } from "../Request";
 import { eval_template } from "../Model";
 import QrCodeImage from "./QrCodeImage";
 import mdui from "mdui";
-import { computed } from "@vue/reactivity";
 
 export default {
   name: "EditorPage",
@@ -113,7 +112,7 @@ function save_template() {
 }
 
 function preview_template() {
-  window.open(`preview?tid=${page_tid.value}`)
+  window.open(`/preview?tid=${page_tid.value}`)
 }
 
 function select_item(widget?: Widget) {

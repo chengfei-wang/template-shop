@@ -5,6 +5,7 @@ import 'element-plus/dist/index.css'
 import LoginPage from './components/LoginPage.vue'
 import RegisterPage from './components/RegisterPage.vue'
 import EditorPage from './components/EditorPage.vue'
+import EditorPageMobile from './components/EditorPageMobile.vue'
 import PreviewPage from './components/PreviewPage'
 import MainPage from "./components/MainPage.vue";
 import NotFoundPage from './components/NotFoundPage.vue';
@@ -18,6 +19,7 @@ const routes = {
     '/': MainPage,
     '/login': LoginPage,
     '/editor': EditorPage,
+    '/editor/mobile': EditorPageMobile,
     '/preview': PreviewPage,
     '/register': RegisterPage,
     '/history': HistoryOrderPage,

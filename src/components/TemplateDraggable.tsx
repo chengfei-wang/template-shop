@@ -54,6 +54,31 @@ export const TemplateDraggable = defineComponent({
     },
 })
 
+export const TemplateClickSource = defineComponent({
+    name: "TemplateClickSource",
+    props: {
+        onItemClick: {
+            type: Function as PropType<(template: TemplateWidget) => void>,
+            required: true,
+        },
+    },
+    setup(props) {
+        return () => (
+            <div>
+                {
+                    templates.map((template) => {
+                        return (
+                            <div class="template-preview" onClick={() => props.onItemClick(template)}>
+                                {template.preview}
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+})
+
 export const TemplateDraggableSource = defineComponent({
     name: "TemplateDraggableSource",
     components: {
