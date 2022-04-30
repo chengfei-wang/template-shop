@@ -3,20 +3,12 @@ import { computed, ComputedRef, ref } from "vue";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
 import { request } from "../Request";
-import { eval_template, Template } from "../Model";
+import { eval_template, Template, DeployOption } from "../Model";
 import mdui from "mdui";
 
 export default {
     name: "DeployPage",
     components: { Toolbar, PageBody }
-}
-
-export interface DeployOption {
-    id: string
-    group: string
-    name: string
-    price: number
-    description: string
 }
 </script>
 

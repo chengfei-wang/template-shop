@@ -3,8 +3,7 @@ import { ref, computed, ComputedRef, defineComponent, PropType } from 'vue'
 import { api, request } from '../Request'
 import Toolbar from './Toolbar.vue';
 import PageBody from './PageBody.vue';
-import { eval_template, Template } from '../Model';
-import { DeployOption } from './DeployPage.vue';
+import { eval_template, Template, DeployInfo, DeployOption } from '../Model';
 import { ElPopover } from 'element-plus';
 import mdui from 'mdui';
 
@@ -16,7 +15,8 @@ interface DeployHistoryComputed {
     deployAddition: DeployOption[],
     price: number,
     pagePath: string,
-    deployTime: Date
+    deployTime: Date,
+    deployOptions: (DeployOption | undefined)[],
 }
 
 const DeployHistoryCard = defineComponent({
@@ -47,13 +47,13 @@ const DeployHistoryCard = defineComponent({
                                     return (
                                         <div class='mdui-list mdui-list-dense'>
                                             {
-                                                [deploy_history.deployType, deploy_history.userVerify, ...deploy_history.deployAddition].map(addition => {
+                                                deploy_history.deployOptions.map(option => {
                                                     return (
                                                         <div class='mdui-list-item'>
                                                             <div class="mdui-list-item-content">
-                                                                <div class="mdui-list-item-title">{addition?.name} ¥{(addition?.price || 0) / 100}</div>
+                                                                <div class="mdui-list-item-title">{option?.name} ¥{(option?.price || 0) / 100}</div>
                                                                 <div class="mdui-list-item-text mdui-list-item-one-line">
-                                                                    <span class="mdui-text-color-grey">{addition?.description}</span>
+                                                                    <span class="mdui-text-color-grey">{option?.description}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -68,6 +68,7 @@ const DeployHistoryCard = defineComponent({
 
                             </ElPopover>
                             <a class="mdui-btn mdui-ripple mdui-float-right" href={api(`page/release/${deploy_history.pagePath}`)}>查看</a>
+                            <a class="mdui-btn mdui-ripple mdui-float-right" href={`/deploy/statistics?did=${deploy_history.deployId}`}>数据</a>
                         </div>
                     </div>
                 </div>
@@ -88,18 +89,7 @@ export default {
 
 
 <script setup lang="tsx">
-interface DeployHistory {
-    deployId: string
-    deployTemplate: string
-    deployType: string
-    userVerify: string
-    deployAddition: string[]
-    price: number
-    pagePath: string
-    deployTime: Date
-}
-
-const deploy_history = ref<DeployHistory[]>([]);
+const deploy_history = ref<DeployInfo[]>([]);
 const all_templates = ref<Template[]>([]);
 const DEPLOY_OPTION_GROUP = ref<{
     DEPLOY_TYPE: DeployOption[],
@@ -123,6 +113,7 @@ const deploy_history_computed: ComputedRef<DeployHistoryComputed[]> = computed((
                 deploy_addition.push(option);
             }
         })
+        const deploy_options: (DeployOption | undefined)[] = [deploy_type, user_verify, ...deploy_addition]
         return {
             deployId: value.deployId,
             deployTemplate: template,
@@ -132,6 +123,7 @@ const deploy_history_computed: ComputedRef<DeployHistoryComputed[]> = computed((
             price: value.price,
             pagePath: value.pagePath,
             deployTime: value.deployTime,
+            deployOptions: deploy_options,
         }
     })
 })

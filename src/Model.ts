@@ -52,3 +52,29 @@ export interface Image {
 export function eval_image(obj: any): Image {
     return { imageId: obj.imageId, imageOwner: obj.imageOwner, uploadTime: new Date(obj.uploadTime) }
 }
+
+export interface DeployInfo {
+    deployId: string
+    deployTemplate: string
+    deployType: string
+    userVerify: string
+    deployAddition: string[]
+    price: number
+    pagePath: string
+    deployTime: Date
+}
+
+export interface AccessLog {
+    accessId: string;
+    accessPage: string;
+    accessIpAddress: string;
+    accessTime: Date;
+}
+
+export interface DeployOption {
+    id: string
+    group: string
+    name: string
+    price: number
+    description: string
+}
