@@ -8,6 +8,7 @@ import { request } from '../Request';
 import { DeployInfo, AccessLog, DeployOption } from '../Model';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js';
+import { ElTable, ElTableColumn } from 'element-plus';
 
 ChartJS.register(...registerables)
 
@@ -59,10 +60,72 @@ const AccessStatusChart = defineComponent({
                         x: {
                             offset: true,
                         }
-                    }
+                    },
                 }}
-                height={250}
             />
+        );
+    }
+})
+
+
+const FromDataTable = defineComponent({
+    name: 'FromDataTable',
+    components: {
+        ElTable,
+        ElTableColumn,
+    },
+    props: {
+        headers: {
+            type: Object as PropType<{ [key: string]: string }>,
+            required: true,
+        },
+        data: {
+            type: Array as PropType<{
+                submit_id: string,
+                submit_ip_address: string,
+                submit_time: Date,
+                submit_user?: string,
+                submit_content: { [key: string]: string },
+            }[]>,
+            required: true,
+        },
+    },
+    setup(props) {
+        const coloums = computed(() => {
+            const coloums: { [key: string]: (string | undefined) }[] = props.data.map(item => {
+                let column: { [key: string]: (string | undefined) } = {}
+                for (const key in props.headers) {
+                    column[key] = item.submit_content[key]
+                }
+                column['_submit_id'] = item.submit_id
+                column['_submit_time'] = item.submit_time.toLocaleString()
+                column['_submit_ip_address'] = item.submit_ip_address
+                column['_submit_user'] = item.submit_user
+
+                return column
+            })
+
+            return coloums
+        })
+        return () => (
+            <div>
+                <div>Hello Table of FormData</div>
+                <ElTable data={coloums.value} style={{ width: '100%' }} size='small'>
+                    <ElTableColumn label="提交时间" prop="_submit_time" sortable={true} fixed={true} />
+                    <ElTableColumn label="提交用户" prop="_submit_user" sortable={true} fixed={true} />
+                    {
+                        Object.keys(props.headers).map(key => {
+                            return (
+                                <ElTableColumn
+                                    label={props.headers[key]}
+                                    prop={key}
+                                    sortable={true}
+                                />
+                            )
+                        })
+                    }
+                </ElTable>
+            </div>
         );
     }
 })
@@ -72,6 +135,8 @@ export default {
     components: {
         Toolbar,
         PageBody,
+        AccessStatusChart,
+        FromDataTable,
     },
 }
 </script>
@@ -112,6 +177,22 @@ const deploy_info_computed = computed(() => {
 
 
 const access_logs = ref<AccessLog[]>([])
+
+const page_form_data = ref<
+    {
+        headers: { [key: string]: string },
+        data: {
+            submit_id: string,
+            submit_ip_address: string,
+            submit_time: Date,
+            submit_user?: string,
+            submit_content: { [key: string]: string },
+        }[]
+    }
+>({
+    headers: {},
+    data: [],
+})
 
 const DEPLOY_OPTION_GROUP = ref<{
     DEPLOY_TYPE: DeployOption[],
@@ -245,8 +326,34 @@ function get_page_access_logs() {
     })
 }
 
+function get_page_form_data() {
+    request(`page/form/data/${deploy_id.value}`, {}, (status, obj) => {
+        if (status === 200 && obj.code === 200 && obj.data != null) {
+            let formData = obj.data.data
+            let headers: { [key: string]: string } = obj.data.fields.reduce((header: any, item: any) => {
+                header[item.name] = item.desc
+                return header
+            }, {})
+            page_form_data.value.headers = headers
+            page_form_data.value.data = formData.map((item: any) => {
+                return {
+                    submit_id: item.submit_id,
+                    submit_ip_address: item.submit_ip_address,
+                    submit_time: new Date(item.submit_time),
+                    submit_user: item.submit_user,
+                    submit_content: item.submit_content,
+                }
+            })
+            console.log(headers, formData)
+        } else {
+            console.log('get_page_form_data', obj)
+        }
+    })
+}
+
 function refresh_all() {
     get_page_access_logs()
+    get_page_form_data()
 }
 
 watch(deploy_info, (newValue, oldValue) => {
@@ -276,13 +383,14 @@ get_page_deploy_info()
 
     <page-body>
         <div class="mdui-container">
-            <el-collapse>
+            <el-collapse accordion>
                 <el-collapse-item :title="`页面配置信息&nbsp;&nbsp;&nbsp;&nbsp;¥${deploy_info_computed.price / 100}`"
                     v-if="deploy_info_computed">
                     <div class='mdui-list mdui-list-dense'>
                         <div class='mdui-list-item' v-for="option in deploy_info_computed.deployOptions">
                             <div class="mdui-list-item-content">
-                                <div class="mdui-list-item-title">{{ option?.name }} ¥{{ (option?.price || 0) / 100 }}</div>
+                                <div class="mdui-list-item-title">{{ option?.name }} ¥{{ (option?.price || 0) / 100 }}
+                                </div>
                                 <div class="mdui-list-item-text mdui-list-item-one-line">
                                     <span class="mdui-text-color-grey">{{ option?.description }}</span>
                                 </div>
@@ -306,6 +414,7 @@ get_page_deploy_info()
                     <template #title>
                         表单数据查看
                     </template>
+                    <from-data-table :headers="page_form_data.headers" :data="page_form_data.data" />
                 </el-collapse-item>
             </el-collapse>
         </div>
