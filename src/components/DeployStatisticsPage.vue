@@ -56,6 +56,9 @@ const AccessStatusChart = defineComponent({
                                 stepSize: 5
                             },
                         },
+                        x: {
+                            offset: true,
+                        }
                     }
                 }}
                 height={250}

@@ -40,8 +40,7 @@ const DeployHistoryCard = defineComponent({
                         <div class="mdui-card-actions">
                             <ElPopover v-slots={{
                                 reference: () => {
-                                    return (<button class='mdui-btn'>价格 ¥{deploy_history.price / 100}</button>)
-
+                                    return (<button class='mdui-btn'><i class="mdui-icon material-icons">payment</i> ¥{deploy_history.price / 100}</button>)
                                 },
                                 default: () => {
                                     return (
@@ -67,8 +66,12 @@ const DeployHistoryCard = defineComponent({
                             }} width={350}>
 
                             </ElPopover>
-                            <a class="mdui-btn mdui-ripple mdui-float-right" href={api(`page/release/${deploy_history.pagePath}`)}>查看</a>
-                            <a class="mdui-btn mdui-ripple mdui-float-right" href={`/deploy/statistics?did=${deploy_history.deployId}`}>数据</a>
+                            <a class="mdui-btn mdui-btn-icon mdui-float-right" href={api(`page/release/${deploy_history.pagePath}`)}>
+                                <i class="mdui-icon material-icons" mdui-tooltip="{content: '访问页面'}">web</i>
+                            </a>
+                            <a class="mdui-btn mdui-btn-icon mdui-float-right" href={`/deploy/statistics?did=${deploy_history.deployId}`}>
+                                <i class="mdui-icon material-icons" mdui-tooltip="{content: '查看数据'}">pie_chart_outlined</i>
+                            </a>
                         </div>
                     </div>
                 </div>
