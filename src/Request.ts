@@ -45,6 +45,24 @@ export function request_urlencoded(route: string, form_data: FormData, callback:
     fetch(form).then(result => result.json().then(obj => callback(result.status, obj)))
 }
 
+export function request_octet(route: string, body: { [key: string]: any; }, callback: (filename: number, Blob: Blob) => void, headers: { [key: string]: string; } = default_headers) {
+    let token = window.localStorage.getItem("token")
+    if (token != null) {
+        headers = {
+            "Content-Type": "application/json;charset=utf-8",
+            "Authorization": token
+        }
+    }
+    let form = new Request(api(route), {
+        method: 'POST',
+        credentials: "same-origin",
+        headers: headers,
+        body: JSON.stringify(body)
+    })
+
+    fetch(form).then(result => result.blob().then(blob => callback(result.status, blob)))
+}
+
 export interface Response {
     code: number
     message: string

@@ -6,9 +6,10 @@ import mdui from 'mdui';
 import { ref, computed, watch, defineComponent, PropType } from 'vue';
 import { request } from '../Request';
 import { DeployInfo, AccessLog, DeployOption } from '../Model';
+import { Buffer } from 'buffer';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import { ElTable, ElTableColumn } from 'element-plus';
+import { ElButton, ElTable, ElTableColumn } from 'element-plus';
 
 ChartJS.register(...registerables)
 
@@ -109,7 +110,6 @@ const FromDataTable = defineComponent({
         })
         return () => (
             <div>
-                <div>Hello Table of FormData</div>
                 <ElTable data={coloums.value} style={{ width: '100%' }} size='small'>
                     <ElTableColumn label="提交时间" prop="_submit_time" sortable={true} fixed={true} />
                     <ElTableColumn label="提交用户" prop="_submit_user" sortable={true} fixed={true} />
@@ -137,6 +137,7 @@ export default {
         PageBody,
         AccessStatusChart,
         FromDataTable,
+        ElButton,
     },
 }
 </script>
@@ -351,6 +352,37 @@ function get_page_form_data() {
     })
 }
 
+function base64ToBlob(data: string, mime: string) {
+    let buffer = Buffer.from(data, 'base64')
+    let ab = new ArrayBuffer(buffer.length)
+    let ia = new Uint8Array(ab)
+    for (let i = 0; i < buffer.length; i++) {
+        ia[i] = buffer[i]
+    }
+    return new Blob([ab], { type: mime })
+}
+
+function export_form_data_xlsx() {
+    request(`page/form/data/export/${deploy_id.value}`, {}, (status, obj) => {
+        if (status === 200 && obj.code === 200 && obj.data != null) {
+            const base64: string = obj.data
+            const blob = base64ToBlob(base64, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `${deploy_id.value}.xlsx`
+            a.click()
+            window.URL.revokeObjectURL(url)
+        } else {
+            console.log('export_form_data_xlsx', status, obj)
+            mdui.snackbar({
+                message: obj.message,
+                position: 'bottom',
+            });
+        }
+    })
+}
+
 function refresh_all() {
     get_page_access_logs()
     get_page_form_data()
@@ -413,6 +445,9 @@ get_page_deploy_info()
                 <el-collapse-item v-if="export_data_available">
                     <template #title>
                         表单数据查看
+                        <el-button @click.stop="export_form_data_xlsx" size="small" class="export-xlsx-button">
+                            导出数据
+                        </el-button>
                     </template>
                     <from-data-table :headers="page_form_data.headers" :data="page_form_data.data" />
                 </el-collapse-item>
@@ -420,3 +455,9 @@ get_page_deploy_info()
         </div>
     </page-body>
 </template>
+
+<style>
+.export-xlsx-button {
+    margin: 0 16px;
+}
+</style>
