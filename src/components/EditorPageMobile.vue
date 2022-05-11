@@ -194,7 +194,7 @@ const footerOn = ref(false)
 
     <el-drawer v-model="add_element_drawer" direction="btt" :fullscreen="true" size="60%" :with-header="false">
         <template #default>
-            <template-click-source :onItemClick="add_element" />
+            <template-click-source :item_click="add_element" />
         </template>
     </el-drawer>
 
