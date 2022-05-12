@@ -1,4 +1,4 @@
-import { ElInput } from "element-plus";
+import { ElInput, ElRadioGroup, ElRadioButton } from "element-plus";
 import { defineComponent, PropType } from "vue";
 import { request_urlencoded } from "../Request";
 import { Widget, ClassProp, FormProp, SlotProp, random_id } from "../Widget";
@@ -20,6 +20,20 @@ function form_action(payload: Event) {
     request_urlencoded('form/test', data, (status, obj) => {
         console.log(status, obj);
     })
+}
+
+function button_action(action: string, args: { content: string }[]) {
+    console.log(action, args.map(x => x.content));
+    if (action === 'open') {
+        args.forEach(x => {
+            window.open(x.content);
+        })
+    }
+    if (action == 'code') {
+        args.forEach(x => {
+            eval(x.content);
+        })
+    }
 }
 
 function create_class_list(init: string[], prop?: ClassProp): string[] {
@@ -80,7 +94,7 @@ const unknown: TemplateWidget = {
     }
 }
 
-export const button: TemplateWidget<{ action: string, arguments: any[] }> = {
+export const button: TemplateWidget<{ action: string, arguments: { content: string }[] }> = {
     name: "BUTTON",
     preview: (<button class='template-item template-default-button'>普通按钮</button>),
     template() {
@@ -98,6 +112,12 @@ export const button: TemplateWidget<{ action: string, arguments: any[] }> = {
         if (prop.content == undefined) {
             prop.content = '普通按钮'
         }
+        if (button.universal_prop().action == undefined) {
+            button.universal_prop().action = ''
+        }
+        if (content.universal_prop.arguments == undefined) {
+            content.universal_prop.arguments = []
+        }
         let classList: string[] = create_class_list(['template-item', 'template-default-button'], prop.clazz)
         return (<button class={classList}>{prop.content}</button>)
     },
@@ -107,19 +127,41 @@ export const button: TemplateWidget<{ action: string, arguments: any[] }> = {
             prop.content = '普通按钮'
         }
         let classList: string[] = create_class_list(['template-item', 'template-default-button'], prop.clazz)
-        return (<button class={classList}>{prop.content}</button>)
+        const action = content.universal_prop.action
+        if (action == undefined || action == '' || action == 'submit') {
+            return (<button type="submit" class={classList}>{prop.content}</button>)
+        }
+        const args = content.universal_prop.arguments
+        return (<button type="button" class={classList} onClick={() => button_action(action, args)}>{prop.content}</button>)
     },
     universal_prop() {
         return {
-            action: '',
-            arguments: [],
+            action: 'submit',
+            arguments: [{ content: '' }],
         }
     },
     configuration(widget) {
+        const universal_prop = widget.universal_prop
+
+        let item_slot = {
+            item: (props: { element: { content: string }, index: number }) => (
+                <ElInput v-model={props.element.content} placeholder={`参数${props.index}`}></ElInput>
+            ),
+            add_item: () => universal_prop.arguments.push({ content: '' }),
+            remove_item: (index: number) => universal_prop.arguments.splice(index, 1),
+        }
         return (
             <div>
                 <ControlListItem title='按钮类型'>
-                    <ElInput v-model={widget.universal_prop.action} placeholder='请输入按钮类型' />
+                    <ElRadioGroup v-model={widget.universal_prop.action} size='small'>
+                        <ElRadioButton label='submit'>提交表单</ElRadioButton>
+                        <ElRadioButton label='open'>打开网站</ElRadioButton>
+                        <ElRadioButton label='code'>执行代码</ElRadioButton>
+                    </ElRadioGroup>
+                </ControlListItem>
+
+                <ControlListItem title="参数列表" vertical={true}>
+                    <ListItemEdit items={widget.universal_prop.arguments} item_slot={item_slot}></ListItemEdit>
                 </ControlListItem>
             </div>
         )
