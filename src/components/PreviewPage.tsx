@@ -40,6 +40,10 @@ export default defineComponent({
             mdui.snackbar({
               message: '模版不存在',
               position: 'bottom',
+              timeout: 2000,
+              onClosed: () => {
+                window.location.href = '/'
+              }
             });
           }
         }
