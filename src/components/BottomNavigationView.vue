@@ -14,15 +14,15 @@ defineProps<{
 
 <template>
   <div class="mdui-bottom-nav mdui-bottom-nav-text-auto mdui-color-white">
-    <a v-on:click="onPageChange(0)" class="mdui-ripple mdui-bottom-nav-active">
+    <a v-on:click="onPageChange(0)" class="mdui-bottom-nav-active">
       <i class="mdui-icon material-icons">language</i>
       <label>模版市场</label>
     </a>
-    <a v-on:click="onPageChange(1)" class="mdui-ripple">
+    <a v-on:click="onPageChange(1)">
       <i class="mdui-icon material-icons">grid_on</i>
       <label>开始创作</label>
     </a>
-    <a v-on:click="onPageChange(2)" class="mdui-ripple">
+    <a v-on:click="onPageChange(2)">
       <i class="mdui-icon material-icons">account_box</i>
       <label>个人中心</label>
     </a>

@@ -1,37 +1,59 @@
 <script lang="ts">
 import Draggable from "vuedraggable";
-import SlotDraggable from "./SlotDraggable.vue";
 import Toolbar from "./Toolbar.vue";
 import PageBody from "./PageBody.vue";
-import TemplateComponent from "./TemplateComponent.vue";
 import ConfigPanelItem from "./ConfigPanelItem.vue";
 import ConfigPanelContainer from "./ConfigPanelContainer.vue";
-
-import { ref } from "vue";
-import { template_widgets, eval_widget_json } from "../Widget"
-import { Widget } from "../Widget"
+import ConfigPanelRoot from "./ConfigPanelRoot";
+import { TemplateDraggable } from "./TemplateDraggable";
+import { TemplateDraggableSource } from "./TemplateDraggable";
+import { TemplateDraggableTrash } from "./TemplateDraggable";
+import { ElPopover } from "element-plus";
+import { ref, computed, onMounted } from "vue";
+import { config_items } from "../Widget";
+import { Widget } from "../Widget";
 import { request } from "../Request";
-import { eval_template, Template } from "../Model";
-import mdui from "mdui"
+import { eval_template } from "../Model";
+import QrCodeImage from "./QrCodeImage";
+import mdui from "mdui";
 
 export default {
   name: "EditorPage",
-  components: { Draggable, SlotDraggable, Toolbar, PageBody, TemplateComponent, ConfigPanelItem, ConfigPanelContainer }
+  components: {
+    Draggable,
+    Toolbar,
+    PageBody,
+    TemplateDraggable,
+    TemplateDraggableSource,
+    TemplateDraggableTrash,
+    ConfigPanelItem,
+    ConfigPanelContainer,
+    ConfigPanelRoot,
+    QrCodeImage,
+    ElPopover,
+  }
 }
 </script>
 
 <script setup lang="ts">
-const content_template = template_widgets
-const content_editor = ref<Array<Widget>>([])
+onMounted(() => {
+    // is mobile
+    if (window.innerWidth < 768) {
+        const params = new URLSearchParams(location.search)
+        const _tid = params.get('tid')
+        window.location.href = `/editor/mobile?tid=${_tid}`;
+    }
+});
+
+const content_editor = ref<Widget[]>([])
 
 const page_title = ref<string>("")
 const page_tid = ref<string>("")
+const page_update_time = ref<Date | undefined>()
+
+const content_draggable = ref<boolean>(true)
 
 const selected_item = ref<Widget | undefined>(undefined)
-
-function clone_item(item: Widget): Widget {
-  return item.clone()
-}
 
 function export_data(): string {
   return JSON.stringify(content_editor.value)
@@ -39,10 +61,7 @@ function export_data(): string {
 
 function import_data(value?: string) {
   if (value == null || value.length == 0) return
-  let widget_array = <Array<any>>JSON.parse(value)
-  content_editor.value = widget_array.map(eval_widget_json)
-  console.log("import_data")
-  console.log(content_editor.value)
+  content_editor.value = JSON.parse(value) as Widget[]
 }
 
 function get_template() {
@@ -55,8 +74,8 @@ function get_template() {
     (status, obj) => {
       if (status == 200 && obj.code == 200 && obj.data != null) {
         let template = eval_template(obj.data.template)
-        // console.log(template)
         page_title.value = template.title
+        page_update_time.value = template.updateTime
         import_data(template.content)
       } else if (status == 200) {
         console.log(obj)
@@ -80,11 +99,12 @@ function save_template() {
       content: export_data(),
     },
     (status, obj) => {
-      if (status == 200 && obj.code == 200) {
+      if (status == 200 && obj.code == 200 && obj.data != null) {
         mdui.snackbar({
           message: '保存成功',
           position: 'bottom',
         });
+        page_update_time.value = new Date(obj.data.updateTime)
       } else if (status == 200 && obj.message != null) {
         mdui.snackbar({
           message: obj.message,
@@ -101,13 +121,17 @@ function save_template() {
 }
 
 function preview_template() {
-  window.location.href = `preview?tid=${page_tid.value}`
+  window.open(`/preview?tid=${page_tid.value}`)
 }
 
 function select_item(widget?: Widget) {
   console.log(`item select: ${widget?.id}`)
   selected_item.value = widget
 }
+
+const preview_url = computed(() => {
+  return `${location.origin}/preview?tid=${page_tid.value}`
+})
 
 const params = new URLSearchParams(location.search)
 const _tid = params.get('tid')
@@ -116,171 +140,107 @@ if (_tid != null && _tid.length > 0) {
 }
 
 get_template()
+
+// for test only
+const headerOn = ref(false)
+const footerOn = ref(false)
 </script>
 
 <template>
   <toolbar title="编辑页面">
-    <a class="mdui-btn mdui-btn-icon" @click="save_template">
-      <i class="mdui-icon material-icons">save</i>
-    </a>
-
+    <div v-if="page_update_time !== undefined" class="mdui-typo-caption">
+      最后更新 {{ page_update_time.toLocaleString() }}
+    </div>
+    <el-switch class="mdui-hidden-xs" v-model="content_draggable" active-text="拖拽" inactive-text="滑动"/>
+    <el-popover trigger="hover" width="128">
+      <template #reference>
+        <a class="mdui-btn mdui-btn-icon mdui-hidden-xs">
+          <i class="mdui-icon material-icons">smartphone</i>
+        </a>
+      </template>
+      <template #default>
+        <qr-code-image :text="preview_url" />
+      </template>
+    </el-popover>
     <a class="mdui-btn mdui-btn-icon" @click="preview_template">
       <i class="mdui-icon material-icons">photo</i>
     </a>
+    <a class="mdui-btn mdui-btn-icon" @click="save_template">
+      <i class="mdui-icon material-icons">save</i>
+    </a>
   </toolbar>
   <page-body>
-    <div class="mdui-container-fluid">
-      <div class="mdui-col-md-3">
+    <div class="mdui-container">
+      <div class="template-editor-area template-editor-area-widget">
         <div id="template-source" class="template-source mdui-center">
-          <draggable
-            :list="content_template"
-            :clone="clone_item"
-            v-bind="{ animation: 200 }"
-            :group="{ name: 'editor', pull: 'clone', put: false }"
-            item-key="id"
-          >
-            <template #item="{ element }">
-              <div
-                v-if="element.is_container()"
-                class="template-container template-item mdui-container-fluid"
-              >
-                <slot-draggable
-                  :id="`${element.id}-${index}`"
-                  :select_item="() => { }"
-                  :selected_item="selected_item"
-                  v-for="(slot, index) in element.children"
-                  :slot="slot"
-                ></slot-draggable>
-              </div>
-              <template-component
-                v-else-if="!element.is_container()"
-                :type="element.type"
-                :node_prop="element.node_prop"
-              ></template-component>
-              <div v-else>Unknown</div>
-            </template>
-          </draggable>
+          <template-draggable-source />
         </div>
 
         <div class="mdui-divider" style="margin: 16px 0;"></div>
 
         <div>
           <div class="mdui-text-center mdui-center">垃圾桶</div>
-          <draggable
-            id="template-trash"
-            class="template-trash mdui-center"
-            group="editor"
-            item-key="id"
-          >
-            <template #item="{ element }">
-              <div style="visibility: hidden"></div>
-            </template>
-          </draggable>
-        </div>
-      </div>
-
-      <div class="mdui-col-md-6">
-        <div class="mdui-container-fluid">
-          <div class="mdui-textfield">
-            <label class="mdui-textfield-label">页面标题</label>
-            <input class="mdui-textfield-input" type="text" v-model="page_title" />
+          <div id="template-trash">
+            <template-draggable-trash class="template-trash mdui-center" />
           </div>
         </div>
-        <draggable
-          id="template-container-root"
-          class="template-container-root"
-          :list="content_editor"
-          v-bind="{ animation: 200 }"
-          @click="select_item(undefined)"
-          group="editor"
-          item-key="id"
-        >
-          <template #item="{ element }">
-            <div
-              v-if="element.is_container()"
-              :id="element.id"
-              @click.stop="select_item(element)"
-              class="template-container template-item mdui-container-fluid"
-              :class="{ 'template-selected': element.id === selected_item?.id }"
-            >
-              <slot-draggable
-                :id="`${element.id}-${index}`"
-                v-for="(slot, index) in element.children"
-                :slot="slot"
-                :select_item="select_item"
-                :selected_item="selected_item"
-              ></slot-draggable>
-            </div>
-            <template-component
-              v-else-if="!element.is_container()"
-              @click.stop="select_item(element)"
-              :type="element.type"
-              :node_prop="element.node_prop"
-              :class="{ 'template-selected': element.id === selected_item?.id }"
-            ></template-component>
-            <div v-else>Unknown</div>
-          </template>
-        </draggable>
       </div>
 
-      <div class="mdui-col-md-3">
+      <div class="template-editor-area template-editor-area-content">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">页面标题</label>
+          <input class="mdui-textfield-input" type="text" v-model="page_title" />
+        </div>
+        <template-draggable @click="select_item(undefined)" id="template-container-root" :enable_drag="content_draggable"
+          class="template-container-root mdui-center" :data="content_editor" :selected_item="selected_item"
+          :select_item="select_item" />
+      </div>
+
+      <div class="template-editor-area template-editor-area-prop">
         <div v-if="selected_item !== undefined">
-          <config-panel-container v-if="selected_item.is_container()" :selected_item="(selected_item)" :key="`container-${selected_item.id}`" />
+          <config-panel-container v-if="config_items.CONTAINER.includes(selected_item.type)"
+            :selected_item="(selected_item)" :key="`container-${selected_item.id}`" />
           <config-panel-item v-else :selected_item="selected_item" :key="`item-${selected_item.id}`" />
-          <pre style="white-space: pre-wrap;word-wrap: break-word;">{{ selected_item }}</pre>
+        </div>
+        <div v-else>
+          <config-panel-root :header-on="headerOn" :footer-on="footerOn" @header-on="headerOn = !headerOn"
+            @footer-on="footerOn = !footerOn" />
         </div>
       </div>
     </div>
   </page-body>
 </template>
 
-<style lang="css">
-@import "../template.css";
-
-.template-container-root {
-    min-height: 720px;
-    border: 1px solid #aaaaaa !important;
-    height: auto;
-    padding: 2px;
+<style scoped>
+.template-editor-area {
+  position: fixed;
+  top: 64px;
+  height: calc(100% - 84px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 8px 4px;
+  background-color: white;
 }
 
-.template-trash {
-    width: 100%;
-    height: 80px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    border: 1px solid #aaaaaa;
+.template-editor-area::-webkit-scrollbar {
+  width: 0px;
 }
 
-.template-selected {
-    border: 2px solid #000000 !important;
+.template-editor-area-widget {
+  left: 0;
+  width: 25%;
+  /* margin: 8px 40px; */
 }
 
-.choice_selected {
-  border: 2px solid #aaaaaa;
-
-  height: 32px;
-  background-color: #eeeeee;
-  text-align: center;
-  line-height: 32px;
+.template-editor-area-prop {
+  right: 0;
+  width: 25%;
+  /* padding: 8px 16px; */
 }
 
-.choice_unselected {
-  height: 32px;
-  background-color: #eeeeee;
-  text-align: center;
-  line-height: 32px;
-}
-
-.style_editor_group {
-  margin-bottom: 12px;
-  border: 1px dotted #cccccc;
-  padding: 8px 0;
-}
-
-.style_editor_group > p {
-  text-align: center;
-  height: 32px;
-  line-height: 32px;
+.template-editor-area-content {
+  left: 30%;
+  width: 40%;
+  overflow-x: scroll;
 }
 </style>

@@ -4,7 +4,7 @@ import TemplateCardItem from "./TemplateCardItem.vue";
 import PageBody from "./PageBody.vue";
 
 import { request } from "../Request";
-import { Template } from "../Model";
+import { eval_template, Template } from "../Model";
 import { ref } from "vue"
 import mdui from "mdui";
 
@@ -18,15 +18,15 @@ export default {
 const templates = ref<Array<Template>>([])
 
 
-function getTemplateList() {
+function get_template_list() {
   request("template/list", {}, (status, obj) => {
     if (status == 200 && obj?.code === 200 && obj.data !== null) {
-      templates.value = (<Array<any>>obj.data.templates).map(value => new Template(value.tid, value.creator, value.title, value.content))
+      templates.value = (<Array<any>>obj.data.templates).map(value => eval_template(value))
     }
   })
 }
 
-function createTemplate() {
+function create_template() {
   mdui.prompt('模版标题', (value: string) => {
     if (value.length > 0) {
       request("template/insert", { title: value, content: JSON.stringify([]) }, (status, obj) => {
@@ -34,9 +34,12 @@ function createTemplate() {
           mdui.snackbar({
             message: '创建成功',
             position: 'bottom',
+            buttonText: '编辑',
+            onButtonClick: () => {
+              window.open(`editor?tid=${obj.data.tid}`)
+            }
           });
-
-          window.location.href = `editor?tid=${obj.data.tid}`
+          get_template_list()
         }
       })
     } else {
@@ -48,27 +51,19 @@ function createTemplate() {
   })
 }
 
-getTemplateList()
+get_template_list()
 </script>
 
 <template>
-  <Toolbar title="开始创作" />
+  <toolbar title="开始创作">
+    <a class="mdui-btn mdui-btn-icon" @click="create_template">
+      <i class="mdui-icon material-icons">add</i>
+    </a>
+  </toolbar>
   <page-body>
     <div class="mdui-container">
-      <template-card-item
-        v-for="template in templates"
-        :tid="template.tid"
-        :title="template.title"
-        thumbnail="/thumbnail.png"
-      />
+      <template-card-item v-for="template in templates" :tid="template.tid" :title="template.title"
+        :update-time="template.updateTime" thumbnail="/thumbnail.png" />
     </div>
-
-    <button
-      @click="createTemplate"
-      class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-green mdui-text-color-white"
-      style="margin-bottom: 48px"
-    >
-      <i class="mdui-icon material-icons">add</i>
-    </button>
   </page-body>
 </template>

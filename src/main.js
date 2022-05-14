@@ -1,17 +1,33 @@
 import {createApp, h} from 'vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 import LoginPage from './components/LoginPage.vue'
 import RegisterPage from './components/RegisterPage.vue'
 import EditorPage from './components/EditorPage.vue'
+import EditorPageMobile from './components/EditorPageMobile.vue'
 import PreviewPage from './components/PreviewPage'
 import MainPage from "./components/MainPage.vue";
-import NotFoundPage from "./components/NotFoundPage.vue";
+import NotFoundPage from './components/NotFoundPage.vue';
+import HistoryOrderPage from './components/HistoryOrderPage.vue';
+import DeployPage from './components/DeployPage.vue';
+import DeployHistoryPage from './components/DeployHistoryPage.vue';
+import DeployStatisticsPage from './components/DeployStatisticsPage.vue';
+import ImageBedManagePage from './components/ImageBedManagePage.vue';
+import "./main.css"
 
 const routes = {
     '/': MainPage,
     '/login': LoginPage,
     '/editor': EditorPage,
+    '/editor/mobile': EditorPageMobile,
     '/preview': PreviewPage,
-    '/register': RegisterPage
+    '/register': RegisterPage,
+    '/history': HistoryOrderPage,
+    '/deploy': DeployPage,
+    '/deploy/history': DeployHistoryPage,
+    '/deploy/statistics': DeployStatisticsPage,
+    '/image/manage': ImageBedManagePage,
 }
 
 const router = {
@@ -29,4 +45,5 @@ const router = {
 }
 
 let app = createApp(router)
+app.use(ElementPlus)
 app.mount('#app')

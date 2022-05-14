@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-const props = defineProps<{
+defineProps<{
   title: string,
 }>()
 </script>
@@ -14,13 +13,10 @@ export default {
 <template>
   <div class="mdui-appbar mdui-appbar-fixed mdui-color-white">
     <div class="mdui-toolbar mdui-color-theme">
-      <a href="/" class="mdui-typo-headline">TemplateShop</a>
+      <a href="/" class="mdui-typo-headline mdui-hidden-xs">TemplateShop</a>
       <a href="javascript:" class="mdui-typo-title">{{ title }}</a>
       <div class="mdui-toolbar-spacer"></div>
       <slot></slot>
-      <a href="javascript:" class="mdui-btn mdui-btn-icon">
-        <i class="mdui-icon material-icons">search</i>
-      </a>
     </div>
   </div>
 </template>
